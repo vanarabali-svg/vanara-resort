@@ -1,25 +1,34 @@
-import Link from "next/link";
+import Link from "next/link"
+import { sanityClient } from "@/lib/sanity.client"
+import { urlFor } from "@/lib/sanity.image"
 
-const ACC = [
-  {
-    slug: "cliff-pool-villa",
-    title: "Cliff Pool Villa",
-    subtitle: "Private cliffside villa with ocean-facing pool and quiet interior warmth.",
-    fromPrice: "From IDR — / night",
-    img: "/img3.jpg",
-  },
-  {
-    slug: "ocean-suite",
-    title: "Ocean Suite",
-    subtitle: "A wide, calm space designed for still mornings and slow sunsets.",
-    fromPrice: "From IDR — / night",
-    img: "/img2.jpg",
-  },
-];
+export const revalidate = 60
 
-export default function AccommodationIndex() {
+type AccItem = {
+  slug: string
+  title: string
+  subtitle?: string
+  shortDescription?: string
+  fromPrice?: string
+  heroImage?: any
+}
+
+const LIST_QUERY = `*[_type=="accommodation" && defined(slug.current)]
+| order(_createdAt desc){
+  "slug": slug.current,
+  title,
+  subtitle,
+  shortDescription,
+  fromPrice,
+  heroImage
+}`
+
+export default async function AccommodationIndex() {
+  const items = await sanityClient.fetch<AccItem[]>(LIST_QUERY)
+
   return (
     <main className="pageA">
+      {/* HERO */}
       <section className="heroSmall">
         <div className="container">
           <div className="kicker">ACCOMMODATION</div>
@@ -32,20 +41,49 @@ export default function AccommodationIndex() {
 
       <div className="ruleA" />
 
+      {/* LIST */}
       <section className="sectionA2">
         <div className="container accGrid">
-          {ACC.map((a) => (
-            <Link key={a.slug} href={`/accommodation/${a.slug}`} className="accCard">
-              <div className="accThumb" style={{ backgroundImage: `url(${a.img})` }} />
-              <div className="accMeta">
-                <div className="accTitle">{a.title}</div>
-                <div className="accSub">{a.subtitle}</div>
-                <div className="accPrice">{a.fromPrice}</div>
-              </div>
-            </Link>
-          ))}
+          {items.map((a) => {
+            const img =
+              a.heroImage ? urlFor(a.heroImage).width(1600).height(1100).fit("crop").url() : ""
+
+            return (
+              <Link key={a.slug} href={`/accommodation/${a.slug}`} className="accCard">
+                <div className="accThumb" style={{ overflow: "hidden" }}>
+                  {img ? (
+                    <img
+                      src={img}
+                      alt={a.title}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div style={{ width: "100%", height: "100%", background: "rgba(20,20,20,.06)" }} />
+                  )}
+                </div>
+
+                <div className="accMeta">
+                  <div className="accTitle">{a.title}</div>
+                  <div className="accSub">
+                    {a.subtitle || a.shortDescription || "A quiet place above the tide."}
+                  </div>
+                  <div className="accPrice">{a.fromPrice ? `From ${a.fromPrice}` : "Limited availability"}</div>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* SOFT CTA */}
+      <section className="sectionA2">
+        <div className="container">
+          <a className="softLinkA" href="/book">
+            Request access →
+          </a>
         </div>
       </section>
     </main>
-  );
+  )
 }
