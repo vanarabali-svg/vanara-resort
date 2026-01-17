@@ -28,11 +28,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         closeSearch()
       }
     }
-
     window.addEventListener('scroll', onScroll)
     window.addEventListener('keydown', onKey)
     onScroll()
-
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('keydown', onKey)
@@ -45,45 +43,51 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
       </head>
 
-      <body className={[scrolled ? 'scrolled' : '', !isHome ? 'inner' : ''].join(' ')}>
-        {/* HEADER */}
-        <header className="nav">
-          <div className="container navBar">
-            {/* LEFT */}
-            <div className="navLeft">
-              <button className="iconBtn" onClick={openMenu} aria-label="Open menu">
-                {/* Aman-style 2-line */}
-                <span className="hamburgerTwo" aria-hidden="true">
+      <body className={`${scrolled ? 'scrolled' : ''} ${!isHome ? 'inner' : ''}`}>
+        <header className="v-nav">
+          <div className="v-nav__inner">
+            <div className="v-nav__left">
+              <button className="v-iconBtn" onClick={openMenu} aria-label="Open menu">
+                <span className="v-burger" aria-hidden="true">
                   <span />
                   <span />
                 </span>
               </button>
 
-              <button className="iconBtn" onClick={openSearch} aria-label="Search">
-                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <button className="v-iconBtn" onClick={openSearch} aria-label="Search">
+                {/* palm search icon */}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="10" cy="10" r="6.5" stroke="currentColor" strokeWidth="1" />
                   <path
-                    d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Zm0-2a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Zm7.8 5.2-4.2-4.2 1.4-1.4 4.2 4.2-1.4 1.4Z"
-                    fill="currentColor"
+                    d="M7.5 9.5
+                       C9 7.5, 11 7.5, 12.5 9
+                       C11.5 8.8, 10.5 9.4, 9.5 10.6
+                       C10.8 10.2, 11.8 10.4, 13 11.5
+                       C11 11.2, 9.8 11.8, 8.8 12.8"
+                    stroke="currentColor"
+                    strokeWidth="0.9"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
+                  <line x1="15" y1="15" x2="20" y2="20" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
                 </svg>
               </button>
             </div>
 
-            {/* CENTER */}
-            <div className="navCenter">
-              <Link href="/" aria-label="Vanara Resort & Spa" className="brandLockup">
+            <div className="v-nav__center">
+              <Link href="/" aria-label="Vanara Resort & Spa">
                 <Image
                   src="/logo.png"
                   alt="Vanara Resort & Spa"
-                  width={248}
+                  width={240}
                   height={34}
                   priority
-                  className="navLogoImg"
+                  className="v-logo"
                   style={{
                     height: 34,
                     width: 'auto',
@@ -93,56 +97,52 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </Link>
             </div>
 
-            {/* RIGHT */}
-            <div className="navRight">
-              <Link href="/book" className="btnReserve">
-                Reserve
-              </Link>
-
-              {/* optical balance */}
-              <span className="navSpacer" aria-hidden="true" />
+            <div className="v-nav__right">
+              <Link href="/book" className="v-reserve">Reserve</Link>
+              <span className="v-nav__ghost" aria-hidden="true" />
             </div>
           </div>
         </header>
 
-        {/* MENU OVERLAY */}
-        <div
-          className="overlay"
-          data-overlay="menu"
-          onClick={(e) => e.target === e.currentTarget && closeMenu()}
-        >
-          <div className="panel menuPanel">
-            <nav className="panelLinks">
+        {/* overlays are separate and safe */}
+        <div className="v-overlay" data-overlay="menu" onClick={(e) => e.target === e.currentTarget && closeMenu()}>
+          <div className="v-panel">
+            <button className="v-x" onClick={closeMenu} aria-label="Close menu">
+              <span />
+              <span />
+            </button>
+
+            <nav className="v-menu">
               <Link href="/" onClick={closeMenu}>Home</Link>
               <Link href="/about" onClick={closeMenu}>About</Link>
               <Link href="/experience" onClick={closeMenu}>Experience</Link>
-              <a href="https://YOUR-RESTAURANT-URL.com" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
+              <a href="https://YOUR-RESTAURANT.com" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
                 Dine
               </a>
               <Link href="/accommodation" onClick={closeMenu}>Accommodation</Link>
               <Link href="/connect" onClick={closeMenu}>Connect</Link>
             </nav>
 
-            <div className="panelBottom">
+            <div className="v-panel__foot">
               <span>Uluwatu, Bali</span>
-              <span className="dot">•</span>
-              <span className="muted">A sanctuary of quiet strength</span>
+              <span className="v-dot">•</span>
+              <span className="v-muted">A sanctuary of quiet strength</span>
             </div>
           </div>
         </div>
 
-        {/* SEARCH OVERLAY */}
-        <div
-          className="overlay"
-          data-overlay="search"
-          onClick={(e) => e.target === e.currentTarget && closeSearch()}
-        >
-          <div className="panel panelSearch searchPanel">
-            <input className="searchInput" placeholder="Search…" />
+        <div className="v-overlay" data-overlay="search" onClick={(e) => e.target === e.currentTarget && closeSearch()}>
+          <div className="v-panel v-panel--search">
+            <button className="v-x" onClick={closeSearch} aria-label="Close search">
+              <span />
+              <span />
+            </button>
+
+            <input className="v-search" placeholder="Search…" />
           </div>
         </div>
 
-        <main className="siteMain">{children}</main>
+        <main className="v-main">{children}</main>
       </body>
     </html>
   )
