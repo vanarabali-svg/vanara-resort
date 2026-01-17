@@ -5,7 +5,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const [scrolled, setScrolled] = useState(false)
 
   const openMenu = () => {
@@ -17,11 +21,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeMenu() }
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40)
+    }
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeMenu()
+    }
 
     window.addEventListener('scroll', onScroll)
     window.addEventListener('keydown', onKey)
+
     onScroll()
 
     return () => {
@@ -33,7 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {/* Aman serif */}
+        {/* Aman-style serif */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -47,7 +57,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="nav">
           <div className="container navLux">
             {/* LEFT */}
-            <button className="menuBtn" onClick={openMenu} aria-label="Open menu">
+            <button
+              className="menuBtn"
+              onClick={openMenu}
+              aria-label="Open menu"
+            >
               MENU
             </button>
 
@@ -55,17 +69,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="navLogo">
               <Link href="/" aria-label="Vanara Resort & Spa">
                 <Image
-                  src={'/logo.png'}
-                   style={{
-                     height: 44,
-                     width: 'auto',
-                     filter: scrolled ? 'none' : 'brightness(0) invert(1)'
-                   }}
+                  src="/logo.png"
                   alt="Vanara Resort & Spa"
                   width={360}
                   height={44}
                   priority
-                  style={{ height: 44, width: 'auto' }}
+                  style={{
+                    height: 44,
+                    width: 'auto',
+                    filter: scrolled
+                      ? 'none'
+                      : 'brightness(0) invert(1)',
+                  }}
                 />
               </Link>
             </div>
@@ -97,18 +112,32 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             <div className="menuLinks">
-              <Link href="/" onClick={closeMenu}>Home</Link>
-              <Link href="/about" onClick={closeMenu}>About</Link>
-              <Link href="/experience" onClick={closeMenu}>Experience</Link>
-              <Link href="/accommodation" onClick={closeMenu}>Accommodation</Link>
-              <Link href="/connect" onClick={closeMenu}>Connect</Link>
-              <Link href="/book" onClick={closeMenu}>Reserve</Link>
+              <Link href="/" onClick={closeMenu}>
+                Home
+              </Link>
+              <Link href="/about" onClick={closeMenu}>
+                About
+              </Link>
+              <Link href="/experience" onClick={closeMenu}>
+                Experience
+              </Link>
+              <Link href="/accommodation" onClick={closeMenu}>
+                Accommodation
+              </Link>
+              <Link href="/connect" onClick={closeMenu}>
+                Connect
+              </Link>
+              <Link href="/book" onClick={closeMenu}>
+                Reserve
+              </Link>
             </div>
 
             <div className="menuBottom">
               <div>Uluwatu, Bali</div>
               <div className="menuDot">•</div>
-              <div>For those who listen to the ocean — not over it.</div>
+              <div>
+                For those who listen to the ocean — not over it.
+              </div>
             </div>
           </div>
         </div>
