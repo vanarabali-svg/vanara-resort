@@ -1,61 +1,64 @@
 export default function AboutPage() {
   return (
-    <main className="page">
-      <section className="sectionA">
+    <main className="pageA">
+      <section className="heroSmall">
         <div className="container">
-          <div className="splitA">
-            <div>
-              <div className="kicker">ABOUT</div>
-              <div className="hr" />
-              <h1 className="h2A">A Philosophy of Quiet Luxury</h1>
-            </div>
-
-            <div>
-              <p className="leadA">
-                Vanara was created as a response to excess. To crowded spaces, loud moments, and places that demand
-                attention instead of offering refuge.
-              </p>
-              <p className="leadA">
-                Every element of Vanara is designed to feel intentional yet effortless — from the way water meets the
-                horizon, to the textures of sand, stone, and wood beneath your feet.
-              </p>
-              <p className="leadA">
-                We believe luxury should feel calm. Unforced. Grounded.
-              </p>
-            </div>
-          </div>
-
-          <div className="rule" style={{ marginTop: 64 }} />
+          <div className="kicker">ABOUT</div>
+          <h1>A Philosophy of Quiet Luxury</h1>
+          <p className="sub">
+            Vanara was created as a response to excess — a place of stillness, space, and presence.
+          </p>
         </div>
       </section>
 
-      <section className="sectionA noTop">
-        <div className="container">
-          <div className="pillars">
-            <div className="pillar">Nature is the main character</div>
-            <div className="pillar">Space is a form of luxury</div>
-            <div className="pillar">Silence is an experience</div>
-          </div>
-        </div>
-      </section>
+      <div className="ruleA" />
 
-      <section className="sectionA">
-        <div className="container">
-          <div className="kicker">THE MEANING</div>
-          <div className="hr" />
-          <h2 className="h2A">The Meaning of Vanara</h2>
-
-          <div className="meaningBlock">
-            <p className="leadA">
-              Vanara draws inspiration from ancient mythologies where nature, spirit, and instinct exist in balance.
-              It represents freedom without chaos. Strength without noise. Presence without performance.
+      <section className="sectionA2">
+        <div className="container twoColA">
+          <div className="editorialA">
+            <p>
+              Vanara is not designed to impress. It is designed to be felt — through ocean air,
+              warm textures, and silence that restores.
             </p>
-            <p className="leadA">
-              Vanara is not meant to impress. It is meant to be felt.
+            <p>
+              Every element is intentional yet effortless: the line of water meeting the horizon,
+              the calm movement of light, and the quiet confidence of material.
+            </p>
+          </div>
+
+          <div>
+            <ul className="listA">
+              <li>Nature is the main character</li>
+              <li>Space is a form of luxury</li>
+              <li>Silence is an experience</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="sectionA2">
+        <div className="container">
+          <div className="imageBlock" style={{ backgroundImage: "url(/img1.jpg)" }} />
+        </div>
+      </section>
+
+      <section className="sectionA2">
+        <div className="container twoColA">
+          <div>
+            <div className="kicker">THE MEANING</div>
+            <h1 style={{ fontSize: 42, marginTop: 10 }}>The Meaning of Vanara</h1>
+          </div>
+          <div className="editorialA">
+            <p>
+              Vanara draws from old mythologies where nature, spirit, and instinct exist in balance:
+              freedom without chaos, strength without noise, presence without performance.
+            </p>
+            <p>
+              It is not a concept. It is a feeling.
             </p>
           </div>
         </div>
       </section>
     </main>
-  );
+  )
 }
