@@ -3,22 +3,43 @@
 import './globals.css'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect } from 'react'
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const openMenu = () => {
+    document.getElementById('lux-menu')?.setAttribute('data-open', 'true')
+  }
+
+  const closeMenu = () => {
+    document.getElementById('lux-menu')?.setAttribute('data-open', 'false')
+  }
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeMenu()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   return (
     <html lang="en">
-      <body>
+      <head>
+        {/* Aman-like serif: Cormorant Garamond */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
 
+      <body>
         {/* HEADER */}
         <header className="nav">
           <div className="container navLux">
-
             {/* LEFT */}
-            <button className="menuBtn" aria-label="Open menu">
+            <button className="menuBtn" onClick={openMenu} aria-label="Open menu">
               MENU
             </button>
 
@@ -42,25 +63,44 @@ export default function RootLayout({
                 RESERVE
               </Link>
             </div>
-
           </div>
         </header>
 
-        {/* PAGE CONTENT */}
-        {children}
+        {/* MENU OVERLAY */}
+        <div
+          id="lux-menu"
+          className="menuOverlay"
+          data-open="false"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeMenu()
+          }}
+        >
+          <div className="menuPanel">
+            <div className="menuTop">
+              <div className="menuKicker">Vanara Resort & Spa</div>
+              <button className="menuClose" onClick={closeMenu}>
+                CLOSE
+              </button>
+            </div>
 
-        {/* FOOTER */}
-        <footer className="footer">
-          <div className="container footerRow">
-            <div>© {new Date().getFullYear()} Vanara Resort & Spa</div>
-            <div className="footerRight">
-              <span>Uluwatu, Bali</span>
-              <span className="dot">•</span>
-              <span>Quiet Luxury</span>
+            <div className="menuLinks">
+              <Link href="/" onClick={closeMenu}>Home</Link>
+              <Link href="/about" onClick={closeMenu}>About</Link>
+              <Link href="/experience" onClick={closeMenu}>Experience</Link>
+              <Link href="/accommodation" onClick={closeMenu}>Accommodation</Link>
+              <Link href="/connect" onClick={closeMenu}>Connect</Link>
+              <Link href="/book" onClick={closeMenu}>Reserve</Link>
+            </div>
+
+            <div className="menuBottom">
+              <div>Uluwatu, Bali</div>
+              <div className="menuDot">•</div>
+              <div>For those who listen to the ocean — not over it.</div>
             </div>
           </div>
-        </footer>
+        </div>
 
+        {children}
       </body>
     </html>
   )
