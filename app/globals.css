@@ -1,45 +1,31 @@
-/* =========================
-   RESET & BASE
-========================= */
+/* RESET */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
   background:#f7f7f5;
   color:#141414;
-  font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  font-weight:300;
 }
+
+/* VARIABLES */
 :root{
-  --serif:"Cormorant Garamond",serif;
+  --serif:"Bodoni Moda",serif;
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --muted:rgba(20,20,20,.65);
+  --line:rgba(20,20,20,.12);
 }
 
-/* =========================
-   LAYOUT
-========================= */
-.container{
-  max-width:1280px;
-  margin:0 auto;
-  padding:0 28px;
-}
-section{
-  padding:120px 0;
-}
+/* LAYOUT */
+.container{max-width:1280px;margin:0 auto;padding:0 28px}
+section{padding:100px 0}
 
-/* =========================
-   HEADER (AMAN STYLE)
-========================= */
-.nav{
-  position:fixed;
-  top:0;left:0;right:0;
-  height:92px;
-  z-index:1000;
-  transition:background .35s, box-shadow .35s;
-}
-body.scrolled .nav{
-  background:rgba(255,255,255,.92);
-  box-shadow:0 1px 0 rgba(0,0,0,.08);
-}
+/* HEADER */
+.nav{position:fixed;top:0;left:0;right:0;height:92px;z-index:1000;transition:.35s}
+body:not(.scrolled):not(.inner) .nav{background:transparent}
+body.scrolled .nav,
+body.inner .nav{background:rgba(255,255,255,.96);box-shadow:0 1px 0 rgba(0,0,0,.08)}
 
-/* TRUE CENTER GRID */
 .navLux{
   height:92px;
   display:grid;
@@ -47,235 +33,96 @@ body.scrolled .nav{
   align-items:center;
 }
 
-/* LEFT */
 .menuBtn{
-  background:none;
-  border:none;
-  cursor:pointer;
-  font-size:11px;
-  letter-spacing:3.5px;
-  text-transform:uppercase;
-  color:#fff;
-  justify-self:start;
-  width:140px;
+  background:none;border:none;cursor:pointer;
+  font-family:var(--sans);
+  font-size:11px;letter-spacing:4px;text-transform:uppercase;
+  color:#fff;width:140px;font-weight:400;
 }
-body.scrolled .menuBtn{color:#222}
+body.scrolled .menuBtn,
+body.inner .menuBtn{color:#141414}
 
-/* CENTER */
-.navLogo{
-  justify-self:center;
-}
+.navLogo{justify-self:center}
 
-/* RIGHT */
-.navCta{
-  justify-self:end;
-  width:140px;
-}
+.navCta{justify-self:end;width:140px}
 .btnReserve{
-  display:inline-block;
-  text-decoration:none;
-  font-size:11px;
-  letter-spacing:3.5px;
-  text-transform:uppercase;
-  padding:10px 18px;
-  border:1px solid rgba(255,255,255,.85);
-  color:#fff;
-  border-radius:999px;
-  transition:.25s;
+  font-family:var(--sans);
+  font-size:11px;letter-spacing:4px;text-transform:uppercase;
+  padding:10px 18px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.9);
+  color:#fff;text-decoration:none;font-weight:400;
 }
-body.scrolled .btnReserve{
-  border-color:#222;
-  color:#222;
-}
+body.scrolled .btnReserve,
+body.inner .btnReserve{border-color:#141414;color:#141414}
 
-/* =========================
-   MENU OVERLAY
-========================= */
-.menuOverlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.82);
-  opacity:0;
-  pointer-events:none;
-  transition:.25s;
-  z-index:1100;
-}
-.menuOverlay[data-open="true"]{
-  opacity:1;
-  pointer-events:auto;
-}
-.menuPanel{
-  height:100%;
-  padding:36px;
-}
-.menuTop{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  color:#fff;
-}
-.menuLinks{
-  margin-top:80px;
-}
-.menuLinks a{
-  display:block;
+/* MENU */
+.menuOverlay{position:fixed;inset:0;background:rgba(0,0,0,.88);opacity:0;pointer-events:none;transition:.3s;z-index:1100}
+.menuOverlay[data-open="true"]{opacity:1;pointer-events:auto}
+.menuPanel{height:100%;padding:48px}
+
+.menuClose{
+  background:none;border:none;
   font-family:var(--serif);
-  font-size:52px;
-  color:#fff;
-  text-decoration:none;
-  margin:18px 0;
+  font-size:30px;color:rgba(255,255,255,.65);
+  cursor:pointer;
 }
-.menuBottom{
-  position:absolute;
-  bottom:36px;
-  left:36px;
-  display:flex;
-  gap:10px;
-  color:rgba(255,255,255,.7);
+.menuLinks{margin-top:88px}
+.menuLinks a{
+  display:block;font-family:var(--serif);
+  font-size:58px;font-weight:300;
+  color:#fff;text-decoration:none;margin:18px 0;
 }
-.menuDot{opacity:.4}
 
-/* =========================
-   HERO
-========================= */
-.hero{
-  position:relative;
-  height:100vh;
-  overflow:hidden;
-}
-.heroVideo{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transform:translateZ(0);
-}
-.heroShade{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    to top,
-    rgba(0,0,0,.55),
-    rgba(0,0,0,.18)
-  );
-}
+/* HERO */
+.hero{position:relative;height:100vh;overflow:hidden}
+.heroVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.heroShade{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.62),rgba(0,0,0,.14))}
+
+/* 🔥 TEXT HIGHER HERE */
 .heroContent{
   position:absolute;
   inset:0;
   display:flex;
   align-items:flex-end;
-  padding-bottom:96px;
+  padding-bottom:36px;   /* LOWER than before */
+  padding-top:90px;      /* TEXT STARTS HIGHER */
 }
+
 .heroKicker{
-  font-size:11px;
-  letter-spacing:3.5px;
-  text-transform:uppercase;
-  color:rgba(255,255,255,.7);
+  font-family:var(--sans);
+  font-size:11px;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(255,255,255,.72);
 }
 .heroH1{
   font-family:var(--serif);
-  font-size:72px;
-  font-weight:500;
-  color:#fff;
-  margin:12px 0 0;
+  font-size:78px;font-weight:400;
+  color:#fff;margin:12px 0 0;
 }
 .heroP{
-  font-size:18px;
-  max-width:560px;
-  line-height:1.9;
-  color:rgba(255,255,255,.82);
+  font-family:var(--sans);
+  font-size:18px;max-width:560px;
+  line-height:1.95;color:rgba(255,255,255,.82);
 }
-.heroLinks{
-  display:flex;
-  align-items:center;
-  gap:24px;
-  margin-top:32px;
-}
+.heroLinks{display:flex;gap:24px;margin-top:26px}
 .heroLink{
-  font-size:11px;
-  letter-spacing:3.5px;
-  text-transform:uppercase;
-  color:#fff;
-  text-decoration:none;
-  border-bottom:1px solid rgba(255,255,255,.35);
+  font-family:var(--sans);
+  font-size:11px;letter-spacing:4px;text-transform:uppercase;
+  color:#fff;text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.3);
 }
-.heroLink:hover{
-  border-bottom-color:rgba(255,255,255,.9);
-}
-.heroHint{
-  margin-top:28px;
-  font-size:11px;
-  letter-spacing:3.5px;
-  text-transform:uppercase;
-  color:rgba(255,255,255,.6);
-}
+.heroLink:hover{border-bottom-color:rgba(255,255,255,.9)}
 
-/* =========================
-   SECTIONS
-========================= */
-.kicker{
-  font-size:11px;
-  letter-spacing:3.5px;
-  text-transform:uppercase;
-  color:rgba(20,20,20,.6);
-}
-.h2A{
-  font-family:var(--serif);
-  font-size:44px;
-  font-weight:500;
-  margin:12px 0;
-}
-.editorialA p{
-  font-size:18px;
-  line-height:2;
-  color:rgba(20,20,20,.72);
-}
-.twoColA{
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  gap:48px;
-}
-.ruleA{
-  height:1px;
-  background:rgba(20,20,20,.12);
-}
+/* CONTENT */
+.h2A{font-family:var(--serif);font-size:46px;font-weight:400}
+.editorialA p{font-size:18px;line-height:2.05;color:var(--muted)}
+.twoColA{display:grid;grid-template-columns:1.1fr .9fr;gap:56px}
+.ruleA{height:1px;background:var(--line)}
 
-/* =========================
-   GALLERY
-========================= */
-.stackGallery{
-  display:grid;
-  gap:18px;
-}
-.imageBlock{
-  height:520px;
-  border-radius:24px;
-  background-size:cover;
-  background-position:center;
-}
-
-/* =========================
-   LINKS
-========================= */
-.softLinkA{
-  display:inline-block;
-  font-size:11px;
-  letter-spacing:3.5px;
-  text-transform:uppercase;
-  text-decoration:none;
-  color:#222;
-  border-bottom:1px solid rgba(20,20,20,.35);
-}
-
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 @media(max-width:900px){
-  section{padding:80px 0}
-  .heroH1{font-size:42px}
+  section{padding:72px 0}
+  .heroContent{padding-bottom:28px;padding-top:80px}
+  .heroH1{font-size:44px}
   .twoColA{grid-template-columns:1fr}
-  .imageBlock{height:320px}
   .menuLinks a{font-size:36px}
-  .menuBtn,.navCta{width:auto}
 }
