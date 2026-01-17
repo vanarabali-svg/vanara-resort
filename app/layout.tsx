@@ -18,7 +18,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const closeSearch = () => document.documentElement.setAttribute('data-search', 'closed')
 
   useEffect(() => {
-    // ensure closed on first load (prevents “stuck” state)
     document.documentElement.setAttribute('data-menu', 'closed')
     document.documentElement.setAttribute('data-search', 'closed')
 
@@ -43,35 +42,44 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {/* Elegant brand + clean UI */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Italiana&family=Inter:wght@300;400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
       </head>
 
       <body className={[scrolled ? 'scrolled' : '', !isHome ? 'inner' : ''].join(' ')}>
-        {/* HEADER */}
         <header className="nav">
           <div className="container navBar">
-            {/* LEFT: HAMBURGER */}
-            <button className="iconBtn" onClick={openMenu} aria-label="Open menu">
-              <span className="hamburger" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </span>
-            </button>
+            {/* LEFT: MENU + SEARCH (side-by-side) */}
+            <div className="navLeft">
+              <button className="iconBtn" onClick={openMenu} aria-label="Open menu">
+                <span className="hamburger" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+              </button>
 
-            {/* CENTER: LOGO */}
+              <button className="iconBtn" onClick={openSearch} aria-label="Search">
+                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Zm0-2a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Zm7.8 5.2-4.2-4.2 1.4-1.4 4.2 4.2-1.4 1.4Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* CENTER */}
             <div className="navCenter">
               <Link href="/" aria-label="Vanara Resort & Spa" className="brandLockup">
                 <Image
                   src="/logo.png"
                   alt="Vanara Resort & Spa"
-                  width={280}
+                  width={260}
                   height={40}
                   priority
                   className="navLogoImg"
@@ -81,22 +89,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     filter: !isHome || scrolled ? 'none' : 'brightness(0) invert(1)',
                   }}
                 />
-                {/* Optional: if you want text under logo later, we can add it here */}
               </Link>
             </div>
 
-            {/* RIGHT: SEARCH + RESERVE */}
+            {/* RIGHT */}
             <div className="navRight">
-              <button className="iconBtn" onClick={openSearch} aria-label="Search">
-                {/* Search icon (SVG) */}
-                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Zm0-2a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Zm7.8 5.2-4.2-4.2 1.4-1.4 4.2 4.2-1.4 1.4Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </button>
-
               <Link href="/book" className="btnReserve">
                 Reserve
               </Link>
@@ -109,18 +106,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="panel">
             <div className="panelTop">
               <div className="panelBrand">Vanara Resort &amp; Spa</div>
-              <button className="panelClose" onClick={closeMenu} aria-label="Close menu">
-                Close
-              </button>
+              <button className="panelClose" onClick={closeMenu}>Close</button>
             </div>
 
-            <nav className="panelLinks" aria-label="Site menu">
+            <nav className="panelLinks">
               <Link href="/" onClick={closeMenu}>Home</Link>
               <Link href="/about" onClick={closeMenu}>About</Link>
               <Link href="/experience" onClick={closeMenu}>Experience</Link>
-              <a href="https://YOUR-RESTAURANT-URL.com" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
-                Dine
-              </a>
+              <a href="https://YOUR-RESTAURANT-URL.com" target="_blank" onClick={closeMenu}>Dine</a>
               <Link href="/accommodation" onClick={closeMenu}>Accommodation</Link>
               <Link href="/connect" onClick={closeMenu}>Connect</Link>
             </nav>
@@ -128,34 +121,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="panelBottom">
               <span>Uluwatu, Bali</span>
               <span className="dot">•</span>
-              <span className="muted">Minimalist luxury by the ocean</span>
+              <span className="muted">Refined seclusion by the ocean</span>
             </div>
           </div>
         </div>
 
         {/* SEARCH OVERLAY */}
-        <div
-          className="overlay"
-          data-overlay="search"
-          onClick={(e) => e.target === e.currentTarget && closeSearch()}
-        >
+        <div className="overlay" data-overlay="search" onClick={(e) => e.target === e.currentTarget && closeSearch()}>
           <div className="panel panelSearch">
             <div className="panelTop">
               <div className="panelBrand">Search</div>
-              <button className="panelClose" onClick={closeSearch} aria-label="Close search">
-                Close
-              </button>
+              <button className="panelClose" onClick={closeSearch}>Close</button>
             </div>
 
             <div className="searchBox">
-              <input
-                className="searchInput"
-                placeholder="Search accommodation, experience, pages…"
-                aria-label="Search"
-              />
-              <div className="searchHint">
-                Tip: we can connect this to Sanity later. For now it’s a luxury UI element.
-              </div>
+              <input className="searchInput" placeholder="Search…" />
             </div>
           </div>
         </div>
