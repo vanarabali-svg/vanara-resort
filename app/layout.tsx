@@ -13,22 +13,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   const openMenu = () => {
     document.getElementById('lux-menu')?.setAttribute('data-open', 'true')
-    document.body.classList.add('menu-open')
   }
-
   const closeMenu = () => {
     document.getElementById('lux-menu')?.setAttribute('data-open', 'false')
-    document.body.classList.remove('menu-open')
   }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && closeMenu()
-
     window.addEventListener('scroll', onScroll)
     window.addEventListener('keydown', onKey)
     onScroll()
-
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('keydown', onKey)
@@ -38,11 +33,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {/* Luxury minimalist fonts */}
+        {/* Elegant brand + minimalist UI */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@300;400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Italiana&family=Inter:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -98,7 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="menuTop">
               <div className="menuBrand">Vanara Resort &amp; Spa</div>
               <button className="menuClose" onClick={closeMenu} aria-label="Close menu">
-                Close
+                ×
               </button>
             </div>
 
