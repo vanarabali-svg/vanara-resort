@@ -48,7 +48,7 @@ main{ display:block; }
 .siteMain{ min-height:100vh; }
 
 /* ==================================================
-   GLOBAL TYPOGRAPHY
+   TYPOGRAPHY (QUIET / AMAN)
 ================================================== */
 h1,h2,h3{ margin:0; font-weight:400; }
 p{ margin:0; }
@@ -62,7 +62,7 @@ p{ margin:0; }
 
 .hLux{
   font-family:var(--brand);
-  letter-spacing:.6px;
+  letter-spacing:.45px;
   font-weight:400;
 }
 
@@ -74,7 +74,7 @@ p{ margin:0; }
 }
 
 /* ==================================================
-   HEADER (FIXED TRUE CENTER)
+   HEADER (TRUE CENTER + OPTICAL BALANCE)
 ================================================== */
 .nav{
   position:fixed;
@@ -84,12 +84,8 @@ p{ margin:0; }
   transition: background .35s ease, box-shadow .35s ease, backdrop-filter .35s ease;
 }
 
-/* Home top stays transparent */
-body:not(.scrolled):not(.inner) .nav{
-  background:transparent;
-}
+body:not(.scrolled):not(.inner) .nav{ background:transparent; }
 
-/* Scrolled / inner pages become beige */
 body.scrolled .nav,
 body.inner .nav{
   background:rgba(243,238,229,.94);
@@ -97,15 +93,13 @@ body.inner .nav{
   box-shadow:0 1px 0 rgba(20,20,20,.08);
 }
 
-/* IMPORTANT: true 3-column symmetry */
 .navBar{
   height:var(--navH);
   display:grid;
-  grid-template-columns: 1fr auto 1fr; /* <- TRUE CENTER */
+  grid-template-columns: 1fr auto 1fr;
   align-items:center;
 }
 
-/* LEFT: menu + search */
 .navLeft{
   display:flex !important;
   flex-direction:row !important;
@@ -113,23 +107,27 @@ body.inner .nav{
   gap:12px;
   white-space:nowrap;
   justify-self:start;
-  width:180px; /* <- lock width */
+  min-width:150px;
 }
 
-/* CENTER: logo */
-.navCenter{
-  justify-self:center;
-  display:flex;
-  align-items:center;
-}
+.navCenter{ justify-self:center; display:flex; align-items:center; }
 
-/* RIGHT: reserve */
 .navRight{
   justify-self:end;
   display:flex;
   align-items:center;
   justify-content:flex-end;
-  width:180px; /* <- same as left */
+  gap:12px;
+  min-width:150px;
+}
+
+/* invisible spacer to balance left */
+.navSpacer{
+  width:40px;
+  height:40px;
+  display:inline-block;
+  opacity:0;
+  pointer-events:none;
 }
 
 /* icon buttons */
@@ -137,7 +135,7 @@ body.inner .nav{
   height:40px;
   width:40px;
   border-radius:999px;
-  border:1px solid rgba(255,255,255,.32);
+  border:1px solid rgba(255,255,255,.30);
   background:transparent;
   color:rgba(255,255,255,.95);
   display:inline-flex;
@@ -154,7 +152,7 @@ body.inner .iconBtn{
   color: var(--ink);
 }
 
-/* hamburger icon */
+/* hamburger */
 .hamburger{
   width:18px;
   display:flex;
@@ -168,12 +166,12 @@ body.inner .iconBtn{
   opacity:.95;
 }
 
-/* Reserve */
+/* reserve */
 .btnReserve{
   height:40px;
   padding:0 16px;
   border-radius:999px;
-  border:1px solid rgba(255,255,255,.7);
+  border:1px solid rgba(255,255,255,.70);
   color:#fff;
   font-family:var(--sans);
   font-size:11px;
@@ -193,7 +191,7 @@ body.inner .btnReserve{
 }
 
 /* ==================================================
-   HERO
+   HERO (QUIETER, LOWER, MORE AMAN)
 ================================================== */
 .hero{
   position:relative;
@@ -216,13 +214,14 @@ body.inner .btnReserve{
   background:linear-gradient(to top, rgba(0,0,0,.62), rgba(0,0,0,.14));
 }
 
+/* lower the text block */
 .heroContent{
   position:relative;
   min-height:100vh;
   display:flex;
   align-items:flex-end;
   padding-top:var(--navH);
-  padding-bottom:104px;
+  padding-bottom:118px;
 }
 
 .heroKicker{
@@ -230,14 +229,15 @@ body.inner .btnReserve{
   font-size:11px;
   letter-spacing:4px;
   text-transform:uppercase;
-  color:rgba(255,255,255,.72);
+  color:rgba(255,255,255,.70);
 }
 
+/* quieter title */
 .heroH1{
   font-family:var(--brand);
   font-weight:400;
-  letter-spacing:.7px;
-  font-size:72px;
+  letter-spacing:.45px;
+  font-size:64px;           /* smaller than before */
   line-height:1.08;
   color:#fff;
   margin-top:12px;
@@ -245,30 +245,35 @@ body.inner .btnReserve{
 
 .heroP{
   font-family:var(--sans);
-  font-size:18px;
+  font-size:17px;
   line-height:1.95;
-  max-width:600px;
-  color:rgba(255,255,255,.82);
-  margin-top:18px;
+  max-width:580px;
+  color:rgba(255,255,255,.80);
+  margin-top:16px;
 }
 
+/* quieter, slightly lower links */
 .heroLinks{
   display:flex;
   gap:24px;
-  margin-top:26px;
+  margin-top:34px;
+  transform: translateY(6px);
   flex-wrap:wrap;
 }
 
 .heroLink{
   font-family:var(--sans);
-  font-size:11px;
-  letter-spacing:4px;
+  font-size:10px;
+  letter-spacing:3.6px;
   text-transform:uppercase;
-  color:#fff;
-  border-bottom:1px solid rgba(255,255,255,.28);
+  color:rgba(255,255,255,.86);
+  border-bottom:1px solid rgba(255,255,255,.22);
   padding-bottom:6px;
 }
-.heroLink:hover{ border-bottom-color:rgba(255,255,255,.85); }
+.heroLink:hover{
+  color:#fff;
+  border-bottom-color:rgba(255,255,255,.55);
+}
 
 /* ==================================================
    SECTIONS
@@ -318,7 +323,7 @@ body.inner .btnReserve{
 .cardTitle{
   font-family:var(--brand);
   font-size:22px;
-  letter-spacing:.5px;
+  letter-spacing:.4px;
   color:var(--ink);
 }
 .cardText{
@@ -334,14 +339,14 @@ body.inner .btnReserve{
   letter-spacing:4px;
   text-transform:uppercase;
   color:var(--ink);
-  opacity:.85;
+  opacity:.78;
 }
 
 /* ==================================================
-   FOOTER (CONTACT FIX)
+   FOOTER (PRINTED / QUIET)
 ================================================== */
 .footer{
-  padding:54px 0;
+  padding:58px 0;
   background: var(--beige-2);
   border-top:1px solid rgba(20,20,20,.10);
 }
@@ -355,10 +360,10 @@ body.inner .btnReserve{
 
 .footerTitle{
   font-family:var(--brand);
-  letter-spacing:1.2px;
+  letter-spacing:1.1px;
   text-transform:uppercase;
-  font-size:13px;
-  color:rgba(20,20,20,.82);
+  font-size:12px;
+  color:rgba(20,20,20,.78);
   margin-bottom:10px;
 }
 
@@ -366,7 +371,7 @@ body.inner .btnReserve{
   font-family:var(--sans);
   font-size:14px;
   line-height:1.9;
-  color:rgba(20,20,20,.70);
+  color:rgba(20,20,20,.68);
 }
 
 .footerLink{
@@ -374,11 +379,11 @@ body.inner .btnReserve{
   font-family:var(--sans);
   font-size:14px;
   line-height:1.9;
-  color:rgba(20,20,20,.72);
-  border-bottom:1px solid rgba(20,20,20,.22);
+  color:rgba(20,20,20,.68);
+  border-bottom:1px solid rgba(20,20,20,.18);
   padding-bottom:2px;
 }
-.footerLink:hover{ border-bottom-color: rgba(20,20,20,.55); }
+.footerLink:hover{ border-bottom-color: rgba(20,20,20,.45); }
 
 /* ==================================================
    OVERLAYS
@@ -460,7 +465,7 @@ html[data-search="open"] .overlay[data-overlay="search"]{
   font-family:var(--brand);
   font-size:52px;
   font-weight:400;
-  letter-spacing:.4px;
+  letter-spacing:.35px;
   color:#fff;
   line-height:1.05;
 }
@@ -496,12 +501,8 @@ html[data-search="open"] .overlay[data-overlay="search"]{
 @media (max-width:900px){
   .container{ padding:0 18px; }
 
-  .navLeft{ width:120px; gap:10px; }
-  .navRight{ width:120px; }
-  .btnReserve{ padding:0 12px; letter-spacing:3px; }
-
   .heroH1{ font-size:42px; }
-  .heroContent{ padding-bottom:72px; }
+  .heroContent{ padding-bottom:86px; }
 
   .section, .sectionAlt{ padding:64px 0; }
   .grid2{ grid-template-columns:1fr; gap:28px; }
@@ -509,4 +510,5 @@ html[data-search="open"] .overlay[data-overlay="search"]{
   .panelLinks a{ font-size:34px; }
 
   .footerRow{ grid-template-columns:1fr; }
+  .navSpacer{ display:none; }
 }
