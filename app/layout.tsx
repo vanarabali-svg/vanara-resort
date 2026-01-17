@@ -4,6 +4,7 @@ import './globals.css'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 export default function RootLayout({
   children,
@@ -11,6 +12,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+  const isHome = pathname === '/'
 
   const openMenu = () => {
     document.getElementById('lux-menu')?.setAttribute('data-open', 'true')
@@ -39,29 +42,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Aman-style serif */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,300;6..96,400;6..96,500&family=Inter:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
       </head>
 
-      <body className={scrolled ? 'scrolled' : ''}>
-        {/* HEADER */}
+      <body className={[scrolled ? 'scrolled' : '', !isHome ? 'inner' : ''].join(' ')}>
         <header className="nav">
           <div className="container navLux">
-            {/* LEFT */}
-            <button
-              className="menuBtn"
-              onClick={openMenu}
-              aria-label="Open menu"
-            >
+            <button className="menuBtn" onClick={openMenu}>
               MENU
             </button>
 
-            {/* CENTER LOGO */}
             <div className="navLogo">
               <Link href="/" aria-label="Vanara Resort & Spa">
                 <Image
@@ -73,13 +68,14 @@ export default function RootLayout({
                   style={{
                     height: 34,
                     width: 'auto',
-                    filter: scrolled ? 'none' : 'brightness(0) invert(1)',
+                    filter: !isHome || scrolled
+                      ? 'none'
+                      : 'brightness(0) invert(1)',
                   }}
                 />
               </Link>
             </div>
 
-            {/* RIGHT */}
             <div className="navCta">
               <Link href="/book" className="btnReserve">
                 RESERVE
@@ -88,37 +84,24 @@ export default function RootLayout({
           </div>
         </header>
 
-        {/* FULLSCREEN MENU OVERLAY */}
         <div
           id="lux-menu"
           className="menuOverlay"
           data-open="false"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) closeMenu()
-          }}
+          onClick={(e) => e.target === e.currentTarget && closeMenu()}
         >
           <div className="menuPanel">
             <div className="menuTop">
               <div className="menuKicker">Vanara Resort & Spa</div>
-              <button className="menuClose" onClick={closeMenu}>
-                CLOSE
+              <button className="menuClose" onClick={closeMenu} aria-label="Close">
+                ×
               </button>
             </div>
 
             <div className="menuLinks">
-              <Link href="/" onClick={closeMenu}>
-                Home
-              </Link>
-
-              <Link href="/about" onClick={closeMenu}>
-                About
-              </Link>
-
-              <Link href="/experience" onClick={closeMenu}>
-                Experience
-              </Link>
-
-              {/* DINE (external restaurant site) */}
+              <Link href="/" onClick={closeMenu}>Home</Link>
+              <Link href="/about" onClick={closeMenu}>About</Link>
+              <Link href="/experience" onClick={closeMenu}>Experience</Link>
               <a
                 href="https://YOUR-RESTAURANT-URL.com"
                 target="_blank"
@@ -127,24 +110,15 @@ export default function RootLayout({
               >
                 Dine
               </a>
-
-              <Link href="/accommodation" onClick={closeMenu}>
-                Accommodation
-              </Link>
-
-              <Link href="/connect" onClick={closeMenu}>
-                Connect
-              </Link>
-
-              <Link href="/book" onClick={closeMenu}>
-                Reserve
-              </Link>
+              <Link href="/accommodation" onClick={closeMenu}>Accommodation</Link>
+              <Link href="/connect" onClick={closeMenu}>Connect</Link>
+              <Link href="/book" onClick={closeMenu}>Reserve</Link>
             </div>
 
             <div className="menuBottom">
-              <div>Uluwatu, Bali</div>
-              <div className="menuDot">•</div>
-              <div>Quiet luxury by the ocean</div>
+              <span>Uluwatu, Bali</span>
+              <span className="menuDot">•</span>
+              <span>Quiet luxury by the ocean</span>
             </div>
           </div>
         </div>
