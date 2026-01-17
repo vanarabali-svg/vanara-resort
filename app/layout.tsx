@@ -18,7 +18,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const closeSearch = () => document.documentElement.setAttribute('data-search', 'closed')
 
   useEffect(() => {
-    // default closed
     document.documentElement.setAttribute('data-menu', 'closed')
     document.documentElement.setAttribute('data-search', 'closed')
 
@@ -43,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {/* Fonts */}
+        {/* Aman-like serif + quiet UI */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -82,14 +81,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Image
                   src="/logo.png"
                   alt="Vanara Resort & Spa"
-                  width={260}
-                  height={40}
+                  width={248}
+                  height={34}
                   priority
                   className="navLogoImg"
                   style={{
-                    height: 40,
+                    height: 34,
                     width: 'auto',
-                    // on home top: logo turns white. on scroll/inner: normal
                     filter: !isHome || scrolled ? 'none' : 'brightness(0) invert(1)',
                   }}
                 />
@@ -98,42 +96,30 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             {/* RIGHT */}
             <div className="navRight">
-              <Link href="/book" className="btnReserve">
-                Reserve
-              </Link>
+              <Link href="/book" className="btnReserve">Reserve</Link>
+
+              {/* OPTICAL CENTER FIX:
+                  this invisible spacer balances the extra left icon weight */}
+              <span className="navSpacer" aria-hidden="true" />
             </div>
           </div>
         </header>
 
-        {/* MENU OVERLAY */}
-        <div
-          className="overlay"
-          data-overlay="menu"
-          onClick={(e) => e.target === e.currentTarget && closeMenu()}
-        >
+        {/* MENU */}
+        <div className="overlay" data-overlay="menu" onClick={(e) => e.target === e.currentTarget && closeMenu()}>
           <div className="panel">
             <div className="panelTop">
               <div className="panelBrand">Vanara Resort &amp; Spa</div>
-              <button className="panelClose" onClick={closeMenu}>
-                Close
-              </button>
+              <button className="panelClose" onClick={closeMenu}>Close</button>
             </div>
 
             <nav className="panelLinks">
               <Link href="/" onClick={closeMenu}>Home</Link>
               <Link href="/about" onClick={closeMenu}>About</Link>
               <Link href="/experience" onClick={closeMenu}>Experience</Link>
-
-              {/* DINE */}
-              <a
-                href="https://YOUR-RESTAURANT-URL.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => closeMenu()}
-              >
+              <a href="https://YOUR-RESTAURANT-URL.com" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
                 Dine
               </a>
-
               <Link href="/accommodation" onClick={closeMenu}>Accommodation</Link>
               <Link href="/connect" onClick={closeMenu}>Connect</Link>
             </nav>
@@ -141,23 +127,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="panelBottom">
               <span>Uluwatu, Bali</span>
               <span className="dot">•</span>
-              <span className="muted">Refined seclusion by the ocean</span>
+              <span className="muted">Minimalist sanctuary by the ocean</span>
             </div>
           </div>
         </div>
 
-        {/* SEARCH OVERLAY */}
-        <div
-          className="overlay"
-          data-overlay="search"
-          onClick={(e) => e.target === e.currentTarget && closeSearch()}
-        >
+        {/* SEARCH */}
+        <div className="overlay" data-overlay="search" onClick={(e) => e.target === e.currentTarget && closeSearch()}>
           <div className="panel panelSearch">
             <div className="panelTop">
               <div className="panelBrand">Search</div>
-              <button className="panelClose" onClick={closeSearch}>
-                Close
-              </button>
+              <button className="panelClose" onClick={closeSearch}>Close</button>
             </div>
 
             <div className="searchBox">
