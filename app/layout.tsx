@@ -42,10 +42,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Luxury minimalist fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,300;6..96,400;6..96,500&family=Inter:wght@300;400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -53,8 +54,12 @@ export default function RootLayout({
       <body className={[scrolled ? 'scrolled' : '', !isHome ? 'inner' : ''].join(' ')}>
         <header className="nav">
           <div className="container navLux">
-            <button className="menuBtn" onClick={openMenu}>
-              MENU
+            <button className="hamburgerBtn" onClick={openMenu} aria-label="Open menu">
+              <span className="hamburgerLines">
+                <span />
+                <span />
+                <span />
+              </span>
             </button>
 
             <div className="navLogo">
@@ -93,7 +98,7 @@ export default function RootLayout({
           <div className="menuPanel">
             <div className="menuTop">
               <div className="menuKicker">Vanara Resort & Spa</div>
-              <button className="menuClose" onClick={closeMenu} aria-label="Close">
+              <button className="menuClose" onClick={closeMenu} aria-label="Close menu">
                 ×
               </button>
             </div>
@@ -118,7 +123,7 @@ export default function RootLayout({
             <div className="menuBottom">
               <span>Uluwatu, Bali</span>
               <span className="menuDot">•</span>
-              <span>Quiet luxury by the ocean</span>
+              <span>Minimal luxury by the ocean</span>
             </div>
           </div>
         </div>
