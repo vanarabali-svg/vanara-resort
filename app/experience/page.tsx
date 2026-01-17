@@ -74,7 +74,6 @@ export default function ExperiencePage() {
         </div>
       </section>
 
-      {/* Dark ritual band */}
       <section className="darkBand">
         <div className="container">
           <div className="kicker">RITUAL MOMENT</div>
@@ -89,6 +88,7 @@ export default function ExperiencePage() {
         <div className="container">
           <div className="kicker">THE RHYTHM OF THE DAY</div>
           <div style={{ height: 18 }} />
+
           <div className="timelineA">
             <div className="timeRow">
               <div className="t">Morning</div>

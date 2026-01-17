@@ -3,9 +3,11 @@
 import './globals.css'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const [scrolled, setScrolled] = useState(false)
+
   const openMenu = () => {
     document.getElementById('lux-menu')?.setAttribute('data-open', 'true')
   }
@@ -15,17 +17,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeMenu()
-    }
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeMenu() }
+
+    window.addEventListener('scroll', onScroll)
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    onScroll()
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('keydown', onKey)
+    }
   }, [])
 
   return (
     <html lang="en">
       <head>
-        {/* Aman-like serif: Cormorant Garamond */}
+        {/* Aman serif */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -34,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
 
-      <body>
+      <body className={scrolled ? 'scrolled' : ''}>
         {/* HEADER */}
         <header className="nav">
           <div className="container navLux">
@@ -43,11 +51,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               MENU
             </button>
 
-            {/* CENTER */}
+            {/* CENTER LOGO */}
             <div className="navLogo">
               <Link href="/" aria-label="Vanara Resort & Spa">
                 <Image
-                  src="/logo.png"
+                  src={'/logo.png'}
+                   style={{
+                     height: 44,
+                     width: 'auto',
+                     filter: scrolled ? 'none' : 'brightness(0) invert(1)'
+                   }}
                   alt="Vanara Resort & Spa"
                   width={360}
                   height={44}
@@ -59,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             {/* RIGHT */}
             <div className="navCta">
-              <Link href="/book" className="btn btnPrimary">
+              <Link href="/book" className="btnReserve">
                 RESERVE
               </Link>
             </div>
