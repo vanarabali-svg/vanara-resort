@@ -14,17 +14,15 @@ body{
   font-weight:300;
   line-height:1.65;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x:hidden;
+  overflow-y:auto !important; /* ensures scroll */
 }
 
-/* prevent scroll when menu open */
-body.menu-open { overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; display:block; }
 
-/* ==================================================
-   VARIABLES
-================================================== */
 :root{
-  --brand:"Cormorant Garamond",serif;
+  --brand:"Italiana",serif;
   --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
 
   --black:#141414;
@@ -33,11 +31,10 @@ body.menu-open { overflow: hidden; }
 }
 
 /* ==================================================
-   BASICS
+   LAYOUT
 ================================================== */
-a { color: inherit; }
-.siteMain { padding-top: 0; } /* header is fixed */
 .container{ max-width:1280px; margin:0 auto; padding:0 28px; }
+.siteMain{ min-height:100vh; } /* makes page layout stable */
 
 /* ==================================================
    HEADER
@@ -58,7 +55,7 @@ body.inner .nav{
   box-shadow:0 1px 0 rgba(0,0,0,.08);
 }
 
-/* True centered logo (fixed side widths) */
+/* true centered logo */
 .navLux{
   height:92px;
   display:grid;
@@ -66,7 +63,6 @@ body.inner .nav{
   align-items:center;
 }
 
-/* LEFT */
 .hamburgerBtn{
   background:none;
   border:none;
@@ -89,7 +85,7 @@ body.inner .nav{
   height:1px;
   width:100%;
   background:rgba(255,255,255,.95);
-  transition: background .25s ease, opacity .25s ease;
+  transition: background .25s ease;
 }
 
 body.scrolled .hamburgerLines span,
@@ -97,17 +93,12 @@ body.inner .hamburgerLines span{
   background:var(--black);
 }
 
-/* CENTER */
 .navLogo{
   justify-self:center;
   display:flex;
   align-items:center;
 }
-.navLogoImg{
-  display:block;
-}
 
-/* RIGHT */
 .navCta{
   justify-self:end;
   width:160px;
@@ -119,18 +110,14 @@ body.inner .hamburgerLines span{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-
   font-family:var(--sans);
   font-size:11px;
   letter-spacing:4px;
   text-transform:uppercase;
-
   padding:10px 18px;
   border-radius:999px;
-
   border:1px solid rgba(255,255,255,.9);
   color:#fff;
-  text-decoration:none;
   font-weight:400;
   transition: all .25s ease;
 }
@@ -142,7 +129,7 @@ body.inner .btnReserve{
 }
 
 /* ==================================================
-   MENU OVERLAY (WORKING)
+   MENU OVERLAY
 ================================================== */
 .menuOverlay{
   position:fixed;
@@ -170,21 +157,21 @@ body.inner .btnReserve{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:20px;
+  gap:16px;
 }
 
 .menuBrand{
   font-family:var(--brand);
   font-size:18px;
-  letter-spacing:.6px;
-  color:rgba(255,255,255,.82);
-  white-space:nowrap; /* one line */
+  letter-spacing:1px;
+  color:rgba(255,255,255,.86);
+  white-space:nowrap;
 }
 
 .menuClose{
   background:none;
   border:1px solid rgba(255,255,255,.22);
-  color:rgba(255,255,255,.78);
+  color:rgba(255,255,255,.8);
   border-radius:999px;
   padding:10px 14px;
   font-family:var(--sans);
@@ -193,7 +180,7 @@ body.inner .btnReserve{
   text-transform:uppercase;
   cursor:pointer;
 }
-.menuClose:hover{ border-color: rgba(255,255,255,.45); color:#fff; }
+.menuClose:hover{ border-color:rgba(255,255,255,.45); color:#fff; }
 
 .menuLinks{
   margin-top:72px;
@@ -208,7 +195,6 @@ body.inner .btnReserve{
   font-size:52px;
   font-weight:400;
   color:#fff;
-  text-decoration:none;
   line-height:1.05;
   letter-spacing:.2px;
 }
@@ -224,13 +210,12 @@ body.inner .btnReserve{
 .menuDot{ opacity:.4; }
 
 /* ==================================================
-   HERO (VIDEO)
+   HERO
 ================================================== */
 .hero{
   position:relative;
   min-height:100vh;
   overflow:hidden;
-  padding:0;
 }
 
 .heroVideo{
@@ -241,7 +226,6 @@ body.inner .btnReserve{
   object-fit:cover;
 }
 
-/* only appears if you render it in React */
 .heroFallback{
   position:absolute;
   inset:0;
@@ -260,6 +244,7 @@ body.inner .btnReserve{
   display:flex;
   align-items:flex-end;
   padding-bottom:120px;
+  padding-top:92px; /* ensures header doesn’t overlap */
 }
 
 .heroKicker{
@@ -272,11 +257,11 @@ body.inner .btnReserve{
 
 .heroH1{
   font-family:var(--brand);
-  font-size:70px;
+  font-size:72px;
   font-weight:400;
   color:#fff;
   margin:12px 0 0;
-  letter-spacing:.2px;
+  letter-spacing:.6px;
 }
 
 .heroP{
@@ -301,17 +286,127 @@ body.inner .btnReserve{
   letter-spacing:4px;
   text-transform:uppercase;
   color:#fff;
-  text-decoration:none;
   border-bottom:1px solid rgba(255,255,255,.3);
   padding-bottom:6px;
 }
 .heroLink:hover{ border-bottom-color:rgba(255,255,255,.9); }
 
 /* ==================================================
+   SECTIONS (UI TEXT)
+================================================== */
+.sectionA{ padding:96px 0; }
+.sectionB{ padding:72px 0; border-top:1px solid var(--line); background:rgba(255,255,255,.55); }
+
+.gridA{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:56px;
+  align-items:start;
+}
+
+.h2A{
+  font-family:var(--brand);
+  font-size:44px;
+  font-weight:400;
+  letter-spacing:.5px;
+  margin:0;
+}
+
+.ruleA{
+  height:1px;
+  background:var(--line);
+  margin:22px 0;
+}
+
+.pA{
+  margin:0;
+  color:var(--muted);
+  font-size:18px;
+  line-height:2;
+}
+
+.cardsA{
+  display:grid;
+  gap:14px;
+}
+
+.cardA{
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:22px 22px;
+  background:rgba(255,255,255,.7);
+  transition: transform .18s ease, border-color .18s ease;
+  display:block;
+}
+.cardA:hover{ transform: translateY(-2px); border-color: rgba(20,20,20,.25); }
+
+.cardTitleA{
+  font-family:var(--brand);
+  font-size:22px;
+  letter-spacing:.4px;
+}
+.cardTextA{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.9;
+}
+.cardCtaA{
+  margin-top:14px;
+  font-family:var(--sans);
+  font-size:11px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--black);
+  opacity:.9;
+}
+
+.kickerA{
+  font-family:var(--sans);
+  font-size:11px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:rgba(20,20,20,.55);
+}
+
+.ctaRowA{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:24px;
+}
+
+.ctaTitleA{
+  font-family:var(--brand);
+  font-size:34px;
+  margin-top:10px;
+  letter-spacing:.4px;
+}
+
+.ctaTextA{
+  margin-top:10px;
+  color:var(--muted);
+}
+
+.btnSolidA{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 18px;
+  border-radius:999px;
+  border:1px solid var(--black);
+  font-family:var(--sans);
+  font-size:11px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+}
+
+/* ==================================================
    MOBILE
 ================================================== */
 @media (max-width:900px){
   .container{ padding:0 18px; }
+
   .navLux{ grid-template-columns:76px 1fr 76px; }
   .hamburgerBtn{ width:76px; }
   .navCta{ width:76px; }
@@ -320,5 +415,9 @@ body.inner .btnReserve{
   .menuLinks a{ font-size:34px; }
 
   .heroContent{ padding-bottom:72px; }
-  .heroH1{ font-size:40px; }
+  .heroH1{ font-size:42px; }
+
+  .gridA{ grid-template-columns:1fr; gap:28px; }
+  .h2A{ font-size:34px; }
+  .ctaRowA{ flex-direction:column; align-items:flex-start; }
 }
