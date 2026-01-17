@@ -8,7 +8,9 @@ export default function HomePage() {
 
   return (
     <main className="home">
+      {/* HERO */}
       <section className="hero">
+        {/* Video */}
         <video
           className="heroVideo"
           autoPlay
@@ -29,22 +31,31 @@ export default function HomePage() {
           <div className="container">
             <div className="heroKicker">ULUWATU · BALI</div>
             <h1 className="heroH1">Vanara Resort &amp; Spa</h1>
+
             <p className="heroP">
               Minimalist luxury above the ocean — a sanctuary shaped by nature.
             </p>
 
             <div className="heroLinks">
-              <Link className="heroLink" href="/accommodation">Explore accommodation</Link>
-              <Link className="heroLink" href="/experience">Discover experiences</Link>
+              <Link className="heroLink" href="/accommodation">
+                Explore accommodation
+              </Link>
+              <Link className="heroLink" href="/experience">
+                Discover experiences
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
+      {/* SECTION */}
       <section className="sectionAlt">
         <div className="container grid2">
           <div>
-            <h2 className="hLux" style={{ fontSize: 44 }}>A sanctuary of quiet strength</h2>
+            <div className="kicker">THE RESORT</div>
+            <h2 className="hLux" style={{ fontSize: 44, marginTop: 14 }}>
+              A sanctuary of quiet strength
+            </h2>
             <div className="rule" />
             <p className="pLux">
               Set on the cliffs of Uluwatu, Vanara offers refined architecture, ocean air,
@@ -55,30 +66,63 @@ export default function HomePage() {
           <div className="cards">
             <Link className="card" href="/accommodation">
               <div className="cardTitle">Accommodation</div>
-              <div className="cardText">Villas and suites designed for privacy and views.</div>
+              <div className="cardText">
+                Villas and suites designed for privacy and ocean views.
+              </div>
               <div className="cardCta">Explore</div>
             </Link>
 
             <Link className="card" href="/experience">
               <div className="cardTitle">Experience</div>
-              <div className="cardText">Ocean rituals, sunset paths, and curated moments.</div>
+              <div className="cardText">
+                Ocean rituals, sunset paths, and curated moments.
+              </div>
               <div className="cardCta">Discover</div>
             </Link>
 
-            <a className="card" href="https://YOUR-RESTAURANT-URL.com" target="_blank" rel="noopener noreferrer">
+            <a
+              className="card"
+              href="https://YOUR-RESTAURANT-URL.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <div className="cardTitle">Dine</div>
-              <div className="cardText">Seasonal cuisine shaped by fire, salt, and the sea.</div>
+              <div className="cardText">
+                Seasonal cuisine shaped by fire, salt, and the sea.
+              </div>
               <div className="cardCta">Visit</div>
             </a>
           </div>
         </div>
       </section>
 
+      {/* FOOTER (CONTACT FIX) */}
       <footer className="footer">
         <div className="container footerRow">
-          <div className="footerBrand">Vanara Resort &amp; Spa</div>
-          <div>Uluwatu, Bali</div>
-          <div>Reservations: +62 (xxx) xxx xxxx</div>
+          <div>
+            <div className="footerTitle">Vanara Resort &amp; Spa</div>
+            <div className="footerText">Uluwatu, Bali</div>
+          </div>
+
+          <div>
+            <div className="footerTitle">Contact</div>
+            <div className="footerText">
+              <a className="footerLink" href="mailto:info@vanara.life">info@vanara.life</a>
+              <br />
+              <a className="footerLink" href="tel:+62XXXXXXXXXX">+62 (xxx) xxx xxxx</a>
+            </div>
+          </div>
+
+          <div>
+            <div className="footerTitle">Explore</div>
+            <div className="footerText">
+              <a className="footerLink" href="/accommodation">Accommodation</a>
+              <br />
+              <a className="footerLink" href="/experience">Experience</a>
+              <br />
+              <a className="footerLink" href="/connect">Connect</a>
+            </div>
+          </div>
         </div>
       </footer>
     </main>
