@@ -3,18 +3,19 @@ import Link from "next/link"
 export default function HomePage() {
   return (
     <main className="home">
-      {/* HERO (video optional) */}
+      {/* HERO */}
       <section className="hero">
-        {/* If you have /public/hero.mp4 it will play. If not, it falls back to image */}
-        <video className="heroVideo" autoPlay muted loop playsInline>
+        <video
+          className="heroVideo"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/hero-poster.jpg"
+        >
           <source src="/hero.mp4" type="video/mp4" />
         </video>
-
-        <div
-          className="heroPoster"
-          aria-hidden="true"
-          style={{ backgroundImage: "url(/img1.jpg)" }}
-        />
 
         <div className="heroShade" />
 
@@ -23,12 +24,13 @@ export default function HomePage() {
             <div className="heroKicker">ULUWATU · BALI</div>
             <h1 className="heroH1">Vanara Resort & Spa</h1>
             <p className="heroP">
-              Nature-first quiet luxury above the tide — warm sand tones, cool water, and space to breathe.
+              A nature-first sanctuary above the tide — warm stone, cool water,
+              and space to breathe.
             </p>
 
             <div className="heroLinks">
               <Link className="heroLink" href="/accommodation">Explore accommodation</Link>
-              <span style={{ display: "inline-block", width: 18 }} />
+              <span />
               <Link className="heroLink" href="/book">Request access</Link>
             </div>
 
@@ -37,24 +39,22 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Editorial intro */}
+      {/* EDITORIAL */}
       <section className="sectionA2">
         <div className="container twoColA">
           <div>
             <div className="kicker">THE ESSENCE</div>
-            <h1 style={{ fontSize: 44, marginTop: 10 }}>
-              Quiet luxury, without performance
-            </h1>
+            <h2 className="h2A">Quiet luxury, without performance</h2>
           </div>
 
           <div className="editorialA">
             <p>
-              Vanara is designed to be felt — through ocean air, warm textures, and silence that restores.
-              Space is not empty here. It is the experience.
+              Vanara is not designed to impress. It is designed to restore —
+              through silence, texture, and a slower rhythm of time.
             </p>
             <p>
-              Elevated above the sea in Uluwatu, Vanara offers a slower rhythm: sunrise calm, midday stillness,
-              and a sunset ritual that deepens into night.
+              Elevated above the ocean in Uluwatu, days unfold gently,
+              ending in a sunset that deepens rather than concludes.
             </p>
           </div>
         </div>
@@ -62,11 +62,9 @@ export default function HomePage() {
 
       <div className="ruleA" />
 
-      {/* Big image / gallery flow */}
+      {/* GALLERY FLOW */}
       <section className="sectionA2">
         <div className="container">
-          <div className="kicker">A GLIMPSE</div>
-          <div style={{ height: 18 }} />
           <div className="stackGallery">
             <div className="imageBlock" style={{ backgroundImage: "url(/img1.jpg)" }} />
             <div className="imageBlock" style={{ backgroundImage: "url(/img2.jpg)" }} />
@@ -75,23 +73,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Minimal CTA */}
+      {/* CTA */}
       <section className="sectionA2">
         <div className="container twoColA">
           <div>
             <div className="kicker">CONNECT</div>
-            <h1 style={{ fontSize: 44, marginTop: 10 }}>Request access</h1>
+            <h2 className="h2A">Request access</h2>
           </div>
 
           <div className="editorialA">
             <p>
-              Limited capacity. Private seating. Quiet by design.
+              Limited capacity. Private by design.
             </p>
-            <div style={{ marginTop: 18 }}>
-              <Link className="softLinkA" href="/connect">Enquire →</Link>
-              <span style={{ display: "inline-block", width: 18 }} />
-              <Link className="softLinkA" href="/book">Reserve →</Link>
-            </div>
+            <Link className="softLinkA" href="/connect">Enquire →</Link>
           </div>
         </div>
       </section>
