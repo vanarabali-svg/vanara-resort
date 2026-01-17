@@ -1,4 +1,5 @@
 'use client'
+
 import './globals.css'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -11,107 +12,44 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+
+        {/* HEADER */}
         <header className="nav">
           <div className="container navLux">
-            {/* LEFT: MENU BUTTON */}
-            <button
-              className="menuBtn"
-              aria-label="Open menu"
-              onClick={() => {
-                const el = document.getElementById('lux-menu')
-                if (el) el.setAttribute('data-open', 'true')
-              }}
-            >
+
+            {/* LEFT */}
+            <button className="menuBtn" aria-label="Open menu">
               MENU
             </button>
 
-            {/* CENTER: LOGO */}
+            {/* CENTER */}
             <div className="navLogo">
               <Link href="/" aria-label="Vanara Resort & Spa">
                 <Image
                   src="/logo.png"
                   alt="Vanara Resort & Spa"
-                  width={320}
-                  height={40}
+                  width={360}
+                  height={44}
                   priority
-                  style={{ width: 'auto', height: 40 }}
+                  style={{ height: 44, width: 'auto' }}
                 />
               </Link>
             </div>
 
-            {/* RIGHT: RESERVE */}
+            {/* RIGHT */}
             <div className="navCta">
-              <Link className="btn btnPrimary" href="/book">
-                Reserve
+              <Link href="/book" className="btn btnPrimary">
+                RESERVE
               </Link>
             </div>
+
           </div>
         </header>
 
-        {/* FULLSCREEN LUX MENU */}
-        <div
-          id="lux-menu"
-          className="menuOverlay"
-          data-open="false"
-          onClick={(e) => {
-            // click outside closes
-            if (e.target === e.currentTarget) {
-              e.currentTarget.setAttribute('data-open', 'false')
-            }
-          }}
-        >
-          <div className="menuPanel">
-            <div className="menuTop">
-              <div className="menuKicker">Vanara Resort & Spa</div>
-              <button
-                className="menuClose"
-                aria-label="Close menu"
-                onClick={() => {
-                  const el = document.getElementById('lux-menu')
-                  if (el) el.setAttribute('data-open', 'false')
-                }}
-              >
-                CLOSE
-              </button>
-            </div>
-
-            <div className="menuLinks">
-              <Link
-                href="/accommodation"
-                onClick={() => document.getElementById('lux-menu')?.setAttribute('data-open', 'false')}
-              >
-                Accommodation
-              </Link>
-              <Link
-                href="/experiences"
-                onClick={() => document.getElementById('lux-menu')?.setAttribute('data-open', 'false')}
-              >
-                Experiences
-              </Link>
-              <Link
-                href="/dining"
-                onClick={() => document.getElementById('lux-menu')?.setAttribute('data-open', 'false')}
-              >
-                Dining
-              </Link>
-              <Link
-                href="/book"
-                onClick={() => document.getElementById('lux-menu')?.setAttribute('data-open', 'false')}
-              >
-                Reserve
-              </Link>
-            </div>
-
-            <div className="menuBottom">
-              <div>Uluwatu, Bali</div>
-              <div className="menuDot">•</div>
-              <div>Quiet Luxury</div>
-            </div>
-          </div>
-        </div>
-
+        {/* PAGE CONTENT */}
         {children}
 
+        {/* FOOTER */}
         <footer className="footer">
           <div className="container footerRow">
             <div>© {new Date().getFullYear()} Vanara Resort & Spa</div>
@@ -122,6 +60,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+
       </body>
     </html>
   )
