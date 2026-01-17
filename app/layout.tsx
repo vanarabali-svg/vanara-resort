@@ -42,7 +42,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {/* Aman-like serif + quiet UI */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -58,8 +57,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {/* LEFT */}
             <div className="navLeft">
               <button className="iconBtn" onClick={openMenu} aria-label="Open menu">
-                <span className="hamburger" aria-hidden="true">
-                  <span />
+                {/* Aman-style 2-line */}
+                <span className="hamburgerTwo" aria-hidden="true">
                   <span />
                   <span />
                 </span>
@@ -96,23 +95,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             {/* RIGHT */}
             <div className="navRight">
-              <Link href="/book" className="btnReserve">Reserve</Link>
+              <Link href="/book" className="btnReserve">
+                Reserve
+              </Link>
 
-              {/* OPTICAL CENTER FIX:
-                  this invisible spacer balances the extra left icon weight */}
+              {/* optical balance */}
               <span className="navSpacer" aria-hidden="true" />
             </div>
           </div>
         </header>
 
-        {/* MENU */}
-        <div className="overlay" data-overlay="menu" onClick={(e) => e.target === e.currentTarget && closeMenu()}>
-          <div className="panel">
-            <div className="panelTop">
-              <div className="panelBrand">Vanara Resort &amp; Spa</div>
-              <button className="panelClose" onClick={closeMenu}>Close</button>
-            </div>
-
+        {/* MENU OVERLAY */}
+        <div
+          className="overlay"
+          data-overlay="menu"
+          onClick={(e) => e.target === e.currentTarget && closeMenu()}
+        >
+          <div className="panel menuPanel">
             <nav className="panelLinks">
               <Link href="/" onClick={closeMenu}>Home</Link>
               <Link href="/about" onClick={closeMenu}>About</Link>
@@ -127,22 +126,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="panelBottom">
               <span>Uluwatu, Bali</span>
               <span className="dot">•</span>
-              <span className="muted">Minimalist sanctuary by the ocean</span>
+              <span className="muted">A sanctuary of quiet strength</span>
             </div>
           </div>
         </div>
 
-        {/* SEARCH */}
-        <div className="overlay" data-overlay="search" onClick={(e) => e.target === e.currentTarget && closeSearch()}>
-          <div className="panel panelSearch">
-            <div className="panelTop">
-              <div className="panelBrand">Search</div>
-              <button className="panelClose" onClick={closeSearch}>Close</button>
-            </div>
-
-            <div className="searchBox">
-              <input className="searchInput" placeholder="Search…" />
-            </div>
+        {/* SEARCH OVERLAY */}
+        <div
+          className="overlay"
+          data-overlay="search"
+          onClick={(e) => e.target === e.currentTarget && closeSearch()}
+        >
+          <div className="panel panelSearch searchPanel">
+            <input className="searchInput" placeholder="Search…" />
           </div>
         </div>
 
