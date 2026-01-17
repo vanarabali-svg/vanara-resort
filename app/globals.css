@@ -332,3 +332,10 @@ body.scrolled .btnReserve{
   .twoColA{ grid-template-columns:1fr; gap:26px; }
   .menuLinks a{ font-size:36px; }
 }
+.heroVideo{
+  filter: saturate(.92) contrast(1.05) brightness(.92);
+}
+
+.imageBlock{
+  filter: saturate(.92) contrast(1.04);
+}
