@@ -1,10 +1,9 @@
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
 import { sanityClient } from '@/lib/sanity.client'
 import { urlFor } from '@/lib/sanity.image'
 
 export default async function HomePage() {
-  // Pull 1 villa for hero image (simple + dynamic)
   const heroVilla = await sanityClient.fetch(`
     *[_type=="accommodation"] | order(_createdAt desc)[0]{
       title,
@@ -14,47 +13,44 @@ export default async function HomePage() {
     }
   `)
 
-  const heroImageUrl = heroVilla?.heroImage
-    ? urlFor(heroVilla.heroImage).width(2400).height(1500).url()
+  const heroUrl = heroVilla?.heroImage
+    ? urlFor(heroVilla.heroImage).width(2600).height(1600).url()
     : null
 
   return (
     <main>
       {/* HERO */}
-      <section className="hero">
-        {heroImageUrl && (
+      <section className="heroLux">
+        {heroUrl && (
           <Image
-            src={heroImageUrl}
-            alt={heroVilla?.title || 'Vanara Uluwatu'}
+            src={heroUrl}
+            alt={heroVilla?.title || 'Vanara Resort & Spa'}
             fill
             priority
             style={{ objectFit: 'cover' }}
           />
         )}
-        <div className="heroOverlay" />
 
-        <div className="heroContent">
+        <div className="heroShade" />
+
+        <div className="heroInner">
           <div className="container">
-            <div className="kicker" style={{ color: 'rgba(255,255,255,.80)' }}>
-              Uluwatu • Bali
-            </div>
+            <div className="heroKicker">Uluwatu • Bali</div>
 
-            <h1
-              className="heroTitle"
-              style={{ fontFamily: 'var(--font-display)' }}
-            >
-              Quiet luxury on the edge of the ocean
+            <h1 className="heroH1">
+              Quiet luxury <span className="heroH1Light">on the edge of the ocean</span>
             </h1>
 
-            <p className="heroSub">
-              A private collection of villas shaped by nature—sandstone, water,
-              and light. Designed for space, silence, and unforgettable sunsets.
+            <p className="heroP">
+              A private collection of villas shaped by nature—sandstone, water, and light.
+              Designed for space, silence, and unforgettable sunsets.
             </p>
 
-            <div style={{ marginTop: 22, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <div className="heroActions">
               <Link className="btn btnPrimary" href="/accommodation">
                 Explore Villas
               </Link>
+
               {heroVilla?.slug && (
                 <Link className="btn" href={`/accommodation/${heroVilla.slug}`}>
                   View {heroVilla.title}
@@ -66,107 +62,70 @@ export default async function HomePage() {
       </section>
 
       {/* INTRO */}
-      <section className="section">
+      <section className="sectionLux">
         <div className="container">
-          <div style={{ maxWidth: 860 }}>
-            <div className="kicker">Vanara Uluwatu</div>
-            <div className="hr" style={{ maxWidth: 160 }} />
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 44, lineHeight: 1.1 }}>
-              A sanctuary of stillness
-            </h2>
-            <p style={{ marginTop: 14, lineHeight: 1.9, maxWidth: 720 }}>
-              Elevated above the shoreline, Vanara is a calm retreat where
-              indoor–outdoor living meets refined craftsmanship. Every detail is
-              intentional—natural textures, soft light, and privacy in every
-              direction.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURES */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div className="container">
-          <div className="grid grid3">
-            <article className="card">
-              <div className="cardInner">
-                <div className="kicker">Design</div>
-                <div className="hr" />
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 28 }}>
-                  Minimal, tactile, cinematic
-                </h3>
-                <p style={{ marginTop: 10, lineHeight: 1.8 }}>
-                  Sandstone tones, cool water hues, and quiet contrast—crafted to
-                  feel open, calm, and timeless.
-                </p>
-              </div>
-            </article>
-
-            <article className="card">
-              <div className="cardInner">
-                <div className="kicker">Location</div>
-                <div className="hr" />
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 28 }}>
-                  Uluwatu at its most private
-                </h3>
-                <p style={{ marginTop: 10, lineHeight: 1.8 }}>
-                  Near iconic cliffs and beaches, yet hidden from crowds—perfect
-                  for restorative days and golden-hour rituals.
-                </p>
-              </div>
-            </article>
-
-            <article className="card">
-              <div className="cardInner">
-                <div className="kicker">Service</div>
-                <div className="hr" />
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 28 }}>
-                  Effortless, discreet, personal
-                </h3>
-                <p style={{ marginTop: 10, lineHeight: 1.8 }}>
-                  Thoughtful hospitality, curated experiences, and in-villa
-                  dining—always present, never intrusive.
-                </p>
-              </div>
-            </article>
-          </div>
-
-          <div style={{ marginTop: 34, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            <Link className="btn btnPrimary" href="/accommodation">
-              Explore Accommodation
-            </Link>
-            <Link className="btn" href="/experiences">
-              Explore Experiences
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA STRIP */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div className="container">
-          <div
-            className="card"
-            style={{
-              background: 'linear-gradient(135deg, rgba(20,20,20,.92), rgba(20,20,20,.72))',
-              color: '#fff',
-            }}
-          >
-            <div className="cardInner" style={{ padding: 34, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
-              <div style={{ maxWidth: 720 }}>
-                <div className="kicker" style={{ color: 'rgba(255,255,255,.75)' }}>Reserve</div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 34, lineHeight: 1.1, marginTop: 8 }}>
-                  Your stay begins with a view
-                </h3>
-                <p style={{ marginTop: 10, color: 'rgba(255,255,255,.82)', lineHeight: 1.8 }}>
-                  Choose a villa, select your dates, and we’ll take care of the rest.
-                </p>
-              </div>
-
-              <Link className="btn btnPrimary" href="/book">
-                Book Now
-              </Link>
+          <div className="split">
+            <div>
+              <div className="kicker">Vanara Resort & Spa</div>
+              <div className="hr" style={{ maxWidth: 180 }} />
+              <h2 className="h2">
+                A sanctuary of stillness
+              </h2>
             </div>
+
+            <div>
+              <p className="lead">
+                Elevated above the shoreline, Vanara is a calm retreat where indoor–outdoor
+                living meets refined craftsmanship. Every detail is intentional—natural
+                textures, soft light, and privacy in every direction.
+              </p>
+
+              <div style={{ marginTop: 18, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                <Link className="btn" href="/experiences">Explore Experiences</Link>
+                <Link className="btn" href="/dining">Discover Dining</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3 FEATURE CARDS */}
+      <section className="sectionLux" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <div className="grid3">
+            <div className="featureCard">
+              <div className="kicker">Design</div>
+              <div className="hr" />
+              <div className="featureTitle">Minimal. Tactile. Cinematic.</div>
+              <p className="featureText">
+                Warm sand tones below, cool emerald water above, soft white foam accents—quiet,
+                open, and timeless.
+              </p>
+            </div>
+
+            <div className="featureCard">
+              <div className="kicker">Location</div>
+              <div className="hr" />
+              <div className="featureTitle">Uluwatu, privately.</div>
+              <p className="featureText">
+                Close to iconic cliffs and beaches, yet secluded—perfect for restorative days
+                and golden-hour rituals.
+              </p>
+            </div>
+
+            <div className="featureCard">
+              <div className="kicker">Service</div>
+              <div className="hr" />
+              <div className="featureTitle">Discreet & personal.</div>
+              <p className="featureText">
+                Thoughtful hospitality, curated experiences, and in-villa dining—always present,
+                never intrusive.
+              </p>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 28 }}>
+            <Link className="btn btnPrimary" href="/book">Reserve</Link>
           </div>
         </div>
       </section>

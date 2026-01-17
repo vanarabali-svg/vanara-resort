@@ -11,51 +11,46 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {/* HEADER */}
-        <header
-          style={{
-            position: 'sticky',
-            top: 0,
-            zIndex: 50,
-            background: 'rgba(255,255,255,0.92)',
-            backdropFilter: 'blur(10px)',
-            borderBottom: '1px solid rgba(0,0,0,0.06)',
-          }}
-        >
-          <div
-            style={{
-              maxWidth: 1200,
-              margin: '0 auto',
-              padding: '16px 24px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
+        <header className="nav">
+          <div className="container navRow">
             {/* LOGO */}
-            <Link href="/">
+            <Link href="/" aria-label="Vanara Resort & Spa" className="brand">
               <Image
                 src="/logo.png"
                 alt="Vanara Resort & Spa"
-                width={140}
-                height={40}
+                width={220}
+                height={28}
                 priority
+                style={{ width: 'auto', height: 28 }}
               />
             </Link>
 
-            {/* NAV */}
-            <nav style={{ display: 'flex', gap: 24 }}>
+            {/* NAVIGATION */}
+            <nav className="navLinks">
               <Link href="/accommodation">Villas</Link>
               <Link href="/experiences">Experiences</Link>
               <Link href="/dining">Dining</Link>
-              <Link href="/book" style={{ fontWeight: 600 }}>
+              <Link href="/book" className="btn btnPrimary">
                 Book
               </Link>
             </nav>
           </div>
         </header>
 
-        {/* PAGE */}
+        {/* PAGE CONTENT */}
         {children}
+
+        {/* FOOTER */}
+        <footer className="footer">
+          <div className="container footerRow">
+            <div>© {new Date().getFullYear()} Vanara Resort & Spa</div>
+            <div className="footerRight">
+              <span>Uluwatu, Bali</span>
+              <span className="dot">•</span>
+              <span>Quiet Luxury</span>
+            </div>
+          </div>
+        </footer>
       </body>
     </html>
   )
