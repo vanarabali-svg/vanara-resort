@@ -339,3 +339,27 @@ body.scrolled .btnReserve{
 .imageBlock{
   filter: saturate(.92) contrast(1.04);
 }
+/* HOME HERO fallback + hint */
+.heroPoster{
+  position:absolute;
+  inset:0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0; /* stays hidden if video plays */
+  pointer-events:none;
+}
+.hero video:not([src]) + .heroPoster { opacity: 1; }
+
+.heroHint{
+  margin-top: 24px;
+  font-size: 11px;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.65);
+}
+
+/* stacked gallery like Aman */
+.stackGallery{
+  display:grid;
+  gap: 16px;
+}
