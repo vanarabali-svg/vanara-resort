@@ -6,28 +6,24 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const isHome = pathname === '/'
 
   const openMenu = () => {
     document.getElementById('lux-menu')?.setAttribute('data-open', 'true')
+    document.body.classList.add('menu-open')
   }
 
   const closeMenu = () => {
     document.getElementById('lux-menu')?.setAttribute('data-open', 'false')
+    document.body.classList.remove('menu-open')
   }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeMenu()
-    }
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && closeMenu()
 
     window.addEventListener('scroll', onScroll)
     window.addEventListener('keydown', onKey)
@@ -46,7 +42,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@300;400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -54,33 +50,35 @@ export default function RootLayout({
       <body className={[scrolled ? 'scrolled' : '', !isHome ? 'inner' : ''].join(' ')}>
         <header className="nav">
           <div className="container navLux">
+            {/* LEFT */}
             <button className="hamburgerBtn" onClick={openMenu} aria-label="Open menu">
-              <span className="hamburgerLines">
+              <span className="hamburgerLines" aria-hidden="true">
                 <span />
                 <span />
                 <span />
               </span>
             </button>
 
+            {/* CENTER */}
             <div className="navLogo">
               <Link href="/" aria-label="Vanara Resort & Spa">
                 <Image
                   src="/logo.png"
                   alt="Vanara Resort & Spa"
-                  width={260}
-                  height={34}
+                  width={300}
+                  height={40}
                   priority
+                  className="navLogoImg"
                   style={{
-                    height: 34,
+                    height: 40,
                     width: 'auto',
-                    filter: !isHome || scrolled
-                      ? 'none'
-                      : 'brightness(0) invert(1)',
+                    filter: !isHome || scrolled ? 'none' : 'brightness(0) invert(1)',
                   }}
                 />
               </Link>
             </div>
 
+            {/* RIGHT */}
             <div className="navCta">
               <Link href="/book" className="btnReserve">
                 RESERVE
@@ -89,6 +87,7 @@ export default function RootLayout({
           </div>
         </header>
 
+        {/* MENU OVERLAY */}
         <div
           id="lux-menu"
           className="menuOverlay"
@@ -97,16 +96,17 @@ export default function RootLayout({
         >
           <div className="menuPanel">
             <div className="menuTop">
-              <div className="menuKicker">Vanara Resort & Spa</div>
+              <div className="menuBrand">Vanara Resort &amp; Spa</div>
               <button className="menuClose" onClick={closeMenu} aria-label="Close menu">
-                ×
+                Close
               </button>
             </div>
 
-            <div className="menuLinks">
+            <nav className="menuLinks" aria-label="Site">
               <Link href="/" onClick={closeMenu}>Home</Link>
               <Link href="/about" onClick={closeMenu}>About</Link>
               <Link href="/experience" onClick={closeMenu}>Experience</Link>
+
               <a
                 href="https://YOUR-RESTAURANT-URL.com"
                 target="_blank"
@@ -115,20 +115,21 @@ export default function RootLayout({
               >
                 Dine
               </a>
+
               <Link href="/accommodation" onClick={closeMenu}>Accommodation</Link>
               <Link href="/connect" onClick={closeMenu}>Connect</Link>
               <Link href="/book" onClick={closeMenu}>Reserve</Link>
-            </div>
+            </nav>
 
             <div className="menuBottom">
               <span>Uluwatu, Bali</span>
               <span className="menuDot">•</span>
-              <span>Minimal luxury by the ocean</span>
+              <span>Refined seclusion by the ocean</span>
             </div>
           </div>
         </div>
 
-        {children}
+        <main className="siteMain">{children}</main>
       </body>
     </html>
   )

@@ -1,10 +1,17 @@
-import Link from "next/link"
+'use client'
+
+import Link from 'next/link'
+import { useState } from 'react'
 
 export default function HomePage() {
+  const [videoOk, setVideoOk] = useState(true)
+
   return (
     <main className="home">
-      {/* HERO */}
       <section className="hero">
+        {/* Fallback image shows ONLY if video fails */}
+        {!videoOk && <div className="heroFallback" aria-hidden="true" />}
+
         <video
           className="heroVideo"
           autoPlay
@@ -12,7 +19,8 @@ export default function HomePage() {
           loop
           playsInline
           preload="auto"
-          poster="/hero-poster.jpg"
+          onError={() => setVideoOk(false)}
+          onCanPlay={() => setVideoOk(true)}
         >
           <source src="/hero.mp4" type="video/mp4" />
         </video>
@@ -22,70 +30,21 @@ export default function HomePage() {
         <div className="heroContent">
           <div className="container">
             <div className="heroKicker">ULUWATU · BALI</div>
-            <h1 className="heroH1">Vanara Resort & Spa</h1>
+
+            <h1 className="heroH1">Vanara Resort &amp; Spa</h1>
+
             <p className="heroP">
-              A nature-first sanctuary above the tide — warm stone, cool water,
-              and space to breathe.
+              A sanctuary of calm above the ocean — minimalist luxury shaped by nature.
             </p>
 
             <div className="heroLinks">
-              <Link className="heroLink" href="/accommodation">Explore accommodation</Link>
-              <span />
-              <Link className="heroLink" href="/book">Request access</Link>
+              <Link className="heroLink" href="/book">
+                Reserve
+              </Link>
+              <Link className="heroLink" href="/accommodation">
+                Explore accommodation
+              </Link>
             </div>
-
-            <div className="heroHint">Scroll to arrive</div>
-          </div>
-        </div>
-      </section>
-
-      {/* EDITORIAL */}
-      <section className="sectionA2">
-        <div className="container twoColA">
-          <div>
-            <div className="kicker">THE ESSENCE</div>
-            <h2 className="h2A">Quiet luxury, without performance</h2>
-          </div>
-
-          <div className="editorialA">
-            <p>
-              Vanara is not designed to impress. It is designed to restore —
-              through silence, texture, and a slower rhythm of time.
-            </p>
-            <p>
-              Elevated above the ocean in Uluwatu, days unfold gently,
-              ending in a sunset that deepens rather than concludes.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <div className="ruleA" />
-
-      {/* GALLERY FLOW */}
-      <section className="sectionA2">
-        <div className="container">
-          <div className="stackGallery">
-            <div className="imageBlock" style={{ backgroundImage: "url(/img1.jpg)" }} />
-            <div className="imageBlock" style={{ backgroundImage: "url(/img2.jpg)" }} />
-            <div className="imageBlock" style={{ backgroundImage: "url(/img3.jpg)" }} />
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="sectionA2">
-        <div className="container twoColA">
-          <div>
-            <div className="kicker">CONNECT</div>
-            <h2 className="h2A">Request access</h2>
-          </div>
-
-          <div className="editorialA">
-            <p>
-              Limited capacity. Private by design.
-            </p>
-            <Link className="softLinkA" href="/connect">Enquire →</Link>
           </div>
         </div>
       </section>
