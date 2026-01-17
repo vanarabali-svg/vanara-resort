@@ -22,7 +22,9 @@ export default function RootLayout({
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeMenu() }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeMenu()
+    }
 
     window.addEventListener('scroll', onScroll)
     window.addEventListener('keydown', onKey)
@@ -37,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Aman-style serif */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -49,10 +52,18 @@ export default function RootLayout({
         {/* HEADER */}
         <header className="nav">
           <div className="container navLux">
-            <button className="menuBtn" onClick={openMenu}>MENU</button>
+            {/* LEFT */}
+            <button
+              className="menuBtn"
+              onClick={openMenu}
+              aria-label="Open menu"
+            >
+              MENU
+            </button>
 
+            {/* CENTER LOGO */}
             <div className="navLogo">
-              <Link href="/">
+              <Link href="/" aria-label="Vanara Resort & Spa">
                 <Image
                   src="/logo.png"
                   alt="Vanara Resort & Spa"
@@ -68,38 +79,72 @@ export default function RootLayout({
               </Link>
             </div>
 
+            {/* RIGHT */}
             <div className="navCta">
-              <Link href="/book" className="btnReserve">RESERVE</Link>
+              <Link href="/book" className="btnReserve">
+                RESERVE
+              </Link>
             </div>
           </div>
         </header>
 
-        {/* MENU OVERLAY */}
+        {/* FULLSCREEN MENU OVERLAY */}
         <div
           id="lux-menu"
           className="menuOverlay"
           data-open="false"
-          onClick={(e) => e.target === e.currentTarget && closeMenu()}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeMenu()
+          }}
         >
           <div className="menuPanel">
             <div className="menuTop">
               <div className="menuKicker">Vanara Resort & Spa</div>
-              <button className="menuClose" onClick={closeMenu}>CLOSE</button>
+              <button className="menuClose" onClick={closeMenu}>
+                CLOSE
+              </button>
             </div>
 
             <div className="menuLinks">
-              <Link href="/" onClick={closeMenu}>Home</Link>
-              <Link href="/about" onClick={closeMenu}>About</Link>
-              <Link href="/experience" onClick={closeMenu}>Experience</Link>
-              <Link href="/accommodation" onClick={closeMenu}>Accommodation</Link>
-              <Link href="/connect" onClick={closeMenu}>Connect</Link>
-              <Link href="/book" onClick={closeMenu}>Reserve</Link>
+              <Link href="/" onClick={closeMenu}>
+                Home
+              </Link>
+
+              <Link href="/about" onClick={closeMenu}>
+                About
+              </Link>
+
+              <Link href="/experience" onClick={closeMenu}>
+                Experience
+              </Link>
+
+              {/* DINE (external restaurant site) */}
+              <a
+                href="https://YOUR-RESTAURANT-URL.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={closeMenu}
+              >
+                Dine
+              </a>
+
+              <Link href="/accommodation" onClick={closeMenu}>
+                Accommodation
+              </Link>
+
+              <Link href="/connect" onClick={closeMenu}>
+                Connect
+              </Link>
+
+              <Link href="/book" onClick={closeMenu}>
+                Reserve
+              </Link>
             </div>
 
             <div className="menuBottom">
-              <span>Uluwatu, Bali</span>
-              <span className="menuDot">•</span>
-              <span>Quiet luxury by the ocean</span>
+              <div>Uluwatu, Bali</div>
+              <div className="menuDot">•</div>
+              <div>Quiet luxury by the ocean</div>
             </div>
           </div>
         </div>
