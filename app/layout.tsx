@@ -18,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const closeSearch = () => document.documentElement.setAttribute('data-search', 'closed')
 
   useEffect(() => {
+    // default closed
     document.documentElement.setAttribute('data-menu', 'closed')
     document.documentElement.setAttribute('data-search', 'closed')
 
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        {/* Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -51,9 +53,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body className={[scrolled ? 'scrolled' : '', !isHome ? 'inner' : ''].join(' ')}>
+        {/* HEADER */}
         <header className="nav">
           <div className="container navBar">
-            {/* LEFT: MENU + SEARCH (side-by-side) */}
+            {/* LEFT */}
             <div className="navLeft">
               <button className="iconBtn" onClick={openMenu} aria-label="Open menu">
                 <span className="hamburger" aria-hidden="true">
@@ -86,6 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   style={{
                     height: 40,
                     width: 'auto',
+                    // on home top: logo turns white. on scroll/inner: normal
                     filter: !isHome || scrolled ? 'none' : 'brightness(0) invert(1)',
                   }}
                 />
@@ -102,18 +106,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </header>
 
         {/* MENU OVERLAY */}
-        <div className="overlay" data-overlay="menu" onClick={(e) => e.target === e.currentTarget && closeMenu()}>
+        <div
+          className="overlay"
+          data-overlay="menu"
+          onClick={(e) => e.target === e.currentTarget && closeMenu()}
+        >
           <div className="panel">
             <div className="panelTop">
               <div className="panelBrand">Vanara Resort &amp; Spa</div>
-              <button className="panelClose" onClick={closeMenu}>Close</button>
+              <button className="panelClose" onClick={closeMenu}>
+                Close
+              </button>
             </div>
 
             <nav className="panelLinks">
               <Link href="/" onClick={closeMenu}>Home</Link>
               <Link href="/about" onClick={closeMenu}>About</Link>
               <Link href="/experience" onClick={closeMenu}>Experience</Link>
-              <a href="https://YOUR-RESTAURANT-URL.com" target="_blank" onClick={closeMenu}>Dine</a>
+
+              {/* DINE */}
+              <a
+                href="https://YOUR-RESTAURANT-URL.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => closeMenu()}
+              >
+                Dine
+              </a>
+
               <Link href="/accommodation" onClick={closeMenu}>Accommodation</Link>
               <Link href="/connect" onClick={closeMenu}>Connect</Link>
             </nav>
@@ -127,11 +147,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         {/* SEARCH OVERLAY */}
-        <div className="overlay" data-overlay="search" onClick={(e) => e.target === e.currentTarget && closeSearch()}>
+        <div
+          className="overlay"
+          data-overlay="search"
+          onClick={(e) => e.target === e.currentTarget && closeSearch()}
+        >
           <div className="panel panelSearch">
             <div className="panelTop">
               <div className="panelBrand">Search</div>
-              <button className="panelClose" onClick={closeSearch}>Close</button>
+              <button className="panelClose" onClick={closeSearch}>
+                Close
+              </button>
             </div>
 
             <div className="searchBox">
