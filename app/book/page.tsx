@@ -1,19 +1,31 @@
 export default function BookPage() {
   return (
-    <main className="page">
-      <section className="sectionA">
-        <div className="container narrow">
+    <main className="pageA">
+      <section className="heroSmall">
+        <div className="container">
           <div className="kicker">RESERVE</div>
-          <div className="hr" />
-          <h1 className="h2A">Request access</h1>
-          <p className="leadA">
-            Booking integration comes next (WhatsApp, form, or booking engine).
+          <h1>Request access</h1>
+          <p className="sub">
+            Limited capacity. Private seating. Quiet by design.
           </p>
-          <p className="leadA">
-            For now, email: <strong>hello@vanara.com</strong>
+        </div>
+      </section>
+
+      <div className="ruleA" />
+
+      <section className="sectionA2">
+        <div className="container editorialA">
+          <p>
+            For reservations, day access, or private enquiries, please contact:
+          </p>
+          <p>
+            <strong>hello@vanara.com</strong>
+          </p>
+          <p>
+            WhatsApp available upon request.
           </p>
         </div>
       </section>
     </main>
-  );
+  )
 }
