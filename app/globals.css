@@ -1,12 +1,15 @@
 /* ======================================================
-   VANARA — GLOBALS (AMAN ULUWATU INSPIRED)
-   - Works with your page.tsx footer classes
-   - Works with the layout.tsx below
+   VANARA — FULL GLOBALS.CSS (AMAN STYLE)
+   Fixes:
+   - Hero video showing half (forces full 100vh/100vw + cover)
+   - Menu + visible X close
+   - Footer styling
+   - Sections spacing (text not stacking)
 ====================================================== */
 
-/* -------------------------
+/* =========================
    RESET
-------------------------- */
+========================= */
 *,
 *::before,
 *::after { box-sizing: border-box; }
@@ -19,29 +22,35 @@ html, body {
 
 body{
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background:#f7f7f5;
-  color:#141414;
-  line-height:1.75;
-  overflow-x:hidden;
-  overflow-y:auto;
+  background: #f7f7f5;
+  color: #141414;
+  line-height: 1.75;
+  overflow-x: hidden;
+  overflow-y: auto;
   -webkit-font-smoothing: antialiased;
 }
 
-a{ color:inherit; text-decoration:none; }
-img, video{ display:block; max-width:100%; }
-button{ font:inherit; color:inherit; background:transparent; border:none; cursor:pointer; }
+a{ color: inherit; text-decoration: none; }
+img, video{ display: block; }
+button{ font: inherit; color: inherit; background: transparent; border: none; cursor: pointer; }
 main{ display:block; position:relative; z-index:1; }
 
+/* IMPORTANT:
+   don’t limit video with max-width/height rules */
+img{ max-width: 100%; height: auto; }
+video{ width: 100%; height: auto; }
+
+/* =========================
+   TOKENS
+========================= */
 :root{
   --serif: "DM Serif Display", serif;
-  --sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-
-  --ink:#141414;
+  --ink: #141414;
   --muted: rgba(20,20,20,.64);
 
-  --beige:#f3eee5;
-  --beige2:#efe8dc;
-  --paper:#f7f7f5;
+  --paper: #f7f7f5;
+  --beige: #f3eee5;
+  --beige2: #efe8dc;
 
   --line: rgba(20,20,20,.12);
   --ease: cubic-bezier(.25,.9,.25,1);
@@ -49,27 +58,27 @@ main{ display:block; position:relative; z-index:1; }
   --navH: 92px;
 }
 
-/* -------------------------
+/* =========================
    CONTAINER
-------------------------- */
+========================= */
 .container{
-  max-width:1280px;
-  margin:0 auto;
-  padding:0 28px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 28px;
 }
 
-/* -------------------------
-   HEADER / NAV
-------------------------- */
+/* =========================
+   NAV (AMAN)
+========================= */
 .v-nav{
-  position:fixed;
-  inset:0 0 auto 0;
-  height:var(--navH);
-  z-index:1000;
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--navH);
+  z-index: 1000;
   transition: background .35s var(--ease), box-shadow .35s var(--ease), backdrop-filter .35s var(--ease);
 }
 
-body:not(.scrolled):not(.inner) .v-nav{ background:transparent; }
+body:not(.scrolled):not(.inner) .v-nav{ background: transparent; }
 
 body.scrolled .v-nav,
 body.inner .v-nav{
@@ -79,72 +88,51 @@ body.inner .v-nav{
 }
 
 .v-nav__inner{
-  max-width:1280px;
-  margin:0 auto;
-  padding:0 28px;
-  height:var(--navH);
-  display:grid;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: var(--navH);
+  display: grid;
   grid-template-columns: 1fr auto 1fr;
-  align-items:center;
+  align-items: center;
 }
 
 .v-nav__left{
-  justify-self:start;
-  min-width:190px;
-  display:flex;
-  align-items:center;
-  gap:12px;
+  justify-self: start;
+  min-width: 190px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .v-nav__center{
-  justify-self:center;
-  display:flex;
-  align-items:center;
+  justify-self: center;
+  display: flex;
+  align-items: center;
 }
 
 .v-nav__right{
-  justify-self:end;
-  min-width:190px;
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  gap:12px;
+  justify-self: end;
+  min-width: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
 }
 
-/* Brand text (Vanara Resort & Spa) */
-.brandWordmark{
-  font-family: var(--serif);
-  font-weight: 400;
-  letter-spacing: .6px;
-  font-size: 15px;
-  line-height: 1;
-  white-space: nowrap;
-  transition: color .25s ease, opacity .25s ease;
-}
-
-body:not(.scrolled):not(.inner) .brandWordmark{
-  color: rgba(255,255,255,.92);
-}
-
-body.scrolled .brandWordmark,
-body.inner .brandWordmark{
-  color: rgba(20,20,20,.92);
-}
-
-/* Icon buttons */
+/* icon buttons */
 .v-iconBtn{
-  width:40px;
-  height:40px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.35);
-  color:#fff;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: opacity .2s ease, transform .2s ease, border-color .2s ease, color .2s ease;
 }
-
-.v-iconBtn:hover{ opacity:.86; transform: translateY(-1px); }
+.v-iconBtn:hover{ opacity: .86; transform: translateY(-1px); }
 
 body.scrolled .v-iconBtn,
 body.inner .v-iconBtn{
@@ -152,24 +140,37 @@ body.inner .v-iconBtn{
   border-color: rgba(20,20,20,.22);
 }
 
-/* Reserve button */
-.v-reserve{
-  height:40px;
-  padding:0 18px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.62);
-  color:#fff;
-  font-size:11px;
-  letter-spacing:3.4px;
-  text-transform:uppercase;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  white-space:nowrap;
-  transition: opacity .2s ease, transform .2s ease, border-color .2s ease, color .2s ease;
+/* Aman hamburger (3 thin lines) */
+.v-burger{
+  width: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.v-burger span{
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  opacity: .95;
 }
 
-.v-reserve:hover{ opacity:.88; transform: translateY(-1px); }
+/* reserve */
+.v-reserve{
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.62);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 3.4px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition: opacity .2s ease, transform .2s ease, border-color .2s ease, color .2s ease;
+}
+.v-reserve:hover{ opacity: .88; transform: translateY(-1px); }
 
 body.scrolled .v-reserve,
 body.inner .v-reserve{
@@ -177,44 +178,57 @@ body.inner .v-reserve{
   border-color: rgba(20,20,20,.32);
 }
 
-/* -------------------------
-   HERO (your page.tsx uses these)
-------------------------- */
+/* =========================
+   HERO (FULL SCREEN VIDEO FIX)
+========================= */
+/* If your hero is inside a .container in page.tsx, it will NOT be full width.
+   This forces full width anyway. */
 .hero{
-  position:relative;
-  min-height:100vh;
-  background:#000;
-  overflow:hidden;
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
 }
 
 .heroVideo,
 .heroImage{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* IMPORTANT: cover, not contain */
 }
 
+/* Keep video crisp */
+.heroVideo{
+  transform: translateZ(0);
+}
+
+/* gradient overlay */
 .heroShade{
-  position:absolute;
-  inset:0;
-  background: linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.14));
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.10));
 }
 
+/* hero content */
 .heroContent{
-  position:relative;
-  min-height:100vh;
-  display:flex;
-  align-items:flex-end;
+  position: relative;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-end;
   padding-top: var(--navH);
   padding-bottom: 110px;
 }
 
+/* hero typography */
 .heroKicker{
-  font-size:11px;
-  letter-spacing:4px;
-  text-transform:uppercase;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
   color: rgba(255,255,255,.70);
 }
 
@@ -223,7 +237,7 @@ body.inner .v-reserve{
   font-size: 60px;
   line-height: 1.1;
   letter-spacing: .25px;
-  color:#fff;
+  color: #fff;
   margin: 12px 0 0 0;
 }
 
@@ -237,29 +251,33 @@ body.inner .v-reserve{
 
 .heroLinks{
   margin-top: 34px;
-  display:flex;
-  gap:24px;
-  flex-wrap:wrap;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
 .heroLink{
-  font-size:10px;
-  letter-spacing:3.6px;
-  text-transform:uppercase;
+  font-size: 10px;
+  letter-spacing: 3.6px;
+  text-transform: uppercase;
   color: rgba(255,255,255,.86);
   border-bottom: 1px solid rgba(255,255,255,.22);
-  padding-bottom:6px;
+  padding-bottom: 6px;
   transition: opacity .2s ease, border-color .2s ease;
 }
-
 .heroLink:hover{
   opacity: 1;
   border-bottom-color: rgba(255,255,255,.45);
 }
 
-/* -------------------------
-   INTRO SECTION (your page.tsx uses these)
-------------------------- */
+/* =========================
+   SECTIONS (UNDER HERO)
+========================= */
+.section{
+  padding: 96px 0;
+  background: var(--paper);
+}
+
 .sectionAlt{
   padding: 96px 0;
   background: linear-gradient(180deg, var(--beige), var(--paper));
@@ -267,17 +285,10 @@ body.inner .v-reserve{
 }
 
 .grid2{
-  display:grid;
+  display: grid;
   grid-template-columns: 1.05fr .95fr;
   gap: 56px;
-  align-items:start;
-}
-
-.rule{
-  height:1px;
-  width:140px;
-  background: rgba(20,20,20,.14);
-  margin: 22px 0;
+  align-items: start;
 }
 
 .hLux{
@@ -286,6 +297,8 @@ body.inner .v-reserve{
   letter-spacing: .2px;
   color: var(--ink);
   margin: 0;
+  font-size: 34px;
+  line-height: 1.18;
 }
 
 .pLux{
@@ -295,10 +308,17 @@ body.inner .v-reserve{
   margin: 14px 0 0 0;
 }
 
-/* Cards */
-.cards{ display:grid; gap:14px; }
+.rule{
+  height: 1px;
+  width: 140px;
+  background: rgba(20,20,20,.14);
+  margin: 22px 0;
+}
+
+/* cards */
+.cards{ display: grid; gap: 14px; }
 .card{
-  border:1px solid rgba(20,20,20,.12);
+  border: 1px solid var(--line);
   border-radius: 18px;
   padding: 22px;
   background: rgba(255,255,255,.78);
@@ -311,8 +331,9 @@ body.inner .v-reserve{
 .cardTitle{
   font-family: var(--serif);
   font-size: 22px;
-  letter-spacing:.2px;
+  letter-spacing: .2px;
   line-height: 1.2;
+  margin: 0;
 }
 .cardText{
   margin-top: 10px;
@@ -328,98 +349,97 @@ body.inner .v-reserve{
   opacity: .72;
 }
 
-/* -------------------------
-   MENU + SEARCH (luxury, not “ugly close button”)
-   Close = click outside OR press ESC OR “Close” link
-------------------------- */
+/* =========================
+   MENU + SEARCH OVERLAY (WITH X)
+========================= */
 .v-overlay{
-  position:fixed;
-  inset:0;
+  position: fixed;
+  inset: 0;
   background: rgba(10,10,10,.74);
-  opacity:0;
-  pointer-events:none;
+  opacity: 0;
+  pointer-events: none;
   transition: opacity .35s var(--ease);
-  z-index:1200;
+  z-index: 1200;
 }
 
 html[data-menu="open"] .v-overlay[data-overlay="menu"],
 html[data-search="open"] .v-overlay[data-overlay="search"]{
-  opacity:1;
-  pointer-events:auto;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .v-panel{
-  position:absolute;
+  position: absolute;
   inset: 18px;
   border-radius: 22px;
   background: rgba(12,12,12,.94);
-  color:#fff;
+  color: #fff;
   padding: 26px 26px 30px;
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   box-shadow: 0 30px 80px rgba(0,0,0,.55);
 }
 
-.v-panelTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
-  min-height: 44px;
+/* X close button */
+.v-x{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  transition: opacity .2s ease, transform .2s ease, border-color .2s ease;
 }
+.v-x:hover{
+  opacity: .9;
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,.32);
+}
+.v-x span{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 1px;
+  background: #fff;
+}
+.v-x span:nth-child(1){ transform: translate(-50%,-50%) rotate(45deg); }
+.v-x span:nth-child(2){ transform: translate(-50%,-50%) rotate(-45deg); }
 
 .v-panelKicker{
   font-size: 11px;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: rgba(255,255,255,.66);
-}
-
-.v-closeLink{
-  font-size: 11px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.78);
-  padding: 10px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.16);
-  transition: opacity .2s ease, border-color .2s ease;
-}
-.v-closeLink:hover{
-  opacity:.9;
-  border-color: rgba(255,255,255,.28);
+  margin-top: 14px;
 }
 
 .v-menu{
-  margin-top: 90px;
-  display:flex;
-  flex-direction:column;
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
   gap: 18px;
 }
-
 .v-menu a{
   font-family: var(--serif);
   font-size: 46px;
   line-height: 1.05;
   letter-spacing: .2px;
-  transition: opacity .2s ease, transform .2s ease;
 }
-.v-menu a:hover{
-  opacity:.86;
-  transform: translateY(-1px);
-}
+.v-menu a:hover{ opacity: .86; }
 
 .v-panelFoot{
-  margin-top:auto;
-  display:flex;
-  gap:10px;
-  align-items:center;
+  margin-top: auto;
+  display: flex;
+  gap: 10px;
+  align-items: center;
   font-size: 13px;
   color: rgba(255,255,255,.60);
 }
-.v-dot{ opacity:.45; }
+.v-dot{ opacity: .45; }
 
-/* Search panel */
+/* search panel */
 .v-panel--search{
   max-width: 760px;
   width: calc(100% - 36px);
@@ -427,26 +447,23 @@ html[data-search="open"] .v-overlay[data-overlay="search"]{
   inset: auto;
   height: auto;
 }
-
 .v-search{
-  width:100%;
-  height:56px;
+  width: 100%;
+  height: 56px;
   margin-top: 68px;
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,.22);
   background: rgba(255,255,255,.08);
   padding: 0 18px;
-  color:#fff;
+  color: #fff;
   font-size: 16px;
   outline: none;
 }
-.v-search:focus{
-  border-color: rgba(255,255,255,.38);
-}
+.v-search:focus{ border-color: rgba(255,255,255,.38); }
 
-/* -------------------------
-   FOOTER (your page.tsx uses footerRow/footerTitle/footerText/footerLink)
-------------------------- */
+/* =========================
+   FOOTER (supports your footer classes too)
+========================= */
 .footer{
   padding: 72px 0;
   background: var(--beige2);
@@ -454,10 +471,10 @@ html[data-search="open"] .v-overlay[data-overlay="search"]{
 }
 
 .footerRow{
-  display:grid;
+  display: grid;
   grid-template-columns: 1.2fr 1fr 1fr;
   gap: 28px;
-  align-items:start;
+  align-items: start;
 }
 
 .footerTitle{
@@ -479,34 +496,27 @@ html[data-search="open"] .v-overlay[data-overlay="search"]{
   border-bottom: 1px solid rgba(20,20,20,.18);
   padding-bottom: 2px;
 }
-.footerLink:hover{
-  border-bottom-color: rgba(20,20,20,.44);
-}
+.footerLink:hover{ border-bottom-color: rgba(20,20,20,.44); }
 
-/* -------------------------
+/* =========================
    MOBILE
-------------------------- */
+========================= */
 @media (max-width: 900px){
   .container,
-  .v-nav__inner{ padding: 0 18px; }
-
-  .grid2{
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-
-  .sectionAlt{ padding: 64px 0; }
-
-  .heroH1{ font-size: 42px; }
-  .heroContent{ padding-bottom: 90px; }
+  .v-nav__inner { padding: 0 18px; }
 
   .v-nav__left,
-  .v-nav__right{ min-width: auto; }
+  .v-nav__right { min-width: auto; }
 
-  .v-menu a{ font-size: 34px; }
+  .heroH1 { font-size: 42px; }
+  .heroContent { padding-bottom: 90px; }
 
-  .footerRow{
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
+  .grid2 { grid-template-columns: 1fr; gap: 28px; }
+
+  .section,
+  .sectionAlt { padding: 64px 0; }
+
+  .v-menu a { font-size: 34px; }
+
+  .footerRow { grid-template-columns: 1fr; gap: 18px; }
 }
