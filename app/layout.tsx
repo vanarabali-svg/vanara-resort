@@ -1,59 +1,61 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { Cormorant_Garamond, Inter } from 'next/font/google'
 import './globals.css'
+import Image from 'next/image'
+import Link from 'next/link'
 
-const display = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['400','500','600'],
-  variable: '--font-display',
-})
-
-const text = Inter({
-  subsets: ['latin'],
-  weight: ['300','400','500','600'],
-  variable: '--font-text',
-})
-
-export const metadata: Metadata = {
-  title: 'Vanara Uluwatu',
-  description: 'Luxury villas in Uluwatu, Bali.',
-}
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en" className={`${display.variable} ${text.variable}`}>
-      <body style={{ fontFamily: 'var(--font-text), system-ui, -apple-system, Segoe UI, Roboto, Arial' }}>
-        <header className="nav">
-          <div className="container">
-            <div className="navRow">
-              <Link className="brand" href="/">
-                <span className="brandTop" style={{ fontFamily: 'var(--font-display)' }}>VANARA</span>
-                <span className="brandBottom">Uluwatu • Bali</span>
-              </Link>
+    <html lang="en">
+      <body>
+        {/* HEADER */}
+        <header
+          style={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 50,
+            background: 'rgba(255,255,255,0.92)',
+            backdropFilter: 'blur(10px)',
+            borderBottom: '1px solid rgba(0,0,0,0.06)',
+          }}
+        >
+          <div
+            style={{
+              maxWidth: 1200,
+              margin: '0 auto',
+              padding: '16px 24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            {/* LOGO */}
+            <Link href="/">
+              <Image
+                src="/logo.png"
+                alt="Vanara Resort & Spa"
+                width={140}
+                height={40}
+                priority
+              />
+            </Link>
 
-              <nav className="navLinks">
-                <Link href="/accommodation">Accommodation</Link>
-                <Link href="/dining">Dining</Link>
-                <Link href="/experiences">Experiences</Link>
-                <Link className="btn btnPrimary" href="/book">Book</Link>
-              </nav>
-            </div>
+            {/* NAV */}
+            <nav style={{ display: 'flex', gap: 24 }}>
+              <Link href="/accommodation">Villas</Link>
+              <Link href="/experiences">Experiences</Link>
+              <Link href="/dining">Dining</Link>
+              <Link href="/book" style={{ fontWeight: 600 }}>
+                Book
+              </Link>
+            </nav>
           </div>
         </header>
 
+        {/* PAGE */}
         {children}
-
-        <footer className="footer">
-          <div className="container" style={{ display:'flex', justifyContent:'space-between', gap: 18, flexWrap:'wrap' }}>
-            <div>© {new Date().getFullYear()} Vanara Resort</div>
-            <div style={{ display:'flex', gap: 16 }}>
-              <span>Uluwatu, Bali</span>
-              <span>•</span>
-              <span>Privacy. Nature. Calm.</span>
-            </div>
-          </div>
-        </footer>
       </body>
     </html>
   )
