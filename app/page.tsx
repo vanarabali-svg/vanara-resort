@@ -19,8 +19,8 @@ export default async function HomePage() {
 
   return (
     <main>
-      {/* HERO */}
-      <section className="heroLux">
+      {/* AMAN HERO */}
+      <section className="heroA">
         {heroUrl && (
           <Image
             src={heroUrl}
@@ -31,26 +31,21 @@ export default async function HomePage() {
           />
         )}
 
-        <div className="heroShade" />
-
-        <div className="heroInner">
+        <div className="heroAInner">
           <div className="container">
-            <div className="heroKicker">Uluwatu • Bali</div>
+            <div className="heroAKicker">Vanara Resort & Spa • Uluwatu</div>
 
-            <h1 className="heroH1">
-              Quiet luxury <span className="heroH1Light">on the edge of the ocean</span>
+            <h1 className="heroATitle">
+              Quiet luxury <span>by the ocean</span>
             </h1>
 
-            <p className="heroP">
-              A private collection of villas shaped by nature—sandstone, water, and light.
-              Designed for space, silence, and unforgettable sunsets.
+            <p className="heroASub">
+              An intimate collection of villas shaped by nature—sand textures, cool water tones,
+              and open horizons. Designed for stillness and privacy.
             </p>
 
-            <div className="heroActions">
-              <Link className="btn btnPrimary" href="/accommodation">
-                Explore Villas
-              </Link>
-
+            <div className="heroAActions">
+              <Link className="btn btnPrimary" href="/accommodation">Explore Villas</Link>
               {heroVilla?.slug && (
                 <Link className="btn" href={`/accommodation/${heroVilla.slug}`}>
                   View {heroVilla.title}
@@ -61,71 +56,65 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* INTRO */}
-      <section className="sectionLux">
+      {/* EDITORIAL INTRO */}
+      <section className="sectionA">
         <div className="container">
-          <div className="split">
+          <div className="splitA">
             <div>
-              <div className="kicker">Vanara Resort & Spa</div>
+              <div className="kicker">The Resort</div>
               <div className="hr" style={{ maxWidth: 180 }} />
-              <h2 className="h2">
-                A sanctuary of stillness
-              </h2>
+              <h2 className="h2A">A sanctuary of stillness</h2>
             </div>
 
             <div>
-              <p className="lead">
-                Elevated above the shoreline, Vanara is a calm retreat where indoor–outdoor
-                living meets refined craftsmanship. Every detail is intentional—natural
-                textures, soft light, and privacy in every direction.
+              <p className="leadA">
+                Elevated above the shoreline, Vanara is a calm retreat where indoor–outdoor living
+                meets refined craftsmanship. Every detail is intentional—natural textures, soft light,
+                and privacy in every direction.
               </p>
 
-              <div style={{ marginTop: 18, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                <Link className="btn" href="/experiences">Explore Experiences</Link>
-                <Link className="btn" href="/dining">Discover Dining</Link>
+              <div style={{ marginTop: 20, display:'flex', gap: 12, flexWrap:'wrap' }}>
+                <Link className="btn" href="/experiences">Experiences</Link>
+                <Link className="btn" href="/dining">Dining</Link>
+                <Link className="btn btnPrimary" href="/book">Reserve</Link>
               </div>
             </div>
           </div>
+
+          <div style={{ marginTop: 64 }} className="rule" />
         </div>
       </section>
 
-      {/* 3 FEATURE CARDS */}
-      <section className="sectionLux" style={{ paddingTop: 0 }}>
+      {/* MINIMAL FEATURES */}
+      <section className="sectionA noTop">
         <div className="container">
-          <div className="grid3">
-            <div className="featureCard">
+          <div className="featureGridA">
+            <div className="featureA">
               <div className="kicker">Design</div>
               <div className="hr" />
-              <div className="featureTitle">Minimal. Tactile. Cinematic.</div>
-              <p className="featureText">
-                Warm sand tones below, cool emerald water above, soft white foam accents—quiet,
-                open, and timeless.
+              <div className="featureATitle">Minimal. Tactile. Cinematic.</div>
+              <p className="featureAText">
+                Warm sand tones, cool emerald water hues, and soft white accents—quiet contrast with space to breathe.
               </p>
             </div>
 
-            <div className="featureCard">
+            <div className="featureA">
               <div className="kicker">Location</div>
               <div className="hr" />
-              <div className="featureTitle">Uluwatu, privately.</div>
-              <p className="featureText">
-                Close to iconic cliffs and beaches, yet secluded—perfect for restorative days
-                and golden-hour rituals.
+              <div className="featureATitle">Uluwatu, privately.</div>
+              <p className="featureAText">
+                Near iconic cliffs and beaches, yet secluded—perfect for restorative days and golden-hour rituals.
               </p>
             </div>
 
-            <div className="featureCard">
+            <div className="featureA">
               <div className="kicker">Service</div>
               <div className="hr" />
-              <div className="featureTitle">Discreet & personal.</div>
-              <p className="featureText">
-                Thoughtful hospitality, curated experiences, and in-villa dining—always present,
-                never intrusive.
+              <div className="featureATitle">Discreet & personal.</div>
+              <p className="featureAText">
+                Thoughtful hospitality and curated experiences—always present, never intrusive.
               </p>
             </div>
-          </div>
-
-          <div style={{ marginTop: 28 }}>
-            <Link className="btn btnPrimary" href="/book">Reserve</Link>
           </div>
         </div>
       </section>

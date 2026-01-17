@@ -5,7 +5,6 @@ import { sanityClient } from '@/lib/sanity.client'
 import { urlFor } from '@/lib/sanity.image'
 
 type PageProps = {
-  // IMPORTANT: Next 15/16 can provide params as a Promise
   params: Promise<{ slug: string }>
 }
 
@@ -27,14 +26,12 @@ export default async function VillaPage({ params }: PageProps) {
 
   if (!v) {
     return (
-      <main className="section">
+      <main className="sectionA">
         <div className="container">
           <div className="kicker">Not found</div>
-          <div className="hr" style={{ maxWidth: 160 }} />
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 54 }}>Villa not found</h1>
-          <p style={{ marginTop: 14, lineHeight: 1.9 }}>
-            No accommodation found for slug: <strong>{slug}</strong>
-          </p>
+          <div className="hr" style={{ maxWidth: 180 }} />
+          <h1 className="h2A">Villa not found</h1>
+          <p className="leadA">No accommodation found for slug: <strong>{slug}</strong></p>
           <div style={{ marginTop: 18 }}>
             <Link className="btn" href="/accommodation">Back to accommodation</Link>
           </div>
@@ -46,7 +43,7 @@ export default async function VillaPage({ params }: PageProps) {
   return (
     <main>
       {/* HERO */}
-      <section className="hero">
+      <section className="heroA" style={{ minHeight: '74vh' }}>
         {v.heroImage && (
           <Image
             src={urlFor(v.heroImage).width(2600).height(1600).url()}
@@ -56,56 +53,48 @@ export default async function VillaPage({ params }: PageProps) {
             style={{ objectFit: 'cover' }}
           />
         )}
-        <div className="heroOverlay" />
 
-        <div className="heroContent">
+        <div className="heroAInner">
           <div className="container">
-            <div className="kicker" style={{ color: 'rgba(255,255,255,.80)' }}>
-              {v.locationLabel || 'Uluwatu • Bali'}
-            </div>
-
-            <h1 className="heroTitle" style={{ fontFamily: 'var(--font-display)' }}>
+            <div className="heroAKicker">{v.locationLabel || 'Uluwatu • Bali'}</div>
+            <h1 className="heroATitle" style={{ fontSize: 56 }}>
               {v.title}
             </h1>
+            {v.subtitle && <p className="heroASub">{v.subtitle}</p>}
 
-            {v.subtitle && <p className="heroSub">{v.subtitle}</p>}
-
-            <div style={{ marginTop: 22, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <Link className="btn btnPrimary" href="/book">Book Now</Link>
+            <div className="heroAActions">
+              <Link className="btn btnPrimary" href="/book">Reserve</Link>
               <Link className="btn" href="/accommodation">All Villas</Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CONTENT */}
-      <section className="section">
+      {/* EDITORIAL BODY */}
+      <section className="villaWrap">
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr .8fr', gap: 34, alignItems: 'start' }}>
+          <div className="villaGrid">
             {/* LEFT */}
             <div>
               <div className="kicker">Overview</div>
-              <div className="hr" />
+              <div className="hr" style={{ maxWidth: 220 }} />
 
               {v.shortDescription && (
-                <p style={{ fontSize: 18, lineHeight: 1.9, maxWidth: 860 }}>
-                  {v.shortDescription}
-                </p>
+                <p className="villaIntro">{v.shortDescription}</p>
               )}
 
               {/* Highlights */}
               <div style={{ marginTop: 34 }}>
                 <div className="kicker">Highlights</div>
-                <div className="hr" />
-                <div className="card" style={{ boxShadow: 'none', border: '1px solid var(--line)' }}>
-                  <div className="cardInner">
-                    <ul style={{ margin: 0, paddingLeft: 18, color: 'var(--muted)', lineHeight: 1.9 }}>
+                <div className="hr" style={{ maxWidth: 220 }} />
+
+                <div className="cardA">
+                  <div className="cardAInner">
+                    <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 2.0, color: 'var(--muted)' }}>
                       {(v.highlights || []).map((x: string, i: number) => (
                         <li key={i} style={{ marginBottom: 6 }}>{x}</li>
                       ))}
-                      {(!v.highlights || v.highlights.length === 0) && (
-                        <li>Add highlights in Sanity to show here.</li>
-                      )}
+                      {(!v.highlights || v.highlights.length === 0) && <li>Add highlights in Sanity.</li>}
                     </ul>
                   </div>
                 </div>
@@ -114,56 +103,43 @@ export default async function VillaPage({ params }: PageProps) {
               {/* Amenities */}
               <div style={{ marginTop: 26 }}>
                 <div className="kicker">Amenities</div>
-                <div className="hr" />
-                <div className="card" style={{ boxShadow: 'none', border: '1px solid var(--line)' }}>
-                  <div className="cardInner">
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0,1fr))', gap: 10 }}>
+                <div className="hr" style={{ maxWidth: 220 }} />
+
+                <div className="cardA">
+                  <div className="cardAInner">
+                    <div className="pillGrid">
                       {(v.amenities || []).map((x: string, i: number) => (
-                        <div
-                          key={i}
-                          style={{
-                            padding: '10px 12px',
-                            borderRadius: 14,
-                            border: '1px solid var(--line)',
-                            color: 'var(--muted)',
-                            background: 'rgba(255,255,255,.6)',
-                            lineHeight: 1.4,
-                          }}
-                        >
-                          {x}
-                        </div>
+                        <div key={i} className="pill">{x}</div>
                       ))}
-                      {(!v.amenities || v.amenities.length === 0) && (
-                        <div style={{ color: 'var(--muted)' }}>Add amenities in Sanity to show here.</div>
-                      )}
+                      {(!v.amenities || v.amenities.length === 0) && <div className="pill">Add amenities in Sanity.</div>}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* RIGHT (STICKY BOOKING CARD) */}
-            <aside style={{ position: 'sticky', top: 92 }}>
-              <div className="card" style={{ boxShadow: 'none', border: '1px solid var(--line)' }}>
-                <div className="cardInner">
+            {/* RIGHT sticky reserve */}
+            <aside className="sticky">
+              <div className="cardA">
+                <div className="cardAInner">
                   <div className="kicker">Reserve</div>
                   <div className="hr" />
 
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 28, lineHeight: 1.1 }}>
+                  <div style={{ fontFamily: 'var(--font-display, serif)', fontSize: 28, lineHeight: 1.1 }}>
                     {v.title}
                   </div>
 
-                  <p style={{ marginTop: 10, lineHeight: 1.8 }}>
-                    {v.fromPrice ? v.fromPrice : 'Flexible dates, best available rate.'}
+                  <p style={{ marginTop: 10, lineHeight: 1.9, color: 'var(--muted)' }}>
+                    {v.fromPrice ? v.fromPrice : 'Select your dates for best available rate.'}
                   </p>
 
-                  <div style={{ marginTop: 18, display: 'grid', gap: 10 }}>
-                    <Link className="btn btnPrimary" href="/book">Book Now</Link>
+                  <div style={{ marginTop: 16, display:'grid', gap: 10 }}>
+                    <Link className="btn btnPrimary" href="/book">Reserve</Link>
                     <Link className="btn" href="/accommodation">Explore other villas</Link>
                   </div>
 
-                  <div style={{ marginTop: 16, color: 'var(--muted)', fontSize: 13, lineHeight: 1.7 }}>
-                    Tip: later we’ll connect your real booking engine here (Cloudbeds, Siteminder, WhatsApp, etc).
+                  <div style={{ marginTop: 16, fontSize: 13, lineHeight: 1.8, color: 'var(--muted)' }}>
+                    We can connect your booking engine here next (direct link, widget, or WhatsApp).
                   </div>
                 </div>
               </div>
@@ -172,41 +148,33 @@ export default async function VillaPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* GALLERY */}
-      <section className="section" style={{ paddingTop: 0 }}>
+      {/* AMAN-LIKE GALLERY */}
+      <section className="sectionA noTop">
         <div className="container">
           <div className="kicker">Gallery</div>
-          <div className="hr" />
+          <div className="hr" style={{ maxWidth: 220 }} />
 
-          <div
-            className="grid"
-            style={{
-              gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-              gap: 16,
-            }}
-          >
-            {(v.gallery || []).map((img: any, i: number) => (
-              <div
-                key={i}
-                className="card"
-                style={{
-                  boxShadow: 'none',
-                  border: '1px solid var(--line)',
-                  position: 'relative',
-                  height: 260,
-                }}
-              >
-                <Image
-                  src={urlFor(img).width(1600).height(1100).url()}
-                  alt={`${v.title} image ${i + 1}`}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                />
+          <div className="galleryA">
+            {(v.gallery || []).slice(0, 1).map((img: any, i: number) => (
+              <div key={`g1-${i}`} className="cardA g1" style={{ position:'relative', overflow:'hidden' }}>
+                <Image src={urlFor(img).width(2000).height(1400).url()} alt={`${v.title} image`} fill style={{ objectFit:'cover' }} />
+              </div>
+            ))}
+
+            {(v.gallery || []).slice(1, 2).map((img: any, i: number) => (
+              <div key={`g2-${i}`} className="cardA g2" style={{ position:'relative', overflow:'hidden' }}>
+                <Image src={urlFor(img).width(2000).height(1400).url()} alt={`${v.title} image`} fill style={{ objectFit:'cover' }} />
+              </div>
+            ))}
+
+            {(v.gallery || []).slice(2, 8).map((img: any, i: number) => (
+              <div key={`g3-${i}`} className="cardA g3" style={{ position:'relative', overflow:'hidden' }}>
+                <Image src={urlFor(img).width(1600).height(1100).url()} alt={`${v.title} image ${i+3}`} fill style={{ objectFit:'cover' }} />
               </div>
             ))}
 
             {(!v.gallery || v.gallery.length === 0) && (
-              <p style={{ gridColumn: '1 / -1', lineHeight: 1.9 }}>
+              <p style={{ gridColumn: '1 / -1', lineHeight: 2.0, color: 'var(--muted)' }}>
                 Add gallery images in Sanity to show them here.
               </p>
             )}
