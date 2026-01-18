@@ -1,43 +1,38 @@
 export default function HomePage() {
   return (
-    <main className="home">
+    <div className="home">
       {/* HERO VIDEO */}
-      <section className="heroVideo">
-        <video
-          className="heroVideoMedia"
-          src="/hero.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
-        <div className="heroVideoShade" />
+      <section className="hero">
+        <video className="heroMedia" src="/hero.mp4" autoPlay muted loop playsInline />
+        <div className="heroShade" />
 
-        <div className="heroVideoContent">
+        <div className="heroContent">
           <div className="heroKicker">ULUWATU · BALI</div>
 
-          <h1 className="heroTitle">A sanctuary of quiet strength</h1>
+          <h1 className="heroH1">Vanara Resort &amp; Spa</h1>
 
-          <p className="heroSub">
-            Cliffside villas shaped by nature, silence, and the ocean below.
+          <p className="heroP">
+            Minimalist luxury above the ocean — a sanctuary shaped by nature.
           </p>
 
-          <div className="heroLinks">
-            <a href="/accommodation">Explore accommodation</a>
-            <a href="/experience">Discover experience</a>
-            <a href="/dine">Dine</a>
+          <div className="heroCtas">
+            <a className="heroCta" href="/accommodation">
+              Explore accommodation
+            </a>
+            <a className="heroCta" href="/experience">
+              Discover experiences
+            </a>
           </div>
         </div>
       </section>
 
-      {/* RETREAT + CARDS */}
+      {/* INTRO / FEATURE */}
       <section className="homeHero">
         <div className="homeHeroInner">
-          <h2 className="homeTitle">The retreat</h2>
-          <div className="homeRule" />
+          <h2 className="homeTitle">A sanctuary of quiet strength</h2>
           <p className="homeLead">
-            Vanara is a place of stillness above the Indian Ocean, where
-            architecture dissolves into landscape and time slows to a breath.
+            Set on the cliffs of Uluwatu, Vanara offers refined architecture, ocean air, and restorative rituals — calm,
+            deliberate, and deeply private.
           </p>
 
           <div className="homeCards">
@@ -55,18 +50,12 @@ export default function HomePage() {
 
             <a className="homeCard" href="/dine">
               <h3>Dine</h3>
-              <p>A coastal table shaped by fire, freshness, and place.</p>
-              <span>View</span>
-            </a>
-
-            <a className="homeCard" href="/connect">
-              <h3>Connect</h3>
-              <p>Location, contact, and quiet arrangements.</p>
-              <span>Contact</span>
+              <p>Seasonal cuisine shaped by fire, salt, and the sea.</p>
+              <span>Visit</span>
             </a>
           </div>
         </div>
       </section>
-    </main>
+    </div>
   )
 }
