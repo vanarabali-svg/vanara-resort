@@ -1,24 +1,13 @@
 /* ======================================================
    VANARA — FULL GLOBALS.CSS (AMAN STYLE)
-   Fixes:
-   - Hero video showing half (forces full 100vh/100vw + cover)
-   - Menu + visible X close
-   - Footer styling
-   - Sections spacing (text not stacking)
 ====================================================== */
 
-/* =========================
-   RESET
-========================= */
+/* RESET */
 *,
 *::before,
 *::after { box-sizing: border-box; }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
+html, body { margin: 0; padding: 0; width: 100%; }
 
 body{
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -35,14 +24,10 @@ img, video{ display: block; }
 button{ font: inherit; color: inherit; background: transparent; border: none; cursor: pointer; }
 main{ display:block; position:relative; z-index:1; }
 
-/* IMPORTANT:
-   don’t limit video with max-width/height rules */
 img{ max-width: 100%; height: auto; }
 video{ width: 100%; height: auto; }
 
-/* =========================
-   TOKENS
-========================= */
+/* TOKENS */
 :root{
   --serif: "DM Serif Display", serif;
   --ink: #141414;
@@ -58,18 +43,14 @@ video{ width: 100%; height: auto; }
   --navH: 92px;
 }
 
-/* =========================
-   CONTAINER
-========================= */
+/* CONTAINER */
 .container{
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 28px;
 }
 
-/* =========================
-   NAV (AMAN)
-========================= */
+/* NAV */
 .v-nav{
   position: fixed;
   inset: 0 0 auto 0;
@@ -77,7 +58,6 @@ video{ width: 100%; height: auto; }
   z-index: 1000;
   transition: background .35s var(--ease), box-shadow .35s var(--ease), backdrop-filter .35s var(--ease);
 }
-
 body:not(.scrolled):not(.inner) .v-nav{ background: transparent; }
 
 body.scrolled .v-nav,
@@ -104,13 +84,7 @@ body.inner .v-nav{
   align-items: center;
   gap: 12px;
 }
-
-.v-nav__center{
-  justify-self: center;
-  display: flex;
-  align-items: center;
-}
-
+.v-nav__center{ justify-self: center; display: flex; align-items: center; }
 .v-nav__right{
   justify-self: end;
   min-width: 190px;
@@ -120,7 +94,7 @@ body.inner .v-nav{
   gap: 12px;
 }
 
-/* icon buttons */
+/* Icon buttons */
 .v-iconBtn{
   width: 40px;
   height: 40px;
@@ -140,21 +114,21 @@ body.inner .v-iconBtn{
   border-color: rgba(20,20,20,.22);
 }
 
-/* Aman hamburger (3 thin lines) */
-.v-burger{
+/* Jumeirah-like burger: 2 lines */
+.v-burger2{
   width: 18px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
 }
-.v-burger span{
+.v-burger2 span{
   width: 100%;
   height: 1px;
   background: currentColor;
   opacity: .95;
 }
 
-/* reserve */
+/* Reserve */
 .v-reserve{
   height: 40px;
   padding: 0 18px;
@@ -178,11 +152,7 @@ body.inner .v-reserve{
   border-color: rgba(20,20,20,.32);
 }
 
-/* =========================
-   HERO (FULL SCREEN VIDEO FIX)
-========================= */
-/* If your hero is inside a .container in page.tsx, it will NOT be full width.
-   This forces full width anyway. */
+/* HERO (full screen) */
 .hero{
   position: relative;
   width: 100vw;
@@ -191,29 +161,19 @@ body.inner .v-reserve{
   overflow: hidden;
   background: #000;
 }
-
 .heroVideo,
 .heroImage{
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;  /* IMPORTANT: cover, not contain */
+  object-fit: cover;
 }
-
-/* Keep video crisp */
-.heroVideo{
-  transform: translateZ(0);
-}
-
-/* gradient overlay */
 .heroShade{
   position: absolute;
   inset: 0;
   background: linear-gradient(to top, rgba(0,0,0,.68), rgba(0,0,0,.10));
 }
-
-/* hero content */
 .heroContent{
   position: relative;
   height: 100%;
@@ -223,15 +183,12 @@ body.inner .v-reserve{
   padding-top: var(--navH);
   padding-bottom: 110px;
 }
-
-/* hero typography */
 .heroKicker{
   font-size: 11px;
   letter-spacing: 4px;
   text-transform: uppercase;
   color: rgba(255,255,255,.70);
 }
-
 .heroH1{
   font-family: var(--serif);
   font-size: 60px;
@@ -240,7 +197,6 @@ body.inner .v-reserve{
   color: #fff;
   margin: 12px 0 0 0;
 }
-
 .heroP{
   max-width: 640px;
   font-size: 17px;
@@ -248,14 +204,12 @@ body.inner .v-reserve{
   color: rgba(255,255,255,.84);
   margin: 16px 0 0 0;
 }
-
 .heroLinks{
   margin-top: 34px;
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
 }
-
 .heroLink{
   font-size: 10px;
   letter-spacing: 3.6px;
@@ -263,34 +217,25 @@ body.inner .v-reserve{
   color: rgba(255,255,255,.86);
   border-bottom: 1px solid rgba(255,255,255,.22);
   padding-bottom: 6px;
-  transition: opacity .2s ease, border-color .2s ease;
 }
 .heroLink:hover{
   opacity: 1;
   border-bottom-color: rgba(255,255,255,.45);
 }
 
-/* =========================
-   SECTIONS (UNDER HERO)
-========================= */
-.section{
-  padding: 96px 0;
-  background: var(--paper);
-}
-
+/* SECTIONS */
+.section{ padding: 96px 0; background: var(--paper); }
 .sectionAlt{
   padding: 96px 0;
   background: linear-gradient(180deg, var(--beige), var(--paper));
   border-top: 1px solid rgba(20,20,20,.06);
 }
-
 .grid2{
   display: grid;
   grid-template-columns: 1.05fr .95fr;
   gap: 56px;
   align-items: start;
 }
-
 .hLux{
   font-family: var(--serif);
   font-weight: 400;
@@ -300,14 +245,12 @@ body.inner .v-reserve{
   font-size: 34px;
   line-height: 1.18;
 }
-
 .pLux{
   color: var(--muted);
   font-size: 18px;
   line-height: 2;
   margin: 14px 0 0 0;
 }
-
 .rule{
   height: 1px;
   width: 140px;
@@ -322,11 +265,6 @@ body.inner .v-reserve{
   border-radius: 18px;
   padding: 22px;
   background: rgba(255,255,255,.78);
-  transition: transform .18s var(--ease), border-color .18s var(--ease);
-}
-.card:hover{
-  transform: translateY(-2px);
-  border-color: rgba(20,20,20,.22);
 }
 .cardTitle{
   font-family: var(--serif);
@@ -349,9 +287,7 @@ body.inner .v-reserve{
   opacity: .72;
 }
 
-/* =========================
-   MENU + SEARCH OVERLAY (WITH X)
-========================= */
+/* OVERLAYS */
 .v-overlay{
   position: fixed;
   inset: 0;
@@ -361,13 +297,11 @@ body.inner .v-reserve{
   transition: opacity .35s var(--ease);
   z-index: 1200;
 }
-
 html[data-menu="open"] .v-overlay[data-overlay="menu"],
 html[data-search="open"] .v-overlay[data-overlay="search"]{
   opacity: 1;
   pointer-events: auto;
 }
-
 .v-panel{
   position: absolute;
   inset: 18px;
@@ -380,7 +314,7 @@ html[data-search="open"] .v-overlay[data-overlay="search"]{
   box-shadow: 0 30px 80px rgba(0,0,0,.55);
 }
 
-/* X close button */
+/* X close */
 .v-x{
   position: absolute;
   top: 20px;
@@ -389,12 +323,6 @@ html[data-search="open"] .v-overlay[data-overlay="search"]{
   height: 46px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.18);
-  transition: opacity .2s ease, transform .2s ease, border-color .2s ease;
-}
-.v-x:hover{
-  opacity: .9;
-  transform: translateY(-1px);
-  border-color: rgba(255,255,255,.32);
 }
 .v-x span{
   position: absolute;
@@ -439,7 +367,7 @@ html[data-search="open"] .v-overlay[data-overlay="search"]{
 }
 .v-dot{ opacity: .45; }
 
-/* search panel */
+/* search */
 .v-panel--search{
   max-width: 760px;
   width: calc(100% - 36px);
@@ -459,24 +387,19 @@ html[data-search="open"] .v-overlay[data-overlay="search"]{
   font-size: 16px;
   outline: none;
 }
-.v-search:focus{ border-color: rgba(255,255,255,.38); }
 
-/* =========================
-   FOOTER (supports your footer classes too)
-========================= */
+/* FOOTER */
 .footer{
   padding: 72px 0;
   background: var(--beige2);
   border-top: 1px solid rgba(20,20,20,.12);
 }
-
 .footerRow{
   display: grid;
   grid-template-columns: 1.2fr 1fr 1fr;
   gap: 28px;
   align-items: start;
 }
-
 .footerTitle{
   font-family: var(--serif);
   font-size: 12px;
@@ -485,22 +408,17 @@ html[data-search="open"] .v-overlay[data-overlay="search"]{
   color: rgba(20,20,20,.78);
   margin-bottom: 12px;
 }
-
 .footerText{
   font-size: 14px;
   line-height: 2.0;
   color: rgba(20,20,20,.70);
 }
-
 .footerLink{
   border-bottom: 1px solid rgba(20,20,20,.18);
   padding-bottom: 2px;
 }
-.footerLink:hover{ border-bottom-color: rgba(20,20,20,.44); }
 
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 @media (max-width: 900px){
   .container,
   .v-nav__inner { padding: 0 18px; }
@@ -512,9 +430,7 @@ html[data-search="open"] .v-overlay[data-overlay="search"]{
   .heroContent { padding-bottom: 90px; }
 
   .grid2 { grid-template-columns: 1fr; gap: 28px; }
-
-  .section,
-  .sectionAlt { padding: 64px 0; }
+  .section, .sectionAlt { padding: 64px 0; }
 
   .v-menu a { font-size: 34px; }
 
