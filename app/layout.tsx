@@ -57,18 +57,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {/* LEFT: menu + search */}
             <div className="v-nav__left">
               <button className="v-iconBtn" onClick={openMenu} aria-label="Open menu">
-                {/* Aman-style hamburger */}
-                <span className="v-burger" aria-hidden="true">
-                  <span />
+                {/* Jumeirah-style: 2 lines */}
+                <span className="v-burger2" aria-hidden="true">
                   <span />
                   <span />
                 </span>
               </button>
 
               <button className="v-iconBtn" onClick={openSearch} aria-label="Search">
+                {/* Aman-like thin search */}
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <circle cx="10" cy="10" r="6.5" stroke="currentColor" strokeWidth="1" />
-                  <line x1="15" y1="15" x2="20" y2="20" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                  <circle cx="11" cy="11" r="6.25" stroke="currentColor" strokeWidth="1" />
+                  <line x1="16.2" y1="16.2" x2="20" y2="20" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
                 </svg>
               </button>
             </div>
@@ -82,7 +82,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   width={240}
                   height={34}
                   priority
-                  className="navLogoImg"
                   style={{
                     height: 34,
                     width: 'auto',
@@ -92,7 +91,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </Link>
             </div>
 
-            {/* RIGHT: reserve */}
+            {/* RIGHT */}
             <div className="v-nav__right">
               <Link href="/book" className="v-reserve">Reserve</Link>
             </div>
@@ -106,7 +105,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           onClick={(e) => e.target === e.currentTarget && closeMenu()}
         >
           <div className="v-panel">
-            {/* X close button (always visible) */}
             <button className="v-x" onClick={closeMenu} aria-label="Close menu">
               <span />
               <span />
