@@ -1,67 +1,72 @@
 export default function HomePage() {
   return (
-    <>
-      {/* HERO MEDIA (keeps your video/photo hero behind header) */}
-      <section className="hero">
+    <main className="home">
+      {/* HERO VIDEO */}
+      <section className="heroVideo">
         <video
-          className="heroVideo"
+          className="heroVideoMedia"
+          src="/hero.mp4"
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
-          poster="/hero.jpg"
-        >
-          <source src="/hero.mp4" type="video/mp4" />
-        </video>
-        <div className="heroShade" />
+        />
+        <div className="heroVideoShade" />
+
+        <div className="heroVideoContent">
+          <div className="heroKicker">ULUWATU · BALI</div>
+
+          <h1 className="heroTitle">A sanctuary of quiet strength</h1>
+
+          <p className="heroSub">
+            Cliffside villas shaped by nature, silence, and the ocean below.
+          </p>
+
+          <div className="heroLinks">
+            <a href="/accommodation">Explore accommodation</a>
+            <a href="/experience">Discover experience</a>
+            <a href="/dine">Dine</a>
+          </div>
+        </div>
       </section>
 
-      {/* CONTENT (this is the “like screenshot” part) */}
-      <section className="paper">
-        <div className="container">
-          <div className="centerHero">
-            <h1 className="centerHeroTitle">A sanctuary of quiet strength</h1>
-            <div className="centerHeroRule" />
-            <p className="centerHeroText">
-              Set on the cliffs of Uluwatu, Vanara offers refined architecture, ocean air,
-              and restorative rituals — calm, deliberate, and deeply private.
-            </p>
-          </div>
+      {/* RETREAT + CARDS */}
+      <section className="homeHero">
+        <div className="homeHeroInner">
+          <h2 className="homeTitle">The retreat</h2>
+          <div className="homeRule" />
+          <p className="homeLead">
+            Vanara is a place of stillness above the Indian Ocean, where
+            architecture dissolves into landscape and time slows to a breath.
+          </p>
 
-          <div className="cardStack">
-            <a className="luxCard" href="/accommodation">
-              <div className="luxCardTitle">Accommodation</div>
-              <div className="luxCardText">Villas and suites designed for privacy and views.</div>
-              <div className="luxCardCta">Explore</div>
+          <div className="homeCards">
+            <a className="homeCard" href="/accommodation">
+              <h3>Accommodation</h3>
+              <p>Villas and suites designed for privacy and views.</p>
+              <span>Explore</span>
             </a>
 
-            <a className="luxCard" href="/experience">
-              <div className="luxCardTitle">Experience</div>
-              <div className="luxCardText">Ocean rituals, sunset paths, and curated moments.</div>
-              <div className="luxCardCta">Discover</div>
+            <a className="homeCard" href="/experience">
+              <h3>Experience</h3>
+              <p>Ocean rituals, sunset paths, and curated moments.</p>
+              <span>Discover</span>
             </a>
 
-            {/* Change this link to your restaurant site */}
-            <a
-              className="luxCard"
-              href="https://example.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <div className="luxCardTitle">Dine</div>
-              <div className="luxCardText">A coastal table shaped by fire, freshness, and place.</div>
-              <div className="luxCardCta">View</div>
+            <a className="homeCard" href="/dine">
+              <h3>Dine</h3>
+              <p>A coastal table shaped by fire, freshness, and place.</p>
+              <span>View</span>
             </a>
 
-            <a className="luxCard" href="/connect">
-              <div className="luxCardTitle">Connect</div>
-              <div className="luxCardText">Location, contact, and quiet arrangements.</div>
-              <div className="luxCardCta">Open</div>
+            <a className="homeCard" href="/connect">
+              <h3>Connect</h3>
+              <p>Location, contact, and quiet arrangements.</p>
+              <span>Contact</span>
             </a>
           </div>
         </div>
       </section>
-    </>
+    </main>
   )
 }
