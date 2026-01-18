@@ -379,3 +379,103 @@ body.is-scrolled .reserve-btn{
   .heroVideoContent{ bottom:12%; }
   .homeHero{ padding:80px 20px; }
 }
+/* Luxury X close button */
+.overlay-x{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:40px;
+  height:40px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.14);
+  background:rgba(255,255,255,.65);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.overlay-x svg{
+  width:18px;
+  height:18px;
+  stroke:#1f1f1d;
+  stroke-width:1.6;
+  fill:none;
+}
+
+/* Search overlay */
+.search-overlay{
+  position:fixed;
+  inset:0;
+  z-index:210;
+  background:rgba(0,0,0,.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.search-panel{
+  position:relative;
+  width:min(720px,100%);
+  background:#f6f1e8;
+  border-radius:18px;
+  padding:54px 28px 28px;
+  text-align:center;
+}
+.search-title{
+  font-family:"Cormorant Garamond", serif;
+  font-size:34px;
+  margin-bottom:18px;
+}
+.search-input{
+  width:100%;
+  padding:16px 18px;
+  border-radius:14px;
+  border:1px solid rgba(0,0,0,.14);
+  background:rgba(255,255,255,.55);
+  font-size:14px;
+  outline:none;
+}
+.search-hint{
+  margin-top:12px;
+  font-size:12px;
+  color:rgba(31,31,29,.55);
+}
+/* Elegant close X (menu + search) */
+.menu-close{
+  position:absolute;
+  top:20px;
+  right:20px;
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.18);
+  background:rgba(255,255,255,.75);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.menu-close svg{
+  width:18px;
+  height:18px;
+  stroke:#1f1f1d;
+  stroke-width:1.5;
+  fill:none;
+}
+
+/* menu links wrapper */
+.menu-links{
+  margin-top:60px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  text-align:center;
+}
+
+.menu-links a{
+  font-family:"Cormorant Garamond", serif;
+  font-size:28px;
+  text-decoration:none;
+  color:#1f1f1d;
+}
