@@ -1,7 +1,7 @@
 export default function HomePage() {
   return (
     <div className="home">
-      {/* HERO VIDEO */}
+      {/* HERO */}
       <section className="hero">
         <video className="heroMedia" src="/hero.mp4" autoPlay muted loop playsInline />
         <div className="heroShade" />
@@ -9,49 +9,58 @@ export default function HomePage() {
         <div className="heroContent">
           <div className="heroKicker">ULUWATU · BALI</div>
 
-          <h1 className="heroH1">Vanara Resort &amp; Spa</h1>
+          <h1 className="heroTitle">Vanara Resort &amp; Spa</h1>
 
-          <p className="heroP">
+          <p className="heroSub">
             Minimalist luxury above the ocean — a sanctuary shaped by nature.
           </p>
 
-          <div className="heroCtas">
-            <a className="heroCta" href="/accommodation">
-              Explore accommodation
-            </a>
-            <a className="heroCta" href="/experience">
-              Discover experiences
-            </a>
+          <div className="heroLinks">
+            <a className="heroLink" href="/accommodation">Explore accommodation</a>
+            <a className="heroLink" href="/experience">Discover experiences</a>
           </div>
         </div>
       </section>
 
-      {/* INTRO / FEATURE */}
-      <section className="homeHero">
-        <div className="homeHeroInner">
-          <h2 className="homeTitle">A sanctuary of quiet strength</h2>
-          <p className="homeLead">
-            Set on the cliffs of Uluwatu, Vanara offers refined architecture, ocean air, and restorative rituals — calm,
-            deliberate, and deeply private.
-          </p>
+      {/* THE RESORT */}
+      <section className="resort">
+        <div className="resortInner">
+          <div className="resortLabel">THE RESORT</div>
 
-          <div className="homeCards">
-            <a className="homeCard" href="/accommodation">
-              <h3>Accommodation</h3>
-              <p>Villas and suites designed for privacy and views.</p>
-              <span>Explore</span>
+          <h2 className="resortTitle">A sanctuary of quiet strength</h2>
+
+          <div className="resortText">
+            <p>
+              Perched above the Indian Ocean, Vanara is shaped by wind, stone, and warm light — a retreat where
+              architecture dissolves into landscape.
+            </p>
+            <p>
+              Days unfold slowly: salt air, soft linen, the sound of water below. Private villas, thoughtful rituals,
+              and a calm that stays with you.
+            </p>
+          </div>
+
+          <div className="resortRule" />
+        </div>
+      </section>
+
+      {/* PHOTOS */}
+      <section className="gallery">
+        <div className="galleryInner">
+          <div className="galleryHeader">
+            <div className="galleryLabel">GLIMPSES</div>
+            <h3 className="galleryTitle">Light, water, and texture</h3>
+          </div>
+
+          <div className="galleryGrid">
+            <a className="galleryCard" href="/experience" aria-label="Ocean view">
+              <img src="/gallery-1.jpg" alt="Ocean view" />
             </a>
-
-            <a className="homeCard" href="/experience">
-              <h3>Experience</h3>
-              <p>Ocean rituals, sunset paths, and curated moments.</p>
-              <span>Discover</span>
+            <a className="galleryCard" href="/accommodation" aria-label="Villa details">
+              <img src="/gallery-2.jpg" alt="Villa details" />
             </a>
-
-            <a className="homeCard" href="/dine">
-              <h3>Dine</h3>
-              <p>Seasonal cuisine shaped by fire, salt, and the sea.</p>
-              <span>Visit</span>
+            <a className="galleryCard" href="/dine" aria-label="Dining atmosphere">
+              <img src="/gallery-3.jpg" alt="Dining atmosphere" />
             </a>
           </div>
         </div>
