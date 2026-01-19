@@ -125,6 +125,10 @@ export default function HomePage() {
 
               <a className="textCta" href="/experience">Explore experiences</a>
             </div>
+
+            <div className="imagePlaceholder" aria-label="Experience image">
+              <img className="experienceImg" src="/experience.jpg" alt="Experience at Vanara" />
+            </div>
           </div>
         </div>
       </section>
@@ -150,9 +154,8 @@ export default function HomePage() {
                 Seasonal openings, villa stories, and experiences — sent rarely, always calm.
               </p>
 
-              {/* Server-component safe form (no client handlers) */}
               <form className="newsletter" action="#" method="post">
-                <input className="newsletterInput" type="email" name="email" placeholder="Email address" />
+                <input className="newsletterInput" type="email" placeholder="Email address" />
                 <button className="newsletterBtn" type="submit">Subscribe</button>
               </form>
 

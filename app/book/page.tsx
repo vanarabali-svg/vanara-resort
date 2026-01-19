@@ -1,31 +1,15 @@
-export default function BookPage() {
+export default function Page() {
   return (
-    <main className="pageA">
-      <section className="heroSmall">
-        <div className="container">
-          <div className="kicker">RESERVE</div>
-          <h1>Request access</h1>
-          <p className="sub">
-            Limited capacity. Private seating. Quiet by design.
-          </p>
+    <div className="section">
+      <div className="container">
+        <div className="eyebrow">RESERVE</div>
+        <h1 className="heroTitle" style={{ color: 'var(--ink)', margin: 0 }}>Reserve</h1>
+        <div className="copy" style={{ marginTop: 16 }}>
+          <p>Choose your dates and preferred villa category.
+If you’d like, we can arrange a complete stay plan before you arrive.</p>
         </div>
-      </section>
-
-      <div className="ruleA" />
-
-      <section className="sectionA2">
-        <div className="container editorialA">
-          <p>
-            For reservations, day access, or private enquiries, please contact:
-          </p>
-          <p>
-            <strong>hello@vanara.com</strong>
-          </p>
-          <p>
-            WhatsApp available upon request.
-          </p>
-        </div>
-      </section>
-    </main>
+        <div className="rule" />
+      </div>
+    </div>
   )
 }
