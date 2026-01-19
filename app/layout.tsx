@@ -107,11 +107,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </button>
 
               <nav className="menu-links" aria-label="Primary">
-                {/* Home removed */}
                 <Link href="/about" onClick={() => setMenuOpen(false)}>About</Link>
                 <Link href="/experience" onClick={() => setMenuOpen(false)}>Experience</Link>
                 <Link href="/dine" onClick={() => setMenuOpen(false)}>Dine</Link>
                 <Link href="/accommodation" onClick={() => setMenuOpen(false)}>Villas</Link>
+                <Link href="/spa" onClick={() => setMenuOpen(false)}>Spa</Link>
                 <Link href="/connect" onClick={() => setMenuOpen(false)}>Connect</Link>
               </nav>
 
@@ -136,7 +136,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </button>
 
               <div className="search-title">Search</div>
-              <input className="search-input" placeholder="Search…" />
+              <input className="search-input" placeholder="Search villas, rituals, dining…" />
+              <div className="search-hint">Type and press Enter</div>
             </div>
           </div>
         )}
@@ -176,6 +177,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="footer-col">
               <div className="footer-head">Contact</div>
               <a className="footer-link" href="mailto:info@vanara.life">info@vanara.life</a>
+              <div className="footer-text">Uluwatu, Bali</div>
               <div className="footer-text">+62 (xxx) xxx xxxx</div>
             </div>
 
@@ -183,7 +185,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="footer-head">Explore</div>
               <Link className="footer-link" href="/accommodation">Villas</Link>
               <Link className="footer-link" href="/experience">Experience</Link>
-              <Link className="footer-link" href="/connect">Connect</Link>
+              <Link className="footer-link" href="/dine">Dine</Link>
+              <Link className="footer-link" href="/spa">Spa</Link>
             </div>
           </div>
 
