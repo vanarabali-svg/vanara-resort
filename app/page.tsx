@@ -31,12 +31,12 @@ export default function HomePage() {
 
           <div className="resortText">
             <p>
-              Perched above the Indian Ocean, Vanara is shaped by wind, stone, and warm light — a retreat where
-              architecture dissolves into landscape.
+              Perched above the Indian Ocean, Vanara is shaped by wind, stone, and warm light —
+              a retreat where architecture dissolves into landscape.
             </p>
             <p>
-              Days unfold slowly: salt air, soft linen, the sound of water below. Private villas, thoughtful rituals,
-              and a calm that stays with you.
+              Days unfold slowly: salt air, soft linen, the sound of water below.
+              Private villas, thoughtful rituals, and a calm that stays with you.
             </p>
           </div>
 
@@ -44,7 +44,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PHOTOS */}
+      {/* GALLERY — STACKED (smaller + better focus) */}
       <section className="gallery">
         <div className="galleryInner">
           <div className="galleryHeader">
@@ -52,16 +52,18 @@ export default function HomePage() {
             <h3 className="galleryTitle">Light, water, and texture</h3>
           </div>
 
-          <div className="galleryGrid">
-            <a className="galleryCard" href="/experience" aria-label="Ocean view">
+          <div className="galleryStack">
+            <figure className="galleryItem ocean">
               <img src="/gallery-1.jpg" alt="Ocean view" />
-            </a>
-            <a className="galleryCard" href="/accommodation" aria-label="Villa details">
-              <img src="/gallery-2.jpg" alt="Villa details" />
-            </a>
-            <a className="galleryCard" href="/dine" aria-label="Dining atmosphere">
+            </figure>
+
+            <figure className="galleryItem villa">
+              <img src="/gallery-2.jpg" alt="Villa ritual" />
+            </figure>
+
+            <figure className="galleryItem dine">
               <img src="/gallery-3.jpg" alt="Dining atmosphere" />
-            </a>
+            </figure>
           </div>
         </div>
       </section>
