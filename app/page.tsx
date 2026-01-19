@@ -87,15 +87,15 @@ export default function HomePage() {
           </div>
 
           <div className="galleryStack">
-            <figure className="galleryItem ocean">
+            <figure className="galleryItem ocean is-left">
               <img src="/gallery-1.jpg" alt="Ocean view" />
             </figure>
 
-            <figure className="galleryItem villa">
+            <figure className="galleryItem villa is-right">
               <img src="/gallery-2.jpg" alt="Villa ritual" />
             </figure>
 
-            <figure className="galleryItem dine">
+            <figure className="galleryItem dine is-center">
               <img src="/gallery-3.jpg" alt="Dining atmosphere" />
             </figure>
           </div>
