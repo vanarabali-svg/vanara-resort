@@ -39,7 +39,7 @@ export default function ExperiencePage() {
       },
       {
         src: '/experience-4.jpg',
-        alt: 'Guided local excursion',
+        alt: 'Handcrafted local excursion',
         kicker: 'BEYOND',
         title: 'Handcrafted local excursions',
         text:
@@ -70,32 +70,26 @@ export default function ExperiencePage() {
   useEffect(() => {
     play()
     return pause
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') go(index + 1)
-      if (e.key === 'ArrowLeft') go(index - 1)
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index])
 
   return (
     <div className="page page-experience">
-      <section className="pageHero">
-        <div className="pageHeroInner">
-          <div className="eyebrow">EXPERIENCE</div>
-          <h1 className="pageTitle">Curated days, quietly unforgettable</h1>
-          <p className="pageLead">
-            From sunrise rituals to firelit dinners — experiences designed with restraint, guided by nature, and shaped
-            by the rhythm of the coast.
+      {/* HERO (uses your first experience image as hero for perfect consistency) */}
+      <section className="experienceHero" aria-label="Experiences hero">
+        <img className="experienceHeroImg" src="/experience-hero.jpg" alt="Vanara experiences" />
+        <div className="experienceHeroShade" />
+        <div className="experienceHeroGrain" aria-hidden="true" />
+
+        <div className="experienceHeroContent">
+          <div className="heroKicker">EXPERIENCE</div>
+          <h1 className="experienceHeroTitle">Curated days, quietly unforgettable</h1>
+          <p className="experienceHeroLead">
+            Sunrise rituals, ocean stillness, firelit dinners — designed with restraint and guided by the rhythm of the coast.
           </p>
         </div>
       </section>
 
+      {/* CAROUSEL */}
       <section className="section sectionExperienceCarousel">
         <div className="container">
           <div className="carouselShell" onMouseEnter={pause} onMouseLeave={play}>
@@ -122,7 +116,7 @@ export default function ExperiencePage() {
                   <span aria-hidden="true">‹</span>
                 </button>
 
-                <div className="carouselDots" role="tablist" aria-label="Slides">
+                <div className="carouselDots" aria-label="Slides">
                   {slides.map((_, i) => (
                     <button
                       key={i}
@@ -139,15 +133,12 @@ export default function ExperiencePage() {
                   <span aria-hidden="true">›</span>
                 </button>
               </div>
-
-              <div className="carouselHint">
-                Add images to <code>/public/experience-1.jpg</code> … <code>experience-4.jpg</code>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* TEXT CONTENT (keeps generated copy) */}
       <section className="section sectionExperienceContent">
         <div className="container">
           <div className="grid2">

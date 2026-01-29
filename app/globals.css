@@ -1162,3 +1162,101 @@ body.is-scrolled .nav{
   .carouselMedia{ height: 300px; }
 }
 
+
+/* EXPERIENCE HERO */
+.experienceHero{
+  position: relative;
+  height: 88vh;
+  overflow: hidden;
+}
+.experienceHero img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.experienceHeroShade{
+  position:absolute;
+  inset:0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.55));
+}
+.experienceHeroContent{
+  position:absolute;
+  bottom:72px;
+  left:8%;
+  color:#fff;
+  max-width:720px;
+}
+
+/* =========================
+   EXPERIENCE HERO (Aman-style)
+   Uses /public/experience-1.jpg as hero image
+========================= */
+.experienceHero{
+  position: relative;
+  height: 78vh;
+  min-height: 520px;
+  overflow: hidden;
+}
+.experienceHeroImg{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 58%;
+  transform: scale(1.02);
+}
+
+/* calmer, more cinematic shade */
+.experienceHeroShade{
+  position:absolute;
+  inset:0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,.06),
+    rgba(0,0,0,.20),
+    rgba(0,0,0,.62)
+  );
+}
+
+/* subtle grain for “film” luxury */
+.experienceHeroGrain{
+  position:absolute;
+  inset:-20%;
+  opacity:.10;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+  transform: rotate(2deg);
+  pointer-events:none;
+}
+
+.experienceHeroContent{
+  position:absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 72px;
+  color:#fff;
+  max-width: 980px;
+}
+
+.experienceHeroTitle{
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(40px, 5.6vw, 82px);
+  line-height: 1.05;
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+
+.experienceHeroLead{
+  margin: 0;
+  max-width: 560px;
+  font-size: 15px;
+  line-height: 1.75;
+  opacity: .92;
+}
+
+@media (max-width: 768px){
+  .experienceHero{ height: 72vh; min-height: 460px; }
+  .experienceHeroContent{ left: 6%; right: 6%; bottom: 56px; }
+  .experienceHeroImg{ object-position: center 60%; }
+}
