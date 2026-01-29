@@ -1422,3 +1422,20 @@ body.is-scrolled .nav{
 .carouselBtn{
   display: none !important;
 }
+/* =========================
+   EXPERIENCE HERO – MOBILE FIX
+========================= */
+@media (max-width: 768px){
+  .experienceHero{
+    height: auto;
+    min-height: 88svh; /* stable viewport height */
+  }
+
+  .experienceHeroImg{
+    object-position: center 62%;
+  }
+
+  .experienceHeroContent{
+    bottom: 48px;
+  }
+}
