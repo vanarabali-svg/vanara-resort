@@ -64,7 +64,7 @@ export default function ExperiencePage() {
     pause()
     timerRef.current = window.setInterval(() => {
       setIndex((i) => (i + 1) % total)
-    }, 6500)
+    }, 7200)
   }
 
   useEffect(() => {
@@ -74,8 +74,8 @@ export default function ExperiencePage() {
 
   return (
     <div className="page page-experience">
-      {/* HERO (uses your first experience image as hero for perfect consistency) */}
-      <section className="experienceHero" aria-label="Experiences hero">
+      {/* HERO */}
+      <section className="experienceHero">
         <img className="experienceHeroImg" src="/experience-hero.jpg" alt="Vanara experiences" />
         <div className="experienceHeroShade" />
         <div className="experienceHeroGrain" aria-hidden="true" />
@@ -84,12 +84,13 @@ export default function ExperiencePage() {
           <div className="heroKicker">EXPERIENCE</div>
           <h1 className="experienceHeroTitle">Curated days, quietly unforgettable</h1>
           <p className="experienceHeroLead">
-            Sunrise rituals, ocean stillness, firelit dinners — designed with restraint and guided by the rhythm of the coast.
+            Sunrise rituals, ocean stillness, firelit dinners — designed with restraint and guided by the rhythm of the
+            coast.
           </p>
         </div>
       </section>
 
-      {/* CAROUSEL */}
+      {/* CAROUSEL (no arrows) */}
       <section className="section sectionExperienceCarousel">
         <div className="container">
           <div className="carouselShell" onMouseEnter={pause} onMouseLeave={play}>
@@ -111,83 +112,63 @@ export default function ExperiencePage() {
               <div className="carouselTitle">{slides[index].title}</div>
               <div className="carouselText">{slides[index].text}</div>
 
-              <div className="carouselControls">
-                <button className="carouselBtn" type="button" onClick={() => go(index - 1)} aria-label="Previous">
-                  <span aria-hidden="true">‹</span>
-                </button>
-
-                <div className="carouselDots" aria-label="Slides">
-                  {slides.map((_, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      className={`dot ${i === index ? 'is-active' : ''}`}
-                      onClick={() => go(i)}
-                      aria-label={`Go to slide ${i + 1}`}
-                      aria-current={i === index ? 'true' : 'false'}
-                    />
-                  ))}
-                </div>
-
-                <button className="carouselBtn" type="button" onClick={() => go(index + 1)} aria-label="Next">
-                  <span aria-hidden="true">›</span>
-                </button>
+              <div className="carouselDots" aria-label="Slides">
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    className={`dot ${i === index ? 'is-active' : ''}`}
+                    onClick={() => go(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    aria-current={i === index ? 'true' : 'false'}
+                  />
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* TEXT CONTENT (keeps generated copy) */}
-      <section className="section sectionExperienceContent">
+      {/* ADD 1: THE RHYTHM OF THE DAY (recommended) */}
+      <section className="section sectionExperienceRhythm">
         <div className="container">
-          <div className="grid2">
-            <div className="panel">
-              <div className="eyebrow">RITUALS</div>
-              <h3 className="h3">A slower way to arrive</h3>
-              <p className="panelText">
-                Morning begins with salt air and soft movement. Afternoon is shade, water, and quiet attention. Evening
-                arrives gently — with warm light and low voices.
-              </p>
-              <ul className="bullets">
-                <li>Sunrise breathwork &amp; meditation</li>
-                <li>Ocean mineral bathing</li>
-                <li>Restorative heat &amp; bodywork</li>
-                <li>Private dining moments</li>
-              </ul>
-            </div>
+          <div className="eyebrow">THE RHYTHM</div>
+          <h2 className="h2">The rhythm of the day</h2>
 
-            <div className="panel">
-              <div className="eyebrow">BEYOND</div>
-              <h3 className="h3">Uluwatu, in detail</h3>
-              <p className="panelText">
-                Explore with discretion — hidden beaches, limestone paths, artisan workshops, and cultural sites — all
-                curated to feel personal, never touristic.
-              </p>
-              <p className="panelText">
-                If you prefer, we’ll design a day with almost no schedule — just a direction, and the freedom to linger.
-              </p>
-            </div>
+          <div className="copy">
+            <p>
+              Days at Vanara are not scheduled — they unfold.
+            </p>
+            <p>
+              Morning is light and air, when the cliffs are still cool and the ocean moves slowly below. Midday belongs
+              to shade, water, and rest. Evenings arrive with warmth, low voices, and firelight.
+            </p>
+            <p>
+              Everything is available. Nothing is imposed.
+            </p>
           </div>
 
           <div className="rule" />
         </div>
       </section>
 
-      <section className="section sectionCta">
+      {/* ADD 2: OUR APPROACH (recommended) */}
+      <section className="section sectionExperienceApproach">
         <div className="container">
-          <div className="ctaBlock">
-            <div className="ctaText">
-              <div className="eyebrow">PLAN</div>
-              <h3 className="h3">Tell us what you’re seeking</h3>
-              <p className="panelText">
-                Stillness, celebration, restoration — we’ll shape a simple itinerary around your pace.
-              </p>
-            </div>
+          <div className="eyebrow">APPROACH</div>
+          <h3 className="h3">Our approach</h3>
 
-            <a className="reserve-pill reserve-dark" href="/connect">
-              Connect
-            </a>
+          <div className="copy">
+            <p>
+              We believe experiences should feel personal, not programmed.
+            </p>
+            <p>
+              Some guests arrive seeking restoration. Others arrive curious, or celebratory. Many arrive unsure — and
+              leave lighter.
+            </p>
+            <p>
+              Our role is simple: to listen carefully, and arrange quietly.
+            </p>
           </div>
         </div>
       </section>
