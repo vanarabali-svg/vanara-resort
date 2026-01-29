@@ -163,6 +163,32 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+      
+          {/* MAP */}
+          <div className="mapBlock">
+            <div className="mapShell">
+              <div className="mapPin" aria-hidden="true"><span /></div>
+              <iframe
+                className="mapFrame"
+                title="Vanara Resort & Spa location"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps?q=-8.84194133249861,115.11168032877258&z=17&output=embed"
+              />
+            </div>
+
+            <div className="mapLinks">
+              <a
+                className="textCta"
+                href="https://www.google.com/maps/place/VANARA+Resort+%26+Spa/@-8.8421164,115.1117122,17z"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View on Google Maps
+              </a>
+            </div>
+          </div>
+
       </section>
     </div>
   )
