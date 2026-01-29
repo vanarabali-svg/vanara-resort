@@ -38,8 +38,31 @@ export default function HomePage() {
               Private villas open to sea air; pathways lead to shaded courts, cliffside pools, and restorative spaces.
               Everything is intentional: calm lines, natural textures, and moments of silence between waves.
             </p>
+            <p>
+              Here, luxury is not loud. It is felt in spaciousness, in careful service, and in the way each view is
+              framed — sunrise over water, afternoon shade across stone, and evenings that arrive softly.
+            </p>
           </div>
 
+          <div className="rule" />
+        </div>
+      </section>
+
+      {/* PHILOSOPHY */}
+      <section className="section">
+        <div className="container">
+          <div className="eyebrow">PHILOSOPHY</div>
+          <h3 className="h3">Designed for stillness</h3>
+          <div className="copy">
+            <p>
+              Vanara is built around a simple idea: the ocean is the main event. Interiors remain quiet so nature can
+              speak — warm neutrals, natural textures, and soft edges that invite you to slow down.
+            </p>
+            <p>
+              Days are intentionally unhurried. You can do very little and feel completely full — a long swim, a spa
+              ritual, a meal by candlelight, then silence.
+            </p>
+          </div>
           <div className="rule" />
         </div>
       </section>
@@ -99,6 +122,13 @@ export default function HomePage() {
               <img src="/gallery-3.jpg" alt="Dining atmosphere" />
             </figure>
           </div>
+
+          <div className="copy" style={{ marginTop: 22 }}>
+            <p>
+              A palette of sand, stone, and sea. Minimalism here is not an aesthetic — it is a way to create room for
+              breath, light, and the quiet rhythm of tides.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -114,6 +144,10 @@ export default function HomePage() {
                   Sunset cliff walks, ocean rituals, private dining, and guided stillness — choose a rhythm that feels
                   like you.
                 </p>
+                <p>
+                  Whether you arrive to celebrate or simply to disappear for a while, every detail is tailored: the
+                  timing, the tone, the temperature of a room at night.
+                </p>
               </div>
 
               <ul className="bullets">
@@ -121,6 +155,8 @@ export default function HomePage() {
                 <li>Ocean sound bathing</li>
                 <li>Private chef’s table</li>
                 <li>Handcrafted local excursions</li>
+                <li>In-villa floating breakfast</li>
+                <li>Sunset fire &amp; tea ceremony</li>
               </ul>
 
               <a className="textCta" href="/experience">Explore experiences</a>
@@ -128,6 +164,43 @@ export default function HomePage() {
 
             <div className="imagePlaceholder" aria-label="Experience image">
               <img className="experienceImg" src="/experience.jpg" alt="Experience at Vanara" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY VANARA */}
+      <section className="section">
+        <div className="container">
+          <div className="eyebrow">DETAILS</div>
+          <h3 className="h3">Small moments, done perfectly</h3>
+          <div className="copy">
+            <p>
+              Every element of the stay is made to feel effortless: discreet arrivals, in-villa dining, bespoke
+              itineraries, and service that anticipates without interrupting.
+            </p>
+          </div>
+
+          <div className="grid3">
+            <div className="card" style={{ cursor: 'default' }}>
+              <div className="cardLabel">ARRIVAL</div>
+              <h3 className="cardTitle">Curated transfers</h3>
+              <p className="cardText">Private arrivals, luggage handled quietly, timing built around your flight.</p>
+              <span className="cardLink">Seamless</span>
+            </div>
+
+            <div className="card" style={{ cursor: 'default' }}>
+              <div className="cardLabel">PRIVACY</div>
+              <h3 className="cardTitle">Space to disappear</h3>
+              <p className="cardText">Villas designed for privacy, with ocean air and soft light at every hour.</p>
+              <span className="cardLink">Uninterrupted</span>
+            </div>
+
+            <div className="card" style={{ cursor: 'default' }}>
+              <div className="cardLabel">SERVICE</div>
+              <h3 className="cardTitle">Quiet precision</h3>
+              <p className="cardText">Warm, attentive, and invisible when you want it to be.</p>
+              <span className="cardLink">By intention</span>
             </div>
           </div>
         </div>
@@ -144,6 +217,10 @@ export default function HomePage() {
                 A quiet edge of the island — limestone cliffs, turquoise water, and warm evenings. Transfers and curated
                 arrivals available upon request.
               </p>
+              <p className="panelText">
+                Close enough for exploration, far enough to feel private. We can arrange drivers, surf breaks, temple
+                visits, and hidden coastal paths.
+              </p>
               <a className="textCta" href="/connect">Plan your arrival</a>
             </div>
 
@@ -152,6 +229,9 @@ export default function HomePage() {
               <h3 className="h3">A note from the coast</h3>
               <p className="panelText">
                 Seasonal openings, villa stories, and experiences — sent rarely, always calm.
+              </p>
+              <p className="panelText">
+                Receive first access to limited dates and new rituals as they are introduced.
               </p>
 
               <form className="newsletter" action="#" method="post">
@@ -162,135 +242,33 @@ export default function HomePage() {
               <div className="smallprint">No spam. Unsubscribe anytime.</div>
             </div>
           </div>
-
-          {/* ULAMAN-STYLE MAP (STATIC) */}
-          <div className="ulamanMapWrap" aria-label="Location map">
-            <div className="ulamanMapCard">
-              <svg
-                className="ulamanMapSvg"
-                viewBox="0 0 1200 560"
-                role="img"
-                aria-label="Minimal map — Vanara Resort & Spa, Uluwatu"
-              >
-                <defs>
-                  <linearGradient id="paper" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="rgba(234,221,198,.75)" />
-                    <stop offset="100%" stopColor="rgba(234,221,198,.38)" />
-                  </linearGradient>
-
-                  <linearGradient id="water" x1="0" x2="1" y1="0" y2="0">
-                    <stop offset="0%" stopColor="rgba(24,110,120,.10)" />
-                    <stop offset="100%" stopColor="rgba(24,110,120,.04)" />
-                  </linearGradient>
-
-                  <filter id="pinShadow" x="-40%" y="-40%" width="180%" height="180%">
-                    <feGaussianBlur stdDeviation="10" result="b" />
-                    <feColorMatrix
-                      in="b"
-                      type="matrix"
-                      values="
-                        1 0 0 0 0
-                        0 1 0 0 0
-                        0 0 1 0 0
-                        0 0 0 .22 0"
-                      result="s"
-                    />
-                    <feMerge>
-                      <feMergeNode in="s" />
-                      <feMergeNode in="SourceGraphic" />
-                    </feMerge>
-                  </filter>
-                </defs>
-
-                {/* paper / sand base */}
-                <rect x="0" y="0" width="1200" height="560" rx="28" fill="url(#paper)" />
-
-                {/* soft water wash */}
-                <path
-                  d="M90,410 C210,360 320,352 430,372 C560,396 660,446 780,452 C930,458 1040,410 1120,362 L1120,560 L90,560 Z"
-                  fill="url(#water)"
-                  opacity=".9"
-                />
-
-                {/* coastline (ulaman-like single stroke) */}
-                <path
-                  d="M140,370
-                     C250,305 350,278 460,292
-                     C580,307 670,360 785,368
-                     C925,378 1026,336 1110,286"
-                  fill="none"
-                  stroke="rgba(31,31,29,.38)"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-
-                {/* inland contour lines */}
-                <path
-                  d="M180,300 C290,230 400,208 520,222 C640,236 730,286 860,294 C980,302 1060,268 1120,240"
-                  fill="none"
-                  stroke="rgba(31,31,29,.18)"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M160,260 C280,195 400,174 540,190 C680,206 770,260 910,268 C1030,276 1100,246 1140,220"
-                  fill="none"
-                  stroke="rgba(31,31,29,.12)"
-                  strokeWidth="1.3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-
-                {/* pin */}
-                <g transform="translate(330 365)" filter="url(#pinShadow)">
-                  <circle cx="0" cy="0" r="22" fill="rgba(255,255,255,.55)" stroke="rgba(31,31,29,.22)" />
-                  <circle cx="0" cy="0" r="8.5" fill="rgba(31,31,29,.62)" />
-                  <path d="M0,26 L12,52 L0,64 L-12,52 Z" fill="rgba(31,31,29,.20)" />
-                </g>
-
-                {/* micro-label */}
-                <g transform="translate(368 345)">
-                  <rect x="0" y="-28" width="318" height="46" rx="18" fill="rgba(255,255,255,.42)" stroke="rgba(31,31,29,.10)" />
-                  <text
-                    x="20"
-                    y="2"
-                    fontSize="14"
-                    fill="rgba(31,31,29,.72)"
-                    fontFamily="ui-sans-serif, system-ui"
-                    letterSpacing=".16em"
-                  >
-                    VANARA  •  ULUWATU
-                  </text>
-                </g>
-
-                {/* compass (very subtle) */}
-                <g transform="translate(1040 96)" opacity=".65">
-                  <circle cx="0" cy="0" r="34" fill="none" stroke="rgba(31,31,29,.18)" />
-                  <path d="M0,-18 L6,0 L0,18 L-6,0 Z" fill="rgba(31,31,29,.18)" />
-                  <text x="-4" y="-42" fontSize="11" fill="rgba(31,31,29,.40)" fontFamily="ui-sans-serif, system-ui">N</text>
-                </g>
-              </svg>
-
-              <div className="ulamanMapMeta">
-                <div className="ulamanMapRow">
-                  <span className="ulamanMapLabel">Coordinates</span>
-                  <span className="ulamanMapValue">-8.841941, 115.111680</span>
-                </div>
-                <a
-                  className="textCta"
-                  href="https://www.google.com/maps/place/VANARA+Resort+%26+Spa/@-8.8421164,115.1117122,17z"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Open in Google Maps
-                </a>
-              </div>
-            </div>
-          </div>
-          {/* /ULAMAN MAP */}
         </div>
+
+        {/* MAP */}
+        <div className="mapBlock">
+          <div className="mapShell">
+            <div className="mapPin" aria-hidden="true"><span /></div>
+            <iframe
+              className="mapFrame"
+              title="Vanara Resort & Spa location"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=-8.84194133249861,115.11168032877258&z=17&output=embed"
+            />
+          </div>
+
+          <div className="mapLinks">
+            <a
+              className="textCta"
+              href="https://www.google.com/maps/place/VANARA+Resort+%26+Spa/@-8.8421164,115.1117122,17z"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View on Google Maps
+            </a>
+          </div>
+        </div>
+
       </section>
     </div>
   )
