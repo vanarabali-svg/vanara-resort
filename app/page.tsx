@@ -6,7 +6,7 @@ export default function HomePage() {
       <section className="hero">
         <video
           className="heroMedia"
-          src="/hero.mov"
+          src="/hero.mp4"
           autoPlay
           muted
           loop
