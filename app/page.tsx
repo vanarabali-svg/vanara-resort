@@ -1,275 +1,180 @@
 export default function HomePage() {
   return (
-    <div className="home">
-      {/* HERO */}
+    <main className="home">
+
+      {/* HERO — PLACE FIRST */}
       <section className="hero">
-        <video className="heroMedia" src="/hero.mp4" autoPlay muted loop playsInline />
+        <video
+          className="heroMedia"
+          src="/hero.mov"
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
         <div className="heroShade" />
 
         <div className="heroContent">
-          <div className="heroKicker">ULUWATU · BALI</div>
+          <span className="heroKicker">ULUWATU · BALI</span>
+          <h1 className="heroTitle">Vanara Ocean Sanctuary</h1>
+          <p className="heroSub">A quiet place above the tide.</p>
+        </div>
+      </section>
 
-          <h1 className="heroTitle">Vanara Resort &amp; Spa</h1>
-
-          <p className="heroSub">
-            Minimalist luxury above the ocean — a sanctuary shaped by nature.
+      {/* INTRO — SHORT, HEAVY */}
+      <section className="section">
+        <div className="container">
+          <p className="copy" style={{ maxWidth: 760, fontSize: 16 }}>
+            Vanara is not a destination designed to impress.
+            <br />
+            It is a sanctuary shaped by ocean, stone, wind, and time.
           </p>
 
-          <div className="heroLinks">
-            <a className="heroLink" href="/accommodation">Explore villas</a>
-            <a className="heroLink" href="/experience">Discover experiences</a>
-            <a className="heroLink" href="/spa">Spa &amp; rituals</a>
-          </div>
+          <p className="copy" style={{ maxWidth: 760 }}>
+            Hidden along the cliffs of Uluwatu, Vanara exists for those
+            who seek stillness rather than spectacle, presence rather than noise.
+          </p>
         </div>
       </section>
 
-      {/* INTRO */}
-      <section className="section sectionIntro">
-        <div className="container">
-          <div className="eyebrow">THE RESORT</div>
-          <h2 className="h2">A sanctuary of quiet strength</h2>
+      {/* SILENCE SECTION — VERY IMPORTANT */}
+      <section className="section">
+        <div style={{ height: 120 }} />
+      </section>
 
-          <div className="copy">
-            <p>
-              Perched above the Indian Ocean, Vanara is shaped by wind, stone, and warm light — a retreat where
-              architecture dissolves into landscape and time slows to a breath.
-            </p>
-            <p>
-              Private villas open to sea air; pathways lead to shaded courts, cliffside pools, and restorative spaces.
-              Everything is intentional: calm lines, natural textures, and moments of silence between waves.
-            </p>
-            <p>
-              Here, luxury is not loud. It is felt in spaciousness, in careful service, and in the way each view is
-              framed — sunrise over water, afternoon shade across stone, and evenings that arrive softly.
-            </p>
-          </div>
-
-          <div className="rule" />
+      {/* PLACE / LANDSCAPE IMAGE */}
+      <section className="sectionGallery">
+        <div className="galleryStack">
+          <figure className="galleryItem ocean is-center">
+            <img src="/gallery-1.jpg" alt="Cliff and ocean horizon" />
+          </figure>
         </div>
       </section>
 
-      {/* PHILOSOPHY */}
+      {/* PHILOSOPHY — MANIFESTO STYLE */}
       <section className="section">
         <div className="container">
-          <div className="eyebrow">PHILOSOPHY</div>
-          <h3 className="h3">Designed for stillness</h3>
+          <h2 className="h2">Quiet luxury, by design</h2>
+
           <div className="copy">
-            <p>
-              Vanara is built around a simple idea: the ocean is the main event. Interiors remain quiet so nature can
-              speak — warm neutrals, natural textures, and soft edges that invite you to slow down.
-            </p>
-            <p>
-              Days are intentionally unhurried. You can do very little and feel completely full — a long swim, a spa
-              ritual, a meal by candlelight, then silence.
-            </p>
+            <p>Nature is the main character.</p>
+            <p>Space is a form of luxury.</p>
+            <p>Silence is an experience.</p>
           </div>
-          <div className="rule" />
+
+          <p className="copy">
+            Every element of Vanara is designed to feel intentional
+            yet effortless — from the way water meets the horizon,
+            to the textures of sand, stone, and wood beneath your feet.
+          </p>
         </div>
       </section>
 
-      {/* SIGNATURES */}
-      <section className="section sectionSignatures">
-        <div className="container">
-          <div className="grid3">
-            <a className="card" href="/accommodation">
-              <div className="cardLabel">VILLAS</div>
-              <h3 className="cardTitle">Private, ocean-facing living</h3>
-              <p className="cardText">
-                Minimal interiors, warm stone, soft linen — designed to disappear into the view.
-              </p>
-              <span className="cardLink">Explore</span>
-            </a>
+      {/* VISUAL FLOW — NO STORY */}
+      <section className="sectionGallery">
+        <div className="galleryStack">
+          <figure className="galleryItem villa is-left">
+            <img src="/gallery-2.jpg" alt="Architecture and water" />
+          </figure>
 
-            <a className="card" href="/spa">
-              <div className="cardLabel">SPA</div>
-              <h3 className="cardTitle">Rituals for body and breath</h3>
-              <p className="cardText">
-                Slow therapies, ocean minerals, and restorative heat — guided by quiet expertise.
-              </p>
-              <span className="cardLink">Discover</span>
-            </a>
-
-            <a className="card" href="/dine">
-              <div className="cardLabel">DINE</div>
-              <h3 className="cardTitle">Seasonal cuisine by the sea</h3>
-              <p className="cardText">
-                Fire, salt, and local harvests — elegant meals that feel effortless.
-              </p>
-              <span className="cardLink">Visit</span>
-            </a>
-          </div>
+          <figure className="galleryItem dine is-right">
+            <img src="/gallery-3.jpg" alt="Dining ritual at sunset" />
+          </figure>
         </div>
       </section>
 
-      {/* GALLERY — STACKED */}
-      <section className="section sectionGallery">
-        <div className="container">
-          <div className="galleryHeader">
-            <div className="eyebrow">GLIMPSES</div>
-            <h3 className="h3">Light, water, and texture</h3>
-          </div>
-
-          <div className="galleryStack">
-            <figure className="galleryItem ocean is-left">
-              <img src="/gallery-1.jpg" alt="Ocean view" />
-            </figure>
-
-            <figure className="galleryItem villa is-right">
-              <img src="/gallery-2.jpg" alt="Villa ritual" />
-            </figure>
-
-            <figure className="galleryItem dine is-center">
-              <img src="/gallery-3.jpg" alt="Dining atmosphere" />
-            </figure>
-          </div>
-
-          <div className="copy" style={{ marginTop: 22 }}>
-            <p>
-              A palette of sand, stone, and sea. Minimalism here is not an aesthetic — it is a way to create room for
-              breath, light, and the quiet rhythm of tides.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* EXPERIENCE */}
-      <section className="section sectionExperience">
-        <div className="container">
-          <div className="split">
-            <div>
-              <div className="eyebrow">EXPERIENCE</div>
-              <h3 className="h3">Curated days, quietly unforgettable</h3>
-              <div className="copy">
-                <p>
-                  Sunset cliff walks, ocean rituals, private dining, and guided stillness — choose a rhythm that feels
-                  like you.
-                </p>
-                <p>
-                  Whether you arrive to celebrate or simply to disappear for a while, every detail is tailored: the
-                  timing, the tone, the temperature of a room at night.
-                </p>
-              </div>
-
-              <ul className="bullets">
-                <li>Cliffside sunrise meditation</li>
-                <li>Ocean sound bathing</li>
-                <li>Private chef’s table</li>
-                <li>Handcrafted local excursions</li>
-                <li>In-villa floating breakfast</li>
-                <li>Sunset fire &amp; tea ceremony</li>
-              </ul>
-
-              <a className="textCta" href="/experience">Explore experiences</a>
-            </div>
-
-            <div className="imagePlaceholder" aria-label="Experience image">
-              <img className="experienceImg" src="/experience.jpg" alt="Experience at Vanara" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* WHY VANARA */}
+      {/* EXPERIENCE — REDUCED, DEEPER */}
       <section className="section">
         <div className="container">
-          <div className="eyebrow">DETAILS</div>
-          <h3 className="h3">Small moments, done perfectly</h3>
+          <h2 className="h2">The rhythm of the day</h2>
+
           <div className="copy">
-            <p>
-              Every element of the stay is made to feel effortless: discreet arrivals, in-villa dining, bespoke
-              itineraries, and service that anticipates without interrupting.
-            </p>
+            <p>Morning begins with salt air and soft light.</p>
+            <p>Afternoons dissolve into water, shade, and silence.</p>
+            <p>Sunsets arrive without announcement — and linger.</p>
           </div>
 
+          <p className="copy">
+            Vanara does not transform into something else at night.
+            It simply deepens.
+          </p>
+        </div>
+      </section>
+
+      {/* DETAILS — NO SALES */}
+      <section className="section">
+        <div className="container">
           <div className="grid3">
-            <div className="card" style={{ cursor: 'default' }}>
-              <div className="cardLabel">ARRIVAL</div>
-              <h3 className="cardTitle">Curated transfers</h3>
-              <p className="cardText">Private arrivals, luggage handled quietly, timing built around your flight.</p>
-              <span className="cardLink">Seamless</span>
+            <div className="card">
+              <div className="cardLabel">SPACE</div>
+              <h3 className="cardTitle">Room to arrive</h3>
+              <p className="cardText">
+                Open areas balanced with intimate, quiet corners.
+                No forced movement. No crowding.
+              </p>
             </div>
 
-            <div className="card" style={{ cursor: 'default' }}>
-              <div className="cardLabel">PRIVACY</div>
-              <h3 className="cardTitle">Space to disappear</h3>
-              <p className="cardText">Villas designed for privacy, with ocean air and soft light at every hour.</p>
-              <span className="cardLink">Uninterrupted</span>
+            <div className="card">
+              <div className="cardLabel">SOUND</div>
+              <h3 className="cardTitle">Atmosphere, not noise</h3>
+              <p className="cardText">
+                Ambient soundscapes that follow the day —
+                present, never dominant.
+              </p>
             </div>
 
-            <div className="card" style={{ cursor: 'default' }}>
-              <div className="cardLabel">SERVICE</div>
-              <h3 className="cardTitle">Quiet precision</h3>
-              <p className="cardText">Warm, attentive, and invisible when you want it to be.</p>
-              <span className="cardLink">By intention</span>
+            <div className="card">
+              <div className="cardLabel">FOOD</div>
+              <h3 className="cardTitle">Ritual, not menu</h3>
+              <p className="cardText">
+                Seasonal, elemental, and refined.
+                Designed to be enjoyed slowly.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* LOCATION + NEWSLETTER */}
-      <section className="section sectionBottom">
+      {/* LOCATION — STATIC, CALM */}
+      <section className="section">
         <div className="container">
-          <div className="grid2">
-            <div className="panel">
-              <div className="eyebrow">LOCATION</div>
-              <h3 className="h3">Uluwatu, Bali</h3>
-              <p className="panelText">
-                A quiet edge of the island — limestone cliffs, turquoise water, and warm evenings. Transfers and curated
-                arrivals available upon request.
-              </p>
-              <p className="panelText">
-                Close enough for exploration, far enough to feel private. We can arrange drivers, surf breaks, temple
-                visits, and hidden coastal paths.
-              </p>
-              <a className="textCta" href="/connect">Plan your arrival</a>
-            </div>
+          <h2 className="h2">Location</h2>
 
-            <div className="panel">
-              <div className="eyebrow">NEWSLETTER</div>
-              <h3 className="h3">A note from the coast</h3>
-              <p className="panelText">
-                Seasonal openings, villa stories, and experiences — sent rarely, always calm.
-              </p>
-              <p className="panelText">
-                Receive first access to limited dates and new rituals as they are introduced.
-              </p>
-
-              <form className="newsletter" action="#" method="post">
-                <input className="newsletterInput" type="email" placeholder="Email address" />
-                <button className="newsletterBtn" type="submit">Subscribe</button>
-              </form>
-
-              <div className="smallprint">No spam. Unsubscribe anytime.</div>
-            </div>
-          </div>
+          <p className="copy">
+            Perched above the Indian Ocean,
+            on a quiet edge of the island where cliffs meet open water.
+          </p>
         </div>
 
-        {/* MAP */}
         <div className="mapBlock">
-          <div className="mapShell">
-            <div className="mapPin" aria-hidden="true"><span /></div>
-            <iframe
-              className="mapFrame"
-              title="Vanara Resort & Spa location"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps?q=-8.84194133249861,115.11168032877258&z=17&output=embed"
-            />
-          </div>
-
-          <div className="mapLinks">
-            <a
-              className="textCta"
-              href="https://www.google.com/maps/place/VANARA+Resort+%26+Spa/@-8.8421164,115.1117122,17z"
-              target="_blank"
-              rel="noreferrer"
-            >
-              View on Google Maps
-            </a>
+          <img
+            className="mapImage"
+            src="/map-vanara.jpg"
+            alt="Vanara Resort & Spa location"
+          />
+          <div className="mapMeta">
+            <span className="mapTitle">Vanara Resort & Spa</span>
+            <span className="mapLocation">Uluwatu · Bali</span>
           </div>
         </div>
-
       </section>
-    </div>
-  )
+
+      {/* SINGLE CTA — AUTHORITY */}
+      <section className="section">
+        <div className="container" style={{ textAlign: "center" }}>
+          <a className="textCta" href="/connect">
+            Enquire
+          </a>
+        </div>
+      </section>
+
+      {/* FOOTER LINE */}
+      <footer className="footer">
+        <p className="footer-copy">
+          For those who listen to the ocean — not over it.
+        </p>
+      </footer>
+
+    </main>
+  );
 }
