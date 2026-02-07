@@ -1,180 +1,195 @@
 export default function HomePage() {
   return (
-    <main className="home">
-
-      {/* HERO — PLACE FIRST */}
+    <div className="home">
+      {/* HERO */}
       <section className="hero">
-        <video
-          className="heroMedia"
-          src="/hero.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-        />
+        <video className="heroMedia" src="/hero.mp4" autoPlay muted loop playsInline />
         <div className="heroShade" />
 
         <div className="heroContent">
-          <span className="heroKicker">ULUWATU · BALI</span>
-          <h1 className="heroTitle">Vanara Ocean Sanctuary</h1>
-          <p className="heroSub">A quiet place above the tide.</p>
-        </div>
-      </section>
+          <div className="heroKicker">ULUWATU · BALI</div>
 
-      {/* INTRO — SHORT, HEAVY */}
-      <section className="section">
-        <div className="container">
-          <p className="copy" style={{ maxWidth: 760, fontSize: 16 }}>
-            Vanara is not a destination designed to impress.
-            <br />
-            It is a sanctuary shaped by ocean, stone, wind, and time.
+          <h1 className="heroTitle">Vanara Resort &amp; Spa</h1>
+
+          <p className="heroSub">
+            Minimalist luxury above the ocean — a sanctuary shaped by nature.
           </p>
 
-          <p className="copy" style={{ maxWidth: 760 }}>
-            Hidden along the cliffs of Uluwatu, Vanara exists for those
-            who seek stillness rather than spectacle, presence rather than noise.
-          </p>
+          <div className="heroLinks">
+            <a className="heroLink" href="/accommodation">Explore villas</a>
+            <a className="heroLink" href="/experience">Discover experiences</a>
+            <a className="heroLink" href="/spa">Spa &amp; rituals</a>
+          </div>
         </div>
       </section>
 
-      {/* SILENCE SECTION — VERY IMPORTANT */}
-      <section className="section">
-        <div style={{ height: 120 }} />
-      </section>
-
-      {/* PLACE / LANDSCAPE IMAGE */}
-      <section className="sectionGallery">
-        <div className="galleryStack">
-          <figure className="galleryItem ocean is-center">
-            <img src="/gallery-1.jpg" alt="Cliff and ocean horizon" />
-          </figure>
-        </div>
-      </section>
-
-      {/* PHILOSOPHY — MANIFESTO STYLE */}
-      <section className="section">
+      {/* INTRO */}
+      <section className="section sectionIntro">
         <div className="container">
-          <h2 className="h2">Quiet luxury, by design</h2>
+          <div className="eyebrow">THE RESORT</div>
+          <h2 className="h2">A sanctuary of quiet strength</h2>
 
           <div className="copy">
-            <p>Nature is the main character.</p>
-            <p>Space is a form of luxury.</p>
-            <p>Silence is an experience.</p>
+            <p>
+              Perched above the Indian Ocean, Vanara is shaped by wind, stone, and warm light — a retreat where
+              architecture dissolves into landscape and time slows to a breath.
+            </p>
+            <p>
+              Private villas open to sea air; pathways lead to shaded courts, cliffside pools, and restorative spaces.
+              Everything is intentional: calm lines, natural textures, and moments of silence between waves.
+            </p>
           </div>
 
-          <p className="copy">
-            Every element of Vanara is designed to feel intentional
-            yet effortless — from the way water meets the horizon,
-            to the textures of sand, stone, and wood beneath your feet.
-          </p>
+          <div className="rule" />
         </div>
       </section>
 
-      {/* VISUAL FLOW — NO STORY */}
-      <section className="sectionGallery">
-        <div className="galleryStack">
-          <figure className="galleryItem villa is-left">
-            <img src="/gallery-2.jpg" alt="Architecture and water" />
-          </figure>
-
-          <figure className="galleryItem dine is-right">
-            <img src="/gallery-3.jpg" alt="Dining ritual at sunset" />
-          </figure>
-        </div>
-      </section>
-
-      {/* EXPERIENCE — REDUCED, DEEPER */}
-      <section className="section">
-        <div className="container">
-          <h2 className="h2">The rhythm of the day</h2>
-
-          <div className="copy">
-            <p>Morning begins with salt air and soft light.</p>
-            <p>Afternoons dissolve into water, shade, and silence.</p>
-            <p>Sunsets arrive without announcement — and linger.</p>
-          </div>
-
-          <p className="copy">
-            Vanara does not transform into something else at night.
-            It simply deepens.
-          </p>
-        </div>
-      </section>
-
-      {/* DETAILS — NO SALES */}
-      <section className="section">
+      {/* SIGNATURES */}
+      <section className="section sectionSignatures">
         <div className="container">
           <div className="grid3">
-            <div className="card">
-              <div className="cardLabel">SPACE</div>
-              <h3 className="cardTitle">Room to arrive</h3>
+            <a className="card" href="/accommodation">
+              <div className="cardLabel">VILLAS</div>
+              <h3 className="cardTitle">Private, ocean-facing living</h3>
               <p className="cardText">
-                Open areas balanced with intimate, quiet corners.
-                No forced movement. No crowding.
+                Minimal interiors, warm stone, soft linen — designed to disappear into the view.
               </p>
-            </div>
+              <span className="cardLink">Explore</span>
+            </a>
 
-            <div className="card">
-              <div className="cardLabel">SOUND</div>
-              <h3 className="cardTitle">Atmosphere, not noise</h3>
+            <a className="card" href="/spa">
+              <div className="cardLabel">SPA</div>
+              <h3 className="cardTitle">Rituals for body and breath</h3>
               <p className="cardText">
-                Ambient soundscapes that follow the day —
-                present, never dominant.
+                Slow therapies, ocean minerals, and restorative heat — guided by quiet expertise.
               </p>
-            </div>
+              <span className="cardLink">Discover</span>
+            </a>
 
-            <div className="card">
-              <div className="cardLabel">FOOD</div>
-              <h3 className="cardTitle">Ritual, not menu</h3>
+            <a className="card" href="/dine">
+              <div className="cardLabel">DINE</div>
+              <h3 className="cardTitle">Seasonal cuisine by the sea</h3>
               <p className="cardText">
-                Seasonal, elemental, and refined.
-                Designed to be enjoyed slowly.
+                Fire, salt, and local harvests — elegant meals that feel effortless.
               </p>
-            </div>
+              <span className="cardLink">Visit</span>
+            </a>
           </div>
         </div>
       </section>
 
-      {/* LOCATION — STATIC, CALM */}
-      <section className="section">
+      {/* GALLERY — STACKED */}
+      <section className="section sectionGallery">
         <div className="container">
-          <h2 className="h2">Location</h2>
+          <div className="galleryHeader">
+            <div className="eyebrow">GLIMPSES</div>
+            <h3 className="h3">Light, water, and texture</h3>
+          </div>
 
-          <p className="copy">
-            Perched above the Indian Ocean,
-            on a quiet edge of the island where cliffs meet open water.
-          </p>
-        </div>
+          <div className="galleryStack">
+            <figure className="galleryItem ocean is-left">
+              <img src="/gallery-1.jpg" alt="Ocean view" />
+            </figure>
 
-        <div className="mapBlock">
-          <img
-            className="mapImage"
-            src="/map-vanara.jpg"
-            alt="Vanara Resort & Spa location"
-          />
-          <div className="mapMeta">
-            <span className="mapTitle">Vanara Resort & Spa</span>
-            <span className="mapLocation">Uluwatu · Bali</span>
+            <figure className="galleryItem villa is-right">
+              <img src="/gallery-2.jpg" alt="Villa ritual" />
+            </figure>
+
+            <figure className="galleryItem dine is-center">
+              <img src="/gallery-3.jpg" alt="Dining atmosphere" />
+            </figure>
           </div>
         </div>
       </section>
 
-      {/* SINGLE CTA — AUTHORITY */}
-      <section className="section">
-        <div className="container" style={{ textAlign: "center" }}>
-          <a className="textCta" href="/connect">
-            Enquire
-          </a>
+      {/* EXPERIENCE */}
+      <section className="section sectionExperience">
+        <div className="container">
+          <div className="split">
+            <div>
+              <div className="eyebrow">EXPERIENCE</div>
+              <h3 className="h3">Curated days, quietly unforgettable</h3>
+              <div className="copy">
+                <p>
+                  Sunset cliff walks, ocean rituals, private dining, and guided stillness — choose a rhythm that feels
+                  like you.
+                </p>
+              </div>
+
+              <ul className="bullets">
+                <li>Cliffside sunrise meditation</li>
+                <li>Ocean sound bathing</li>
+                <li>Private chef’s table</li>
+                <li>Handcrafted local excursions</li>
+              </ul>
+
+              <a className="textCta" href="/experience">Explore experiences</a>
+            </div>
+
+            <div className="imagePlaceholder" aria-label="Experience image">
+              <img className="experienceImg" src="/experience.jpg" alt="Experience at Vanara" />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* FOOTER LINE */}
-      <footer className="footer">
-        <p className="footer-copy">
-          For those who listen to the ocean — not over it.
-        </p>
-      </footer>
+      {/* LOCATION + NEWSLETTER */}
+      <section className="section sectionBottom">
+        <div className="container">
+          <div className="grid2">
+            <div className="panel">
+              <div className="eyebrow">LOCATION</div>
+              <h3 className="h3">Uluwatu, Bali</h3>
+              <p className="panelText">
+                A quiet edge of the island — limestone cliffs, turquoise water, and warm evenings. Transfers and curated
+                arrivals available upon request.
+              </p>
+              <a className="textCta" href="/connect">Plan your arrival</a>
+            </div>
 
-    </main>
-  );
+            <div className="panel">
+              <div className="eyebrow">NEWSLETTER</div>
+              <h3 className="h3">A note from the coast</h3>
+              <p className="panelText">
+                Seasonal openings, villa stories, and experiences — sent rarely, always calm.
+              </p>
+
+              <form className="newsletter" action="#" method="post">
+                <input className="newsletterInput" type="email" placeholder="Email address" />
+                <button className="newsletterBtn" type="submit">Subscribe</button>
+              </form>
+
+              <div className="smallprint">No spam. Unsubscribe anytime.</div>
+            </div>
+          </div>
+        </div>
+      
+          {/* MAP */}
+          <div className="mapBlock">
+            <div className="mapShell">
+              <div className="mapPin" aria-hidden="true"><span /></div>
+              <iframe
+                className="mapFrame"
+                title="Vanara Resort & Spa location"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps?q=-8.84194133249861,115.11168032877258&z=17&output=embed"
+              />
+            </div>
+
+            <div className="mapLinks">
+              <a
+                className="textCta"
+                href="https://www.google.com/maps/place/VANARA+Resort+%26+Spa/@-8.8421164,115.1117122,17z"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View on Google Maps
+              </a>
+            </div>
+          </div>
+
+      </section>
+    </div>
+  )
 }

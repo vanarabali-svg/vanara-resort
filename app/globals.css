@@ -159,16 +159,19 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   height:100%;
   object-fit:cover;
   transform: scale(1.02);
+  filter: brightness(1.10) contrast(.98) saturate(1.06);
+  will-change: transform, filter;
 }
 
 .heroShade{
   position:absolute;
   inset:0;
+  /* light, airy gradient (does not darken the whole frame) */
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,.08),
-    rgba(0,0,0,.24),
-    rgba(0,0,0,.62)
+    rgba(255,255,255,.03),
+    rgba(0,0,0,.06) 45%,
+    rgba(0,0,0,.26)
   );
 }
 
@@ -810,11 +813,12 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
 
 /* Softer hero shade (refined) */
 .heroShade{
+  /* light, airy gradient (override) */
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,.05),
-    rgba(0,0,0,.22),
-    rgba(0,0,0,.58)
+    rgba(255,255,255,.03),
+    rgba(0,0,0,.06) 45%,
+    rgba(0,0,0,.26)
   );
 }
 
@@ -1126,7 +1130,6 @@ body.is-scrolled .nav{
 }
 .carouselHint code{
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  explains: none;
   background: rgba(0,0,0,.06);
   padding: 2px 6px;
   border-radius: 8px;
@@ -1250,9 +1253,71 @@ body.is-scrolled .nav{
 
 .experienceHeroLead{
   margin: 0;
-  max-width: 520px;
-  opacity: .92;
+  max-width: 560px;
+  font-size: 15px;
   line-height: 1.75;
+  opacity: .92;
+}
+
+@media (max-width: 768px){
+  .experienceHero{ height: 72vh; min-height: 460px; }
+  .experienceHeroContent{ left: 6%; right: 6%; bottom: 56px; }
+  .experienceHeroImg{ object-position: center 60%; }
+}
+
+/* =========================
+   LUXURY LOCATION MAP (exact pin)
+========================= */
+.sectionMap{
+  padding-top: 54px;
+  padding-bottom: 54px;
+}
+
+.mapShell{
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.20);
+  box-shadow: 0 16px 40px rgba(0,0,0,.06);
+  height: 420px;
+}
+
+.mapFrame{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: grayscale(1) contrast(1.05) brightness(.98) saturate(.65);
+}
+
+.mapPin{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:46px;
+  height:46px;
+  transform:translate(-50%,-100%);
+  pointer-events:none;
+}
+.mapPin span{
+  position:absolute;
+  inset:0;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.8);
+  background:rgba(0,0,0,.22);
+  box-shadow:0 10px 24px rgba(0,0,0,.18);
+}
+.mapPin::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:-12px;
+  width:10px;
+  height:10px;
+  transform:translateX(-50%) rotate(45deg);
+  background:rgba(0,0,0,.22);
+  border-right:1px solid rgba(255,255,255,.48);
+  border-bottom:1px solid rgba(255,255,255,.48);
 }
 
 /* =========================
@@ -1313,42 +1378,6 @@ body.is-scrolled .nav{
 }
 
 /* =========================
-   STATIC MAP (no API) — use /public/map-vanara.jpg
-   If you replace the iframe with an <img>, these styles apply.
-========================= */
-.mapImage{
-  width: 100%;
-  height: 100%;
-  display:block;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.05) brightness(1.02);
-  transform: scale(1.01);
-  transition: transform 1.2s ease, filter 1.2s ease;
-}
-.mapShell:hover .mapImage{
-  transform: scale(1.02);
-  filter: grayscale(0) contrast(1.08) brightness(1.04);
-}
-
-.mapMeta{
-  margin-top: 16px;
-  text-align: center;
-}
-.mapTitle{
-  display:block;
-  font-size: 11px;
-  letter-spacing: .30em;
-  text-transform: uppercase;
-  color: rgba(31,31,29,.78);
-}
-.mapLocation{
-  display:block;
-  margin-top: 8px;
-  font-size: 12px;
-  color: rgba(31,31,29,.58);
-}
-
-/* =========================
    EXPERIENCE CAROUSEL – LUXURY MODE
 ========================= */
 
@@ -1359,11 +1388,24 @@ body.is-scrolled .nav{
   gap: 10px;
 }
 .carouselDots .dot{
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: rgba(0,0,0,.16);
+  width: 6px;
+  height: 6px;
+  background: rgba(0,0,0,.25);
 }
 .carouselDots .dot.is-active{
-  background: rgba(0,0,0,.46);
+  background: rgba(0,0,0,.55);
+  transform: scale(1.2);
+}
+
+/* remove any arrow styles just in case */
+.carouselBtn{
+  display: none !important;
+}
+
+/* =========================
+   iOS VIDEO BRIGHTNESS FIX
+   (Mobile Safari dims video by default)
+========================= */
+@supports (-webkit-touch-callout: none){
+  .heroMedia{ filter: brightness(1.16) contrast(.98) saturate(1.08); }
 }
