@@ -6,10 +6,10 @@ export default function ExperiencePage() {
   const gallery = useMemo(
     () => [
       { src: '/gallery-1.jpg', alt: 'Ocean horizon at Vanara' },
-      { src: '/gallery-2.jpg', alt: 'Architecture and texture' },
-      { src: '/gallery-3.jpg', alt: 'Dining ritual at sunset' },
+      { src: '/experience-1.jpg', alt: 'Architecture and texture' },
+      { src: '/experience-2.jpg', alt: 'Dining ritual at sunset' },
       { src: '/experience.jpg', alt: 'Cliffside atmosphere' },
-      { src: '/wedding.jpg', alt: 'Intimate wedding above the ocean' },
+      { src: '/experience-3.jpg', alt: 'Intimate wedding above the ocean' },
     ],
     []
   )
@@ -156,7 +156,7 @@ export default function ExperiencePage() {
             <div className="luxCarouselFade luxCarouselFadeRight" aria-hidden="true" />
           </div>
 
-          <div className="luxHint">Drag / scroll to explore</div>
+          <div className="luxHint">Scroll</div>
         </div>
       </section>
 
