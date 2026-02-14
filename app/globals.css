@@ -159,19 +159,16 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   height:100%;
   object-fit:cover;
   transform: scale(1.02);
-  filter: brightness(1.10) contrast(.98) saturate(1.06);
-  will-change: transform, filter;
 }
 
 .heroShade{
   position:absolute;
   inset:0;
-  /* light, airy gradient (does not darken the whole frame) */
   background: linear-gradient(
     to bottom,
-    rgba(255,255,255,.03),
-    rgba(0,0,0,.06) 45%,
-    rgba(0,0,0,.26)
+    rgba(0,0,0,.08),
+    rgba(0,0,0,.24),
+    rgba(0,0,0,.62)
   );
 }
 
@@ -813,12 +810,11 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
 
 /* Softer hero shade (refined) */
 .heroShade{
-  /* light, airy gradient (override) */
   background: linear-gradient(
     to bottom,
-    rgba(255,255,255,.03),
-    rgba(0,0,0,.06) 45%,
-    rgba(0,0,0,.26)
+    rgba(0,0,0,.05),
+    rgba(0,0,0,.22),
+    rgba(0,0,0,.58)
   );
 }
 
@@ -1403,9 +1399,157 @@ body.is-scrolled .nav{
 }
 
 /* =========================
-   iOS VIDEO BRIGHTNESS FIX
-   (Mobile Safari dims video by default)
+   EXPERIENCE CAROUSEL – LUXURY MODE
 ========================= */
-@supports (-webkit-touch-callout: none){
-  .heroMedia{ filter: brightness(1.16) contrast(.98) saturate(1.08); }
+
+/* dots refinement */
+.carouselDots{
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
 }
+.carouselDots .dot{
+  width: 6px;
+  height: 6px;
+  background: rgba(0,0,0,.25);
+}
+.carouselDots .dot.is-active{
+  background: rgba(0,0,0,.55);
+  transform: scale(1.2);
+}
+
+/* remove any arrow styles just in case */
+.carouselBtn{
+  display: none !important;
+}
+/* =========================
+   EXPERIENCE HERO – MOBILE FIX
+========================= */
+@media (max-width: 768px){
+  .experienceHero{
+    height: auto;
+    min-height: 88svh; /* stable viewport height */
+  }
+
+  .experienceHeroImg{
+    object-position: center 62%;
+  }
+
+  .experienceHeroContent{
+    bottom: 48px;
+  }
+}
+
+/* ==================================================
+   LUXURY CAROUSEL (Index)
+   - No arrows (Aman-style restraint)
+   - Drag / trackpad scroll
+   - Scroll-snap for perfect stops
+================================================== */
+
+.sectionCarousel{
+  padding-top: 36px;
+}
+
+.carouselHead{
+  max-width: 860px;
+  margin: 0 auto 18px;
+}
+
+.luxCarousel{
+  position: relative;
+  margin: 0 auto;
+  max-width: 1100px;
+}
+
+.luxCarouselTrack{
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(78%, 72vw, 860px);
+  gap: 14px;
+
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 26px;
+  padding: 6px 26px 18px;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.luxCarouselTrack::-webkit-scrollbar{
+  height: 8px;
+}
+.luxCarouselTrack::-webkit-scrollbar-track{
+  background: rgba(0,0,0,.06);
+  border-radius: 999px;
+}
+.luxCarouselTrack::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,.18);
+  border-radius: 999px;
+}
+
+.luxSlide{
+  scroll-snap-align: start;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.22);
+  box-shadow: 0 18px 44px rgba(0,0,0,.07);
+}
+
+.luxSlide img{
+  width: 100%;
+  height: clamp(260px, 44vw, 520px);
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.01);
+}
+
+.luxCarouselFade{
+  position: absolute;
+  top: 6px;
+  bottom: 26px;
+  width: 56px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.luxCarouselFadeLeft{
+  left: 0;
+  background: linear-gradient(to right, rgba(246,241,232,1), rgba(246,241,232,0));
+}
+
+.luxCarouselFadeRight{
+  right: 0;
+  background: linear-gradient(to left, rgba(246,241,232,1), rgba(246,241,232,0));
+}
+
+.carouselNote{
+  max-width: 860px;
+  margin: 10px auto 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(31,31,29,.58);
+}
+
+.carouselNote strong{
+  font-weight: 500;
+  color: rgba(31,31,29,.74);
+}
+
+@media (max-width: 768px){
+  .luxCarouselTrack{
+    grid-auto-columns: 88%;
+    padding: 6px 18px 16px;
+    scroll-padding: 18px;
+  }
+  .luxCarouselFade{
+    width: 36px;
+  }
+  .luxSlide img{
+    height: 320px;
+  }
+}
+

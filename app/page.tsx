@@ -3,7 +3,18 @@ export default function HomePage() {
     <div className="home">
       {/* HERO */}
       <section className="hero">
-        <video className="heroMedia" src="/hero.mp4" autoPlay muted loop playsInline />
+        <video
+          className="heroMedia"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/hero-poster.jpg"
+        >
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+
         <div className="heroShade" />
 
         <div className="heroContent">
@@ -12,7 +23,7 @@ export default function HomePage() {
           <h1 className="heroTitle">Vanara Resort &amp; Spa</h1>
 
           <p className="heroSub">
-            Minimalist luxury above the ocean — a sanctuary shaped by nature.
+            Minimalist luxury above the ocean — a sanctuary shaped by light, stone, and silence.
           </p>
 
           <div className="heroLinks">
@@ -38,8 +49,30 @@ export default function HomePage() {
               Private villas open to sea air; pathways lead to shaded courts, cliffside pools, and restorative spaces.
               Everything is intentional: calm lines, natural textures, and moments of silence between waves.
             </p>
+            <p>
+              Here, luxury is not loud. It lives in spaciousness, in discreet service, and in the way each view is framed.
+            </p>
           </div>
 
+          <div className="rule" />
+        </div>
+      </section>
+
+      {/* PHILOSOPHY */}
+      <section className="section">
+        <div className="container">
+          <div className="eyebrow">PHILOSOPHY</div>
+          <h3 className="h3">Designed for stillness</h3>
+          <div className="copy">
+            <p>
+              Vanara is built around a simple idea: the ocean is the main event. Interiors remain quiet so nature can
+              speak — warm neutrals, natural textures, and soft edges that invite you to slow down.
+            </p>
+            <p>
+              Days are intentionally unhurried. You can do very little and feel completely full — a long swim, a spa
+              ritual, a meal by candlelight, then silence.
+            </p>
+          </div>
           <div className="rule" />
         </div>
       </section>
@@ -99,20 +132,27 @@ export default function HomePage() {
               <img src="/gallery-3.jpg" alt="Dining atmosphere" />
             </figure>
           </div>
+
+          <div className="copy" style={{ marginTop: 22 }}>
+            <p>
+              A palette of sand, stone, and sea. Minimalism here is not an aesthetic — it is a way to create room for
+              breath, light, and the quiet rhythm of tides.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* EXPERIENCE */}
+      {/* EXPERIENCE PREVIEW */}
       <section className="section sectionExperience">
         <div className="container">
           <div className="split">
             <div>
               <div className="eyebrow">EXPERIENCE</div>
-              <h3 className="h3">Curated days, quietly unforgettable</h3>
+              <h3 className="h3">The day, unhurried</h3>
               <div className="copy">
                 <p>
-                  Sunset cliff walks, ocean rituals, private dining, and guided stillness — choose a rhythm that feels
-                  like you.
+                  Sunrise silence. Warm water. Slow dining. Evenings that arrive softly.
+                  Choose a rhythm that feels like you — and let everything else fall away.
                 </p>
               </div>
 
@@ -133,6 +173,45 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ✅ WEDDINGS — NEW (Luxury / Aman-style) */}
+      <section className="section sectionWeddings" id="weddings">
+        <div className="container">
+          <div className="split">
+            <div>
+              <div className="eyebrow">WEDDINGS</div>
+              <h3 className="h3">Celebrations, quietly elevated</h3>
+
+              <div className="copy">
+                <p>
+                  Vanara is an intimate setting for weddings and private celebrations — a ceremony above the ocean,
+                  followed by candlelit dining in a calm, private atmosphere.
+                </p>
+                <p>
+                  We curate the details with discretion: timing, sound, florals, lighting, and service —
+                  refined, minimal, and never excessive.
+                </p>
+              </div>
+
+              <ul className="bullets">
+                <li>Cliffside ceremony at golden hour</li>
+                <li>Private dinner reception (chef-led)</li>
+                <li>Minimal floral styling &amp; table design</li>
+                <li>Sound, lighting &amp; sunset setup</li>
+                <li>Villa buyout options (upon request)</li>
+                <li>Photography-friendly pacing (no rush)</li>
+              </ul>
+
+              <a className="textCta" href="/connect">Enquire about weddings</a>
+            </div>
+
+            <div className="imagePlaceholder" aria-label="Wedding image">
+              {/* Add /public/wedding.jpg (or replace with your filename) */}
+              <img className="experienceImg" src="/wedding.jpg" alt="Wedding at Vanara" />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* LOCATION + NEWSLETTER */}
       <section className="section sectionBottom">
         <div className="container">
@@ -143,6 +222,10 @@ export default function HomePage() {
               <p className="panelText">
                 A quiet edge of the island — limestone cliffs, turquoise water, and warm evenings. Transfers and curated
                 arrivals available upon request.
+              </p>
+              <p className="panelText">
+                Close enough for exploration, far enough to feel private. We can arrange drivers, surf breaks, temple
+                visits, and hidden coastal paths.
               </p>
               <a className="textCta" href="/connect">Plan your arrival</a>
             </div>
@@ -163,32 +246,31 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      
-          {/* MAP */}
-          <div className="mapBlock">
-            <div className="mapShell">
-              <div className="mapPin" aria-hidden="true"><span /></div>
-              <iframe
-                className="mapFrame"
-                title="Vanara Resort & Spa location"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps?q=-8.84194133249861,115.11168032877258&z=17&output=embed"
-              />
-            </div>
 
-            <div className="mapLinks">
-              <a
-                className="textCta"
-                href="https://www.google.com/maps/place/VANARA+Resort+%26+Spa/@-8.8421164,115.1117122,17z"
-                target="_blank"
-                rel="noreferrer"
-              >
-                View on Google Maps
-              </a>
-            </div>
+        {/* MAP */}
+        <div className="mapBlock">
+          <div className="mapShell">
+            <div className="mapPin" aria-hidden="true"><span /></div>
+            <iframe
+              className="mapFrame"
+              title="Vanara Resort & Spa location"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=-8.84194133249861,115.11168032877258&z=17&output=embed"
+            />
           </div>
 
+          <div className="mapLinks">
+            <a
+              className="textCta"
+              href="https://www.google.com/maps/place/VANARA+Resort+%26+Spa/@-8.8421164,115.1117122,17z"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View on Google Maps
+            </a>
+          </div>
+        </div>
       </section>
     </div>
   )
