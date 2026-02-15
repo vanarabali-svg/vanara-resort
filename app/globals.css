@@ -2292,7 +2292,19 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
 @media (max-width: 420px){
   .hero.hero--ss .heroTitle{
     /* keep it one line on very small screens */
-    font-size: clamp(28px, 8.4vw, 44px);
+    font-size: clamp(18px, 7.0vw, 40px);
+    letter-spacing: -0.01em;
+  }
+}
+
+@media (max-width: 360px){
+  .hero.hero--ss .heroContent{
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .hero.hero--ss .heroTitle{
+    font-size: clamp(16px, 6.4vw, 34px);
+    letter-spacing: -0.02em;
   }
 }
 
