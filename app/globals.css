@@ -2255,6 +2255,7 @@ body.is-scrolled .nav{
   font-size: clamp(46px, 5.2vw, 84px);
   line-height: 1.03;
   margin: 0;
+  white-space: nowrap; /* keep “Vanara Resort & Spa” on one line */
 }
 
 /* If any dots exist from older builds, keep hidden */
@@ -2276,6 +2277,14 @@ body.is-scrolled .nav{
   .hero.hero--ss .heroTitle{
     font-size: clamp(38px, 9.2vw, 56px);
     line-height: 1.05;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 420px){
+  .hero.hero--ss .heroTitle{
+    /* extra safety to prevent wrapping on very small screens */
+    font-size: clamp(30px, 10vw, 44px);
   }
 }
 
