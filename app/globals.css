@@ -2224,6 +2224,24 @@ body.is-scrolled .nav{
   }
 }
 
+/* ==================================================
+   HERO TOP TEXT MINIMAL (ULUWATU + VANARA)
+   - Only small location + brand name at top
+================================================== */
+.hero.hero--ss .heroContent{
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  max-width: 760px;
+  text-align: center;
+  align-items: center;
+  padding-left: 26px;
+  padding-right: 26px;
+  padding-bottom: 0;
+}
+
 .hero.hero--ss .heroKicker{
   letter-spacing: .28em;
   text-transform: uppercase;
@@ -2233,70 +2251,64 @@ body.is-scrolled .nav{
 }
 
 .hero.hero--ss .heroTitle{
-  font-size: clamp(28px, 3.2vw, 44px);
-  line-height: 1.08;
+  /* bigger, more cinematic hero title */
+  font-size: clamp(46px, 5.2vw, 84px);
+  line-height: 1.03;
   margin: 0;
 }
 
 /* If any dots exist from older builds, keep hidden */
-
+.hero.hero--ss .ssHeroDots{ display:none !important; }
 
 @media (max-width: 768px){
   .hero.hero--ss .heroContent{
-    top: 18px;
-    left: 18px;
-    max-width: 78vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 92vw;
+    padding-left: 18px;
+    padding-right: 18px;
   }
   .hero.hero--ss .heroKicker{
-    font-size: 10px;
+    font-size: 11px;
+  }
+
+  .hero.hero--ss .heroTitle{
+    font-size: clamp(38px, 9.2vw, 56px);
+    line-height: 1.05;
   }
 }
 
 /* ==================================================
-   HERO TEXT POSITION (SIX SENSES BOTTOM-LEFT)
-   Only: ULUWATU · BALI + Vanara Resort & Spa
+   HERO SLIDER TRANSITION (SIX SENSES CROSSFADE)
+   - Real crossfade (prev stays visible while active fades in)
+   - Zoom only on active
 ================================================== */
-.hero.hero--ss .heroContent{
-  left: 44px;
-  bottom: 120px;
-  top: auto;
-  right: auto;
-  max-width: 680px;
-  text-align: left;
+
+.ssHeroSlide{
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 900ms ease;
+  transform: scale(1.05);
+  animation: none;
 }
 
-.hero.hero--ss .heroKicker{
-  letter-spacing: .32em;
-  text-transform: uppercase;
-  font-size: 11px;
-  opacity: .85;
-  margin-bottom: 14px;
+/* previous slide stays visible during transition */
+.ssHeroSlide.is-prev{
+  opacity: 1;
+  z-index: 1;
+  animation: none;
+  transform: scale(1.06);
 }
 
-.hero.hero--ss .heroTitle{
-  font-size: clamp(34px, 4vw, 56px);
-  line-height: 1.05;
-  margin: 0;
-  text-shadow: 0 10px 40px rgba(0,0,0,.35);
+/* active slide fades in and zooms */
+.ssHeroSlide.is-active{
+  opacity: 1;
+  z-index: 2;
+  animation: ssKenBurns 8.2s ease-out forwards;
 }
 
-/* Move dots slightly below the text (like Six Senses) */
-.hero.hero--ss .ssHeroDots{
-  left: 44px;
-  bottom: 54px;
-}
-
-@media (max-width: 768px){
-  .hero.hero--ss .heroContent{
-    left: 22px;
-    bottom: 92px;
-    max-width: 82vw;
-  }
-  .hero.hero--ss .ssHeroDots{
-    left: 22px;
-    bottom: 34px;
-  }
-  .hero.hero--ss .heroTitle{
-    font-size: clamp(28px, 6vw, 36px);
-  }
+@keyframes ssKenBurns{
+  0%   { transform: scale(1.05); }
+  100% { transform: scale(1.16); }
 }

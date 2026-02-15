@@ -14,50 +14,56 @@ function HeroSlider() {
   )
 
   const [active, setActive] = useState(0)
-  const [tick, setTick] = useState(0) // restart zoom animation
+  const [prev, setPrev] = useState<number | null>(null)
+  const [zoomKey, setZoomKey] = useState(0) // restart zoom only on the active slide
   const pausedRef = useRef(false)
   const touchStartX = useRef<number | null>(null)
-
   const total = slides.length
 
-  const go = (next: number) => {
-    const n = (next + total) % total
+  const go = (nextIndex: number) => {
+    const n = (nextIndex + total) % total
+    setPrev(active)
     setActive(n)
-    setTick((t) => t + 1)
+    setZoomKey((k) => k + 1)
+    // clear prev after fade duration so it can fade out cleanly
+    window.setTimeout(() => setPrev(null), 950)
   }
 
   const next = () => go(active + 1)
-  const prev = () => go(active - 1)
+  const prevSlide = () => go(active - 1)
 
+  // Auto-advance (Six Senses pacing)
   useEffect(() => {
     const id = window.setInterval(() => {
       if (pausedRef.current) return
       next()
-    }, 7800)
+    }, 8200)
     return () => window.clearInterval(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active])
 
+  // Keyboard arrows
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') next()
-      if (e.key === 'ArrowLeft') prev()
+      if (e.key === 'ArrowLeft') prevSlide()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active])
 
-  const onTouchStart = (e: React.TouchEvent) => {
+  // Touch swipe
+  const onTouchStart = (e: TouchEvent<HTMLElement>) => {
     pausedRef.current = true
     touchStartX.current = e.touches[0]?.clientX ?? null
   }
-  const onTouchMove = (e: React.TouchEvent) => {
+  const onTouchMove = (e: TouchEvent<HTMLElement>) => {
     if (touchStartX.current == null) return
     const x = e.touches[0]?.clientX ?? touchStartX.current
     const dx = x - touchStartX.current
     if (Math.abs(dx) > 42) {
-      if (dx > 0) prev()
+      if (dx > 0) prevSlide()
       else next()
       touchStartX.current = null
     }
@@ -77,21 +83,27 @@ function HeroSlider() {
       onTouchEnd={onTouchEnd}
     >
       <div className="ssHeroStage" aria-hidden="true">
-        {slides.map((s, i) => (
-          <div
-            key={`${i}-${active}-${tick}`}
-            className={`ssHeroSlide ${i === active ? 'is-active' : ''}`}
-            style={{ backgroundImage: `url(${s.src})` }}
-            aria-hidden="true"
-          />
-        ))}
+        {slides.map((s, i) => {
+          const isActive = i === active
+          const isPrev = prev !== null && i === prev
+          return (
+            <div
+              key={isActive ? `${i}-${zoomKey}` : i}
+              className={`ssHeroSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}
+              style={{ backgroundImage: `url(${s.src})` }}
+              aria-hidden="true"
+            />
+          )
+        })}
       </div>
 
       <div className="heroShade" />
 
-      <button className="ssHeroNav ssHeroNav--prev" aria-label="Previous photo" onClick={prev} />
+      {/* click zones */}
+      <button className="ssHeroNav ssHeroNav--prev" aria-label="Previous photo" onClick={prevSlide} />
       <button className="ssHeroNav ssHeroNav--next" aria-label="Next photo" onClick={next} />
 
+      {/* dots */}
       <div className="ssHeroDots" aria-label="Hero pagination">
         {slides.map((_, i) => (
           <button
