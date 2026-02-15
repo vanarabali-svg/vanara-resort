@@ -2291,20 +2291,20 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
 
 @media (max-width: 420px){
   .hero.hero--ss .heroTitle{
-    /* keep it one line on very small screens */
-    font-size: clamp(18px, 7.0vw, 40px);
+    /* phones: keep ONE line but reduce size so it doesn't get clipped */
+    font-size: clamp(22px, 6.9vw, 34px);
     letter-spacing: -0.01em;
+    white-space: nowrap;
+    text-wrap: nowrap;
   }
 }
 
 @media (max-width: 360px){
-  .hero.hero--ss .heroContent{
-    padding-left: 14px;
-    padding-right: 14px;
-  }
+  /* ultra-small phones: allow a soft wrap rather than clipping */
   .hero.hero--ss .heroTitle{
-    font-size: clamp(16px, 6.4vw, 34px);
-    letter-spacing: -0.02em;
+    white-space: normal;
+    text-wrap: balance;
+    line-height: 1.08;
   }
 }
 
