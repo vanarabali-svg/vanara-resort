@@ -11,7 +11,7 @@ export default function AboutPage() {
     <main className="home">
       {/* HERO */}
       <section className="hero hero--short">
-        <img className="heroImage" src="/about1.jpg" alt="Ocean horizon at Vanara" />
+        <img className="heroImage" src="/about-1.jpg" alt="Ocean horizon at Vanara" />
         <div className="heroShade" />
 
         <div className="heroContent">
@@ -86,7 +86,7 @@ export default function AboutPage() {
             </div>
 
             <div className="imagePlaceholder" aria-label="Architecture image">
-              <img className="experienceImg" src="/about3.jpg" alt="Architecture and texture" />
+              <img className="experienceImg" src="/about-2.jpg" alt="Architecture and texture" />
             </div>
           </div>
         </div>
@@ -129,7 +129,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* TEAM */}
+            {/* TEAM */}
       <section className="section" id="team" style={{ paddingTop: 92, paddingBottom: 92 }}>
         <div className="container">
           <div className="split" style={{ alignItems: 'center', gap: 40 }}>
@@ -167,7 +167,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* GLIMPSES */}
+{/* GLIMPSES */}
       <section className="section sectionGallery">
         <div className="container">
           <div className="galleryHeader">
@@ -177,15 +177,15 @@ export default function AboutPage() {
 
           <div className="galleryStack">
             <figure className="galleryItem ocean is-left">
-              <img src="/gallery-1.jpg" alt="Ocean view" loading="lazy" />
+              <img src="/about-1.jpg" alt="Ocean view" loading="lazy" />
             </figure>
 
             <figure className="galleryItem villa is-right">
-              <img src="/gallery-2.jpg" alt="Villa atmosphere" loading="lazy" />
+              <img src="/about-2.jpg" alt="Villa atmosphere" loading="lazy" />
             </figure>
 
             <figure className="galleryItem dine is-center">
-              <img src="/gallery-3.jpg" alt="Dining atmosphere" loading="lazy" />
+              <img src="/about-3.jpg" alt="Dining atmosphere" loading="lazy" />
             </figure>
           </div>
 

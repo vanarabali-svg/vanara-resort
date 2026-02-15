@@ -1,38 +1,121 @@
+'use client'
+import { useEffect, useMemo, useRef, useState } from 'react'
+
+function HeroSlider() {
+  const slides = useMemo(
+    () => [
+      { src: '/hero1.jpg', alt: 'Vanara hero 1' },
+      { src: '/hero2.jpg', alt: 'Vanara hero 2' },
+      { src: '/hero3.jpg', alt: 'Vanara hero 3' },
+      { src: '/hero4.jpg', alt: 'Vanara hero 4' },
+      { src: '/hero5.jpg', alt: 'Vanara hero 5' },
+    ],
+    []
+  )
+
+  const [active, setActive] = useState(0)
+  const [tick, setTick] = useState(0) // restart zoom animation
+  const pausedRef = useRef(false)
+  const touchStartX = useRef<number | null>(null)
+
+  const total = slides.length
+
+  const go = (next: number) => {
+    const n = (next + total) % total
+    setActive(n)
+    setTick((t) => t + 1)
+  }
+
+  const next = () => go(active + 1)
+  const prev = () => go(active - 1)
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      if (pausedRef.current) return
+      next()
+    }, 7800)
+    return () => window.clearInterval(id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') next()
+      if (e.key === 'ArrowLeft') prev()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active])
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    pausedRef.current = true
+    touchStartX.current = e.touches[0]?.clientX ?? null
+  }
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (touchStartX.current == null) return
+    const x = e.touches[0]?.clientX ?? touchStartX.current
+    const dx = x - touchStartX.current
+    if (Math.abs(dx) > 42) {
+      if (dx > 0) prev()
+      else next()
+      touchStartX.current = null
+    }
+  }
+  const onTouchEnd = () => {
+    touchStartX.current = null
+    pausedRef.current = false
+  }
+
+  return (
+    <section
+      className="hero hero--ss"
+      onMouseEnter={() => (pausedRef.current = true)}
+      onMouseLeave={() => (pausedRef.current = false)}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      <div className="ssHeroStage" aria-hidden="true">
+        {slides.map((s, i) => (
+          <div
+            key={`${i}-${active}-${tick}`}
+            className={`ssHeroSlide ${i === active ? 'is-active' : ''}`}
+            style={{ backgroundImage: `url(${s.src})` }}
+            aria-hidden="true"
+          />
+        ))}
+      </div>
+
+      <div className="heroShade" />
+
+      <button className="ssHeroNav ssHeroNav--prev" aria-label="Previous photo" onClick={prev} />
+      <button className="ssHeroNav ssHeroNav--next" aria-label="Next photo" onClick={next} />
+
+      <div className="ssHeroDots" aria-label="Hero pagination">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            className={`ssDot ${i === active ? 'is-active' : ''}`}
+            aria-label={`Go to slide ${i + 1}`}
+            onClick={() => go(i)}
+          />
+        ))}
+      </div>
+
+      <div className="heroContent">
+        <div className="heroKicker">ULUWATU · BALI</div>
+        <h1 className="heroTitle">Vanara Resort &amp; Spa</h1>
+      </div>
+    </section>
+  )
+}
+
 export default function HomePage() {
   return (
     <div className="home">
       {/* HERO */}
-      <section className="hero">
-        <video
-          className="heroMedia"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="/hero-poster.jpg"
-        >
-          <source src="/hero.mp4" type="video/mp4" />
-        </video>
-
-        <div className="heroShade" />
-
-        <div className="heroContent">
-          <div className="heroKicker">ULUWATU · BALI</div>
-
-          <h1 className="heroTitle">Vanara Resort &amp; Spa</h1>
-
-          <p className="heroSub">
-            Minimalist luxury above the ocean — a sanctuary shaped by light, stone, and silence.
-          </p>
-
-          <div className="heroLinks">
-            <a className="heroLink" href="/accommodation">Explore villas</a>
-            <a className="heroLink" href="/experience">Discover experiences</a>
-            <a className="heroLink" href="/spa">Spa &amp; rituals</a>
-          </div>
-        </div>
-      </section>
+                  <HeroSlider />
 
       {/* INTRO */}
       <section className="section sectionIntro">

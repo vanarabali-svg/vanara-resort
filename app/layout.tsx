@@ -53,8 +53,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="nav">
           <div className="nav-inner">
             <div className="nav-left">
-              <button className="icon-pill" type="button" onClick={() => setMenuOpen(true)} aria-label="Open menu">
-                <span className="burger" aria-hidden="true" />
+              <button className="ss-menuBtn" type="button" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+                <span className="ss-burger" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </span>
               </button>
 
               <button className="icon-pill" type="button" onClick={() => setSearchOpen(true)} aria-label="Search">
