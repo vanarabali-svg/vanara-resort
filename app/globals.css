@@ -1948,24 +1948,29 @@ body.is-scrolled .nav{
    SIX SENSES-INSPIRED HAMBURGER (DIFFERENT ICON)
    3 hairlines, varied lengths, no pill
 ================================================== */
-.ss-menuBtn{
-  width: 44px;
-  height: 44px;
+
+/* Default (on hero): white + bigger */
+.nav .ss-menuBtn{
+  width: 56px;
+  height: 56px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   border: 0;
   background: transparent;
-  color: currentColor;
+  color: #fff;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
+/* After scroll: match ink */
+body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
+
 .ss-burger{
-  width: 22px;
-  height: 14px;
+  width: 28px;
+  height: 18px;
   display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1973,22 +1978,22 @@ body.is-scrolled .nav{
 
 .ss-burger span{
   display: block;
-  height: 1px;
+  height: 2px;
   background: currentColor;
-  border-radius: 2px;
+  border-radius: 999px;
   opacity: .92;
   transition: transform .28s ease, opacity .28s ease;
 }
 
 /* Luxury signature lengths */
-.ss-burger span:nth-child(1){ width: 22px; }
-.ss-burger span:nth-child(2){ width: 14px; align-self: flex-end; opacity: .80; }
-.ss-burger span:nth-child(3){ width: 18px; }
+.ss-burger span:nth-child(1){ width: 28px; }
+.ss-burger span:nth-child(2){ width: 18px; align-self: flex-end; opacity: .80; }
+.ss-burger span:nth-child(3){ width: 22px; }
 
 @media (hover:hover){
-  .ss-menuBtn:hover .ss-burger span:nth-child(1){ transform: translateX(2px); }
-  .ss-menuBtn:hover .ss-burger span:nth-child(2){ transform: translateX(-1px); }
-  .ss-menuBtn:hover .ss-burger span:nth-child(3){ transform: translateX(1px); }
+  .ss-menuBtn:hover .ss-burger span:nth-child(1){ transform: translateX(3px); }
+  .ss-menuBtn:hover .ss-burger span:nth-child(2){ transform: translateX(-2px); }
+  .ss-menuBtn:hover .ss-burger span:nth-child(3){ transform: translateX(2px); }
 }
 
 /* ==================================================
@@ -2255,7 +2260,9 @@ body.is-scrolled .nav{
   font-size: clamp(46px, 5.2vw, 84px);
   line-height: 1.03;
   margin: 0;
-  white-space: nowrap; /* keep “Vanara Resort & Spa” on one line */
+  white-space: nowrap;
+  text-wrap: nowrap;
+  max-width: none;
 }
 
 /* If any dots exist from older builds, keep hidden */
@@ -2278,13 +2285,14 @@ body.is-scrolled .nav{
     font-size: clamp(38px, 9.2vw, 56px);
     line-height: 1.05;
     white-space: nowrap;
+    text-wrap: nowrap;
   }
 }
 
 @media (max-width: 420px){
   .hero.hero--ss .heroTitle{
-    /* extra safety to prevent wrapping on very small screens */
-    font-size: clamp(30px, 10vw, 44px);
+    /* keep it one line on very small screens */
+    font-size: clamp(28px, 8.4vw, 44px);
   }
 }
 
