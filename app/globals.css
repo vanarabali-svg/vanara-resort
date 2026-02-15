@@ -2282,7 +2282,7 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   }
 
   .hero.hero--ss .heroTitle{
-    font-size: clamp(28px, 8vw, 44px);
+    font-size: clamp(38px, 9.2vw, 56px);
     line-height: 1.05;
     white-space: nowrap;
     text-wrap: nowrap;
@@ -2290,22 +2290,29 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
 }
 
 @media (max-width: 420px){
+  .hero.hero--ss .heroContent{
+    max-width: none;
+    width: calc(100vw - 28px);
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
   .hero.hero--ss .heroTitle{
-    /* phones: force 1 line and make smaller so the full title fits */
-    font-size: clamp(16px, 5.6vw, 24px);
-    letter-spacing: -0.02em;
+    /* iPhone-sized screens: smaller so the full line fits */
+    font-size: clamp(16px, 5.4vw, 22px);
+    letter-spacing: -0.015em;
     white-space: nowrap;
     text-wrap: nowrap;
   }
 }
 
 @media (max-width: 360px){
+
+  /* ultra-small phones: allow a soft wrap rather than clipping */
   .hero.hero--ss .heroTitle{
-    /* very small phones: even smaller (still 1 line) */
-    font-size: clamp(14px, 5.2vw, 20px);
-    letter-spacing: -0.025em;
-    white-space: nowrap;
-    text-wrap: nowrap;
+    white-space: normal;
+    text-wrap: balance;
+    line-height: 1.08;
   }
 }
 
