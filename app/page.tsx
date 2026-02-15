@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type TouchEvent as ReactTouchEvent } from 'react'
 
 function HeroSlider() {
   const slides = useMemo(
@@ -54,11 +54,11 @@ function HeroSlider() {
   }, [active])
 
   // Touch swipe
-  const onTouchStart = (e: TouchEvent<HTMLElement>) => {
+  const onTouchStart = (e: ReactTouchEvent<HTMLElement>) => {
     pausedRef.current = true
     touchStartX.current = e.touches[0]?.clientX ?? null
   }
-  const onTouchMove = (e: TouchEvent<HTMLElement>) => {
+  const onTouchMove = (e: ReactTouchEvent<HTMLElement>) => {
     if (touchStartX.current == null) return
     const x = e.touches[0]?.clientX ?? touchStartX.current
     const dx = x - touchStartX.current
