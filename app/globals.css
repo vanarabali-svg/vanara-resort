@@ -2239,11 +2239,6 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   right: auto;
   bottom: auto;
   transform: translate(-50%, -50%);
-  /* IMPORTANT: keep hero text fully visible on mobile.
-     Constrain the element to the viewport using border-box sizing,
-     so padding does not push it wider than the screen (which would clip with overflow:hidden). */
-  box-sizing: border-box;
-  width: min(760px, calc(100vw - 52px));
   max-width: 760px;
   text-align: center;
   align-items: center;
@@ -2267,9 +2262,7 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   margin: 0;
   white-space: nowrap;
   text-wrap: nowrap;
-  /* keep within viewport */
-  max-width: 100%;
-  display: inline-block;
+  max-width: none;
 }
 
 /* If any dots exist from older builds, keep hidden */
@@ -2280,9 +2273,7 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    box-sizing: border-box;
-    width: calc(100vw - 36px);
-    max-width: none;
+    max-width: 92vw;
     padding-left: 18px;
     padding-right: 18px;
   }
@@ -2291,7 +2282,7 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   }
 
   .hero.hero--ss .heroTitle{
-    font-size: clamp(38px, 9.2vw, 56px);
+    font-size: clamp(28px, 8vw, 44px);
     line-height: 1.05;
     white-space: nowrap;
     text-wrap: nowrap;
@@ -2300,20 +2291,21 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
 
 @media (max-width: 420px){
   .hero.hero--ss .heroTitle{
-    /* phones: keep ONE line but reduce size so it doesn't get clipped */
-    font-size: clamp(20px, 6.6vw, 30px);
-    letter-spacing: -0.015em;
+    /* phones: force 1 line and make smaller so the full title fits */
+    font-size: clamp(16px, 5.6vw, 24px);
+    letter-spacing: -0.02em;
     white-space: nowrap;
     text-wrap: nowrap;
   }
 }
 
 @media (max-width: 360px){
-  /* ultra-small phones: allow a soft wrap rather than clipping */
   .hero.hero--ss .heroTitle{
-    white-space: normal;
-    text-wrap: balance;
-    line-height: 1.08;
+    /* very small phones: even smaller (still 1 line) */
+    font-size: clamp(14px, 5.2vw, 20px);
+    letter-spacing: -0.025em;
+    white-space: nowrap;
+    text-wrap: nowrap;
   }
 }
 
