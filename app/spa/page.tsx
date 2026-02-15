@@ -19,19 +19,19 @@ export default function SpaPage() {
       {
         label: 'MINERALS',
         title: 'Ocean Mineral Reset',
-        text: 'A slow, full-body ritual using warm minerals and rhythmic massage — designed to soften the nervous system.',
+        text: 'Warm minerals and slow massage. A long exhale.',
         meta: '90 min',
       },
       {
         label: 'HEAT',
         title: 'Warm Stone Release',
-        text: 'Basalt warmth, long strokes, and quiet pressure to dissolve tension from shoulders, back, and hips.',
+        text: 'Basalt heat, long strokes, quiet release.',
         meta: '75 min',
       },
       {
         label: 'BREATH',
         title: 'Breath & Bodywork',
-        text: 'A grounding blend of breathwork, stretching, and bodywork — steadying, calming, and deeply restorative.',
+        text: 'Breathwork with gentle stretch. Settle and soften.',
         meta: '60 min',
       },
     ],
@@ -43,51 +43,44 @@ export default function SpaPage() {
       {
         title: 'Balinese Flow Massage',
         duration: '60 / 90 min',
-        subtitle: 'Slow, traditional, unhurried.',
-        body:
-          'Long, continuous strokes and gentle acupressure calm the body and smooth the breath. A quiet, classic treatment that feels like being returned to balance.',
-        idealFor: ['Jet lag', 'Restless sleep', 'First day reset'],
-        includes: ['Foot cleanse + warm towel', 'Aromatherapy selection', 'Calming tea in the lounge'],
+        subtitle: 'Slow and traditional.',
+        body: 'Long strokes and gentle pressure to return the body to calm.',
+        idealFor: ['Jet lag', 'Restless sleep'],
       },
       {
         title: 'Deep Tissue & Stretch',
         duration: '75 / 90 min',
-        subtitle: 'Focused pressure for true release.',
-        body:
-          'Targeted work for shoulders, back, hips, and legs — paired with slow assisted stretches. Stronger where needed, always controlled and mindful.',
-        idealFor: ['Training fatigue', 'Long travel', 'Neck + shoulder tension'],
+        subtitle: 'Precise and grounded.',
+        body: 'Focused work for back, shoulders, hips, and legs — with assisted stretch.',
+        idealFor: ['Tension', 'Training fatigue'],
       },
       {
         title: 'Mineral Body Polish',
         duration: '60 min',
-        subtitle: 'Glow without noise.',
-        body:
-          'A gentle exfoliation with ocean minerals and botanical oils, followed by a hydrating finish. Skin feels clean, warm, and quietly radiant.',
-        idealFor: ['Pre-dinner glow', 'Dry coastal skin', 'A fresh start'],
+        subtitle: 'Clean glow.',
+        body: 'Ocean minerals and botanical oils. Smooth skin, warm finish.',
+        idealFor: ['Dry skin', 'Fresh start'],
       },
       {
         title: 'Botanical Facial',
         duration: '60 / 75 min',
-        subtitle: 'Clean care, calm touch.',
-        body:
-          'A tailored facial that focuses on hydration, barrier support, and circulation. Expect slow massage, warm compresses, and simple, effective steps.',
-        idealFor: ['Dehydration', 'Sensitivity', 'Travel-worn skin'],
+        subtitle: 'Simple, effective care.',
+        body: 'Hydration, barrier support, and slow facial massage.',
+        idealFor: ['Dehydration', 'Sensitivity'],
       },
       {
         title: 'After-Surf Recovery',
         duration: '60 / 90 min',
-        subtitle: 'Legs, back, and salt-tired muscles.',
-        body:
-          'Cooling-to-warm contrast, focused leg work, and gentle mobility. Built for those who spent the day in sun, sea, and movement.',
-        idealFor: ['Surf + swim recovery', 'Sun fatigue', 'Lower-body tightness'],
+        subtitle: 'For salt-tired muscles.',
+        body: 'Cooling-to-warm contrast and lower-body release after sun and sea.',
+        idealFor: ['Soreness', 'Sun fatigue'],
       },
       {
         title: 'Couples Ritual',
         duration: '75 / 90 min',
         subtitle: 'Two tables, one pace.',
-        body:
-          'Side-by-side bodywork in a quiet suite — aligned pressure, shared silence, and an unhurried finish. A simple, intimate ritual.',
-        idealFor: ['Anniversaries', 'A calm shared reset', 'Honeymoon stays'],
+        body: 'Side-by-side bodywork in a quiet suite. Unhurried and intimate.',
+        idealFor: ['Anniversaries', 'Honeymoon'],
       },
     ],
     []
@@ -95,9 +88,9 @@ export default function SpaPage() {
 
   const addOns = useMemo(
     () => [
-      { title: 'Scalp & Temple Release', duration: '15 min', note: 'A quiet finish for clarity and calm.' },
-      { title: 'Foot Ritual', duration: '20 min', note: 'Warm soak, scrub, and slow pressure points.' },
-      { title: 'Thermal Circuit', duration: '45 min', note: 'Steam, rinse, cold, mineral warmth — guided and unhurried.' },
+      { title: 'Scalp & Temple', duration: '15 min', note: 'Clear the mind.' },
+      { title: 'Foot Ritual', duration: '20 min', note: 'Warm soak + pressure points.' },
+      { title: 'Thermal Circuit', duration: '45 min', note: 'Steam, cold, warmth, rest.' },
     ],
     []
   )
@@ -154,7 +147,7 @@ export default function SpaPage() {
         <div className="heroContent">
           <span className="heroKicker">SPA</span>
           <h1 className="heroTitle">Spa &amp; Rituals</h1>
-          <p className="heroSub">Restorative therapies guided by warmth, breath, and ocean minerals.</p>
+          <p className="heroSub">Quiet restoration. Warmth, breath, minerals.</p>
 
           <div className="heroLinks">
             <a className="heroLink" href="#signature">Signature</a>
@@ -169,16 +162,11 @@ export default function SpaPage() {
       <section className="section">
         <div className="container">
           <div className="eyebrow">PHILOSOPHY</div>
-          <h2 className="h2">Restoration, without rush</h2>
+          <h2 className="h2">A calm place to return</h2>
 
           <div className="copy">
             <p>
-              Vanara Spa is a quiet refuge of stone, shade, and sea air. Treatments are slow and intentional — designed
-              to settle the nervous system, soften the body, and return you to an easier breath.
-            </p>
-            <p>
-              Choose bodywork, mineral therapies, and botanicals — each ritual is tailored to your pace. We begin with a
-              simple arrival: warm towel, foot cleanse, calm guidance.
+              Stone, shade, sea air. Treatments are slow and tailored — designed to settle the body and quiet the mind.
             </p>
           </div>
 
@@ -190,7 +178,7 @@ export default function SpaPage() {
       <section className="section" id="signature" style={anchorStyle}>
         <div className="container">
           <div className="eyebrow">SIGNATURE</div>
-          <h3 className="h3">Quiet essentials</h3>
+          <h3 className="h3">Essentials</h3>
 
           <div className="grid3">
             {signature.map((s) => (
@@ -209,11 +197,10 @@ export default function SpaPage() {
       <section className="section" id="menu" style={anchorStyle}>
         <div className="container">
           <div className="eyebrow">MENU</div>
-          <h2 className="h2">Treatments &amp; rituals</h2>
+          <h2 className="h2">Treatments</h2>
           <div className="copy">
             <p>
-              A calm collection of bodywork, minerals, and botanicals. If you’re unsure what to choose, tell us how you
-              feel — we’ll recommend the right pace, pressure, and focus.
+              Tell us how you feel — we’ll guide the pace, pressure, and focus.
             </p>
           </div>
 
@@ -239,21 +226,10 @@ export default function SpaPage() {
                       </div>
                     </div>
 
-                    {item.includes?.length ? (
-                      <div className={styles.detailsRow}>
-                        <div className={styles.detailsLabel}>Includes</div>
-                        <ul className={styles.detailsBullets}>
-                          {item.includes.map((x) => (
-                            <li key={x}>{x}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    ) : null}
-
                     <div className={styles.detailsCtaRow}>
-                      <a className="textCta" href="/book">Reserve this ritual</a>
+                      <a className="textCta" href="/book">Reserve</a>
                       <span className={styles.detailsHint}>
-                        or <a href="/connect">ask for a recommendation</a>
+                        or <a href="/connect">ask us</a>
                       </span>
                     </div>
                   </div>
@@ -264,9 +240,9 @@ export default function SpaPage() {
             <aside className={styles.detailsAside} aria-label="Spa notes">
               <div className="panel">
                 <div className="eyebrow">ADD-ONS</div>
-                <h3 className="h3" style={{ fontSize: 28, marginBottom: 10 }}>Quiet refinements</h3>
+                <h3 className="h3" style={{ fontSize: 28, marginBottom: 10 }}>Small rituals</h3>
                 <p className="panelText">
-                  Add a small ritual to your treatment — simple, precise, and deeply satisfying.
+                  Add a quiet finish.
                 </p>
 
                 <div className={styles.miniList}>
@@ -284,7 +260,7 @@ export default function SpaPage() {
                 <div className="rule" style={{ marginTop: 18 }} />
 
                 <div className="smallprint" style={{ marginTop: 12 }}>
-                  For pregnancy, injuries, or sensitivities, share details in advance so we can tailor safely.
+                  Please share pregnancy, injuries, or sensitivities in advance.
                 </div>
               </div>
             </aside>
@@ -296,32 +272,27 @@ export default function SpaPage() {
       <section className="section" id="thermal" style={anchorStyle}>
         <div className="container">
           <div className="eyebrow">THERMAL</div>
-          <h2 className="h2">Heat, cold, and stillness</h2>
+          <h2 className="h2">Heat. Cold. Rest.</h2>
 
           <div className="split">
             <div>
               <div className="copy">
                 <p>
-                  A simple circuit of warmth and contrast can change everything — muscles soften, breath deepens, and the
-                  mind becomes quieter.
-                </p>
-                <p>
-                  We guide you through an unhurried sequence: steam, rinse, cold plunge, mineral warmth, then rest.
-                  Arrive early or add it after bodywork.
+                  An unhurried circuit to soften muscles and steady the breath.
                 </p>
               </div>
 
-              <div className="eyebrow" style={{ marginTop: 22 }}>INCLUDES</div>
+              <div className="eyebrow" style={{ marginTop: 22 }}>SEQUENCE</div>
               <ul className="bullets">
-                <li>Aromatic steam + warm rinse</li>
-                <li>Cold plunge (optional intensity)</li>
-                <li>Mineral warmth + hydration ritual</li>
-                <li>Quiet lounge with tea</li>
+                <li>Steam</li>
+                <li>Cold plunge (optional)</li>
+                <li>Mineral warmth</li>
+                <li>Quiet lounge + tea</li>
               </ul>
 
-              <a className="textCta" href="/book">Book thermal circuit</a>
+              <a className="textCta" href="/book">Book thermal</a>
               <div className="smallprint" style={{ marginTop: 10 }}>
-                Tip: Pair with Deep Tissue &amp; Stretch for the most complete reset.
+                Pair with Deep Tissue &amp; Stretch for deeper release.
               </div>
             </div>
 
@@ -337,10 +308,10 @@ export default function SpaPage() {
         <div className="container">
           <div className="luxGalleryHead">
             <div className="eyebrow">GLIMPSES</div>
-            <h2 className="h2">Light, water, texture</h2>
+            <h2 className="h2">Light &amp; water</h2>
             <div className="copy">
               <p>
-                A quiet sequence — stone warmth, soft linen, and the ocean always nearby. Scroll gently.
+                A few quiet moments.
               </p>
             </div>
           </div>
@@ -377,44 +348,41 @@ export default function SpaPage() {
           <div className="grid2">
             <div className="panel">
               <div className="eyebrow">FAQ</div>
-              <h3 className="h3">Before your ritual</h3>
+              <h3 className="h3">Before you arrive</h3>
 
               <div className={styles.detailsList} aria-label="Spa FAQ">
                 <details className={styles.detailsItem}>
                   <summary className={styles.detailsSummary}>
-                    <span className={styles.detailsTitle}>When should I arrive?</span>
-                    <span className={styles.detailsMeta}>Timing</span>
+                    <span className={styles.detailsTitle}>Arrival time</span>
+                    <span className={styles.detailsMeta}>10–15 min</span>
                   </summary>
                   <div className={styles.detailsBody}>
                     <p className={styles.detailsText}>
-                      Arrive 10–15 minutes early to settle, choose aromatherapy, and begin slowly. If you’re adding the
-                      thermal circuit, arrive 30 minutes early.
+                      Arrive early to settle. For thermal, arrive 30 minutes early.
                     </p>
                   </div>
                 </details>
 
                 <details className={styles.detailsItem}>
                   <summary className={styles.detailsSummary}>
-                    <span className={styles.detailsTitle}>What if I’m pregnant or have an injury?</span>
-                    <span className={styles.detailsMeta}>Care</span>
+                    <span className={styles.detailsTitle}>Pregnancy or injury</span>
+                    <span className={styles.detailsMeta}>Tell us</span>
                   </summary>
                   <div className={styles.detailsBody}>
                     <p className={styles.detailsText}>
-                      Let us know in advance. We can adjust positioning, pressure, and products — or recommend a better
-                      fit.
+                      We’ll adjust the session — or suggest the right alternative.
                     </p>
                   </div>
                 </details>
 
                 <details className={styles.detailsItem}>
                   <summary className={styles.detailsSummary}>
-                    <span className={styles.detailsTitle}>Can you tailor pressure and focus?</span>
-                    <span className={styles.detailsMeta}>Yes</span>
+                    <span className={styles.detailsTitle}>Pressure &amp; focus</span>
+                    <span className={styles.detailsMeta}>Tailored</span>
                   </summary>
                   <div className={styles.detailsBody}>
                     <p className={styles.detailsText}>
-                      Always. Tell us if you prefer light, medium, or deep pressure — and where you hold tension. We’ll
-                      build the session around you.
+                      Light to deep. Tell us where you hold tension.
                     </p>
                   </div>
                 </details>
@@ -423,24 +391,23 @@ export default function SpaPage() {
 
             <div className="panel">
               <div className="eyebrow">BOOK</div>
-              <h3 className="h3">Reserve a session</h3>
+              <h3 className="h3">Reserve</h3>
               <p className="panelText">
-                For the calmest schedule, book in advance — especially at sunset. If you’d like a full plan (spa,
-                dining, experiences), we can curate your stay quietly.
+                Sunset is popular. Book ahead for the calmest schedule.
               </p>
 
               <a className="textCta" href="/book">Reserve now</a>
               <div className="smallprint" style={{ marginTop: 10 }}>
-                Prefer to speak with our team? <a href="/connect">Contact us</a>.
+                Prefer guidance? <a href="/connect">Contact us</a>.
               </div>
 
               <div className="rule" style={{ marginTop: 18 }} />
 
-              <div className="eyebrow" style={{ marginTop: 18 }}>SUGGESTED COMBINATIONS</div>
+              <div className="eyebrow" style={{ marginTop: 18 }}>PAIRINGS</div>
               <ul className="bullets" style={{ marginTop: 8 }}>
-                <li>Thermal Circuit + Deep Tissue &amp; Stretch</li>
-                <li>Mineral Body Polish + Botanical Facial</li>
-                <li>Warm Stone Release + Scalp &amp; Temple Add-on</li>
+                <li>Thermal + Deep Tissue</li>
+                <li>Mineral Polish + Facial</li>
+                <li>Warm Stone + Scalp</li>
               </ul>
             </div>
           </div>
