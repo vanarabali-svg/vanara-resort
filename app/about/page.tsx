@@ -25,6 +25,7 @@ export default function AboutPage() {
             <a className="heroLink" href="#story">Story</a>
             <a className="heroLink" href="#design">Design</a>
             <a className="heroLink" href="#values">Values</a>
+            <a className="heroLink" href="#team">Team</a>
           </div>
         </div>
       </section>
@@ -128,6 +129,44 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* TEAM */}
+      <section className="section" id="team" style={{ paddingTop: 92, paddingBottom: 92 }}>
+        <div className="container">
+          <div className="split" style={{ alignItems: 'center', gap: 40 }}>
+            <div>
+              <div className="eyebrow">THE RESORT</div>
+              <h2 className="h2">Quiet people. Quiet excellence.</h2>
+
+              <div className="copy" style={{ maxWidth: 560 }}>
+                <p>
+                  Vanara is cared for by a small team with calm attention — present when you need us, invisible when you
+                  don’t.
+                </p>
+                <p style={{ marginTop: 18, opacity: 0.9 }}>
+                  Warmth, discretion, and an unhurried rhythm — so your days feel spacious.
+                </p>
+              </div>
+
+              <div style={{ height: 18 }} />
+
+              <div className="smallprint" style={{ maxWidth: 520 }}>
+                Add your team photo as <strong>/team.jpg</strong> in the <strong>/public</strong> folder.
+              </div>
+            </div>
+
+            <div className="imagePlaceholder" aria-label="Team photo" style={{ minHeight: 520 }}>
+              <img
+                className="experienceImg"
+                src="/team.jpg"
+                alt="Vanara team"
+                loading="lazy"
+                style={{ borderRadius: 22, objectFit: 'cover', height: '100%', width: '100%' }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* GLIMPSES */}
       <section className="section sectionGallery">
         <div className="container">
@@ -142,7 +181,7 @@ export default function AboutPage() {
             </figure>
 
             <figure className="galleryItem villa is-right">
-              <img src="/about2.jpg" alt="Villa atmosphere" loading="lazy" />
+              <img src="/gallery-2.jpg" alt="Villa atmosphere" loading="lazy" />
             </figure>
 
             <figure className="galleryItem dine is-center">
