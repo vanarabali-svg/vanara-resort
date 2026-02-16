@@ -2245,6 +2245,8 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   padding-left: 26px;
   padding-right: 26px;
   padding-bottom: 0;
+  box-sizing: border-box;
+  width: min(760px, calc(100vw - 48px));
 }
 
 .hero.hero--ss .heroKicker{
