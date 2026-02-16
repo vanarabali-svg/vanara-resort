@@ -2261,7 +2261,6 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   line-height: 1.03;
   margin: 0;
   white-space: nowrap;
-  text-wrap: nowrap;
   max-width: none;
 }
 
@@ -2285,7 +2284,6 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
     font-size: clamp(38px, 9.2vw, 56px);
     line-height: 1.05;
     white-space: nowrap;
-    text-wrap: nowrap;
   }
 }
 
@@ -2302,19 +2300,19 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
     font-size: clamp(16px, 5.4vw, 22px);
     letter-spacing: -0.015em;
     white-space: nowrap;
-    text-wrap: nowrap;
   }
-}
 
-@media (max-width: 360px){
-
-  /* ultra-small phones: allow a soft wrap rather than clipping */
   .hero.hero--ss .heroTitle{
-    white-space: normal;
-    text-wrap: balance;
+    /* iPhone: never clip — allow wrap + smaller type */
+    font-size: clamp(22px, 6.3vw, 30px);
     line-height: 1.08;
+    letter-spacing: -0.01em;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 }
+
 
 /* ==================================================
    HERO SLIDER TRANSITION (SIX SENSES CROSSFADE)
