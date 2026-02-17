@@ -7,9 +7,9 @@ import { useEffect, useState } from 'react'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
-
-  // Transparent header until scroll (adds body.is-scrolled)
+  const [langOpen, setLangOpen] = useState(false)
+  const [lang, setLang] = useState<'EN' | 'ID' | 'RU'>('EN')
+    // Transparent header until scroll (adds body.is-scrolled)
   useEffect(() => {
     const onScroll = () => {
       document.body.classList.toggle('is-scrolled', window.scrollY > 10)
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setMenuOpen(false)
-        setSearchOpen(false)
+        setLangOpen(false)
       }
     }
     window.addEventListener('keydown', onKeyDown)
@@ -31,11 +31,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen || searchOpen ? 'hidden' : ''
+    document.body.style.overflow = menuOpen || langOpen ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [menuOpen, searchOpen])
+  }, [menuOpen, langOpen])
 
   return (
     <html lang="en">
@@ -62,11 +62,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </span>
               </button>
 
-              <button className="icon-pill" type="button" onClick={() => setSearchOpen(true)} aria-label="Search">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="11" cy="11" r="7" />
-                  <line x1="16.5" y1="16.5" x2="21" y2="21" strokeLinecap="round" />
-                </svg>
+              <button className="lang-pill" type="button" onClick={() => setLangOpen(true)} aria-label="Change language">
+                <span className="lang-pillText">{lang}</span> <span className="palmIcon" aria-hidden="true">
+  <svg viewBox="0 0 24 24">
+    <path d="M12 21v-7" />
+    <path d="M12 14c-1.8 0-3.4.7-4.6 1.9" />
+    <path d="M12 14c1.8 0 3.4.7 4.6 1.9" />
+    <path d="M12 14c-2.8-1.6-4.7-4.4-4.9-7.7 2.3.1 4.2 1.2 5.4 2.9" />
+    <path d="M12 14c2.8-1.6 4.7-4.4 4.9-7.7-2.3.1-4.2 1.2-5.4 2.9" />
+  </svg>
+</span>
               </button>
             </div>
 
@@ -92,9 +97,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             <div className="nav-right">
-              <Link href="/book" className="reserve-pill">
-                Reserve
-              </Link>
+              <Link href="/book" className="reserve-pill"><span className="reserveText"><span className="reserveLong">Reserve now</span><span className="reserveShort">Reserve</span></span> <span className="palmIcon reservePalm" aria-hidden="true">
+  <svg viewBox="0 0 24 24">
+    <path d="M12 21v-7" />
+    <path d="M12 14c-1.8 0-3.4.7-4.6 1.9" />
+    <path d="M12 14c1.8 0 3.4.7 4.6 1.9" />
+    <path d="M12 14c-2.8-1.6-4.7-4.4-4.9-7.7 2.3.1 4.2 1.2 5.4 2.9" />
+    <path d="M12 14c2.8-1.6 4.7-4.4 4.9-7.7-2.3.1-4.2 1.2-5.4 2.9" />
+  </svg>
+</span></Link>
             </div>
           </div>
         </header>
@@ -136,24 +147,45 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         )}
 
-        {/* SEARCH OVERLAY */}
-        {searchOpen && (
-          <div className="search-overlay" onClick={() => setSearchOpen(false)} role="dialog" aria-modal="true">
-            <div className="search-panel" onClick={(e) => e.stopPropagation()}>
-              <button className="search-x" type="button" onClick={() => setSearchOpen(false)} aria-label="Close search">
+
+        {/* LANGUAGE OVERLAY */}
+        {langOpen && (
+          <div className="lang-overlay" onClick={() => setLangOpen(false)} role="dialog" aria-modal="true">
+            <div className="lang-panel" onClick={(e) => e.stopPropagation()}>
+              <button className="lang-x" type="button" onClick={() => setLangOpen(false)} aria-label="Close language">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <line x1="6" y1="6" x2="18" y2="18" />
                   <line x1="18" y1="6" x2="6" y2="18" />
                 </svg>
               </button>
 
-              <div className="search-title">Search</div>
-              <input className="search-input" placeholder="Search villas, rituals, dining…" />
-              <div className="search-hint">Type and press Enter</div>
+              <div className="lang-title">Language</div>
+
+              <div className="lang-options" role="list">
+                {(['EN', 'ID', 'RU'] as const).map((code) => (
+                  <button
+                    key={code}
+                    type="button"
+                    className={`lang-option ${lang === code ? 'is-active' : ''}`}
+                    onClick={() => {
+                      setLang(code)
+                      setLangOpen(false)
+                    }}
+                  >
+                    <span className="lang-code">{code}</span>
+                    <span className="lang-name">
+                      {code === 'EN' ? 'English' : code === 'ID' ? 'Bahasa Indonesia' : 'Русский'}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="lang-hint">This changes the interface label only (text translation can be added next).</div>
             </div>
           </div>
         )}
 
+        {/* SEARCH OVERLAY */}
         <main>{children}</main>
 
         <footer className="footer">
