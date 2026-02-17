@@ -236,33 +236,6 @@ function HeroSlider() {
 }
 
 export default function HomePage() {
-  // Scroll zoom for non-hero photos (six-senses-like subtle motion)
-  useEffect(() => {
-    const els = Array.from(document.querySelectorAll<HTMLElement>('.imagePlaceholder'))
-    if (!els.length) return
-
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    if (reduce) return
-
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          const el = e.target as HTMLElement
-          if (e.isIntersecting) {
-            // retrigger animation each time it enters view
-            el.classList.remove('is-inview')
-            requestAnimationFrame(() => el.classList.add('is-inview'))
-          } else {
-            el.classList.remove('is-inview')
-          }
-        }
-      },
-      { threshold: 0.18, rootMargin: '0px 0px -15% 0px' }
-    )
-
-    els.forEach((el) => obs.observe(el))
-    return () => obs.disconnect()
-  }, [])
 
   return (
 

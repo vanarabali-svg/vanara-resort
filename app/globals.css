@@ -317,7 +317,6 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   padding-bottom: 48px;
 }
 
-
 /* Villas feature: photo more dominant */
 .sectionVillasFeature .split--rev{
   grid-template-columns: 1.15fr .85fr;
@@ -928,49 +927,6 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   .galleryCarFade{ width: 44px; }
 }
 
-
-
-
-
-
-/* ==================================================
-   SCROLL ZOOM (non-hero photos)
-   - subtle zoom-in on reveal while scrolling down
-================================================== */
-.imagePlaceholder img.experienceImg{
-  transform: scale(1.0);
-  will-change: transform;
-}
-
-/* Default reveal */
-.imagePlaceholder.is-inview img.experienceImg{
-  animation: vnrZoomIn 2200ms ease-out forwards;
-}
-
-@keyframes vnrZoomIn{
-  from { transform: scale(1.0); }
-  to   { transform: scale(1.10); }
-}
-
-/* Stronger zoom on Yoga photo only */
-.sectionYoga .imagePlaceholder.is-inview img.experienceImg{
-  animation: vnrZoomInYoga 2400ms ease-out forwards;
-}
-@keyframes vnrZoomInYoga{
-  from { transform: scale(1.0); }
-  to   { transform: scale(1.18); }
-}
-
-@media (prefers-reduced-motion: reduce){
-  .imagePlaceholder img.experienceImg{
-    transform: none !important;
-    animation: none !important;
-  }
-}
-
-
-
-
 /* ==================================================
    VILLAS PHOTO SLIDER (3 photos, auto)
 ================================================== */
@@ -1063,8 +1019,6 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   .villasSliderDots{ left: 14px; bottom: 14px; }
   .villasSliderHint{ right: 14px; bottom: 14px; }
 }
-
-
 
 /* ==================================================
    VILLAS PHOTO SLIDER (4 photos, auto) — refined
@@ -1193,7 +1147,6 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
 @media (prefers-reduced-motion: reduce){
   .villasSlide.is-active{ animation: none !important; transform: none !important; }
 }
-
 
 /* =========================
    RESPONSIVE
