@@ -1712,3 +1712,23 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   .pillIcon{ margin-left: 2px; }
   .pillIcon svg{ width: 15px; height: 15px; }
 }
+
+/* Micro-align language code (EN) so it visually matches other header pills */
+.lang-pill{
+  padding-left: 10px;
+  padding-right: 12px;
+}
+
+.lang-pillText{
+  display: inline-block;
+  transform: translateX(-1px);
+}
+@media (max-width: 520px){
+  .lang-pill{
+    padding-left: 9px;
+    padding-right: 11px;
+  }
+  .lang-pillText{
+    transform: translateX(-1px);
+  }
+}
