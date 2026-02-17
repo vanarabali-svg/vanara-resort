@@ -1706,3 +1706,57 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   }
 }
 
+
+/* =========================
+   MOBILE HEADER SPACING
+   - shift the whole header slightly left via padding
+   - keep logo centered with grid
+========================= */
+@media (max-width: 520px){
+  /* reduce side padding so everything sits a bit more left/right like Six Senses */
+  .nav{
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  /* keep left button close to edge without breaking center */
+  .nav-left{
+    margin-left: -4px;
+  }
+
+  /* slightly tighter right cluster */
+  .nav-right{ gap: 8px; }
+
+  .lang-pill, .reserve-pill{
+    height: 38px;
+    padding: 0 11px;
+  }
+}
+
+
+/* Luxury Palm Icon (refined) */
+.palmIcon svg,
+.reservePalm svg{
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: .95;
+}
+
+.reservePalm{ margin-left: 5px; }
+.lang-pill .palmIcon{ margin-left: 6px; }
+
+@media (max-width: 520px){
+  .palmIcon svg,
+  .reservePalm svg{
+    width: 13px;
+    height: 13px;
+    stroke-width: 1.1;
+  }
+  .reservePalm{ margin-left: 4px; }
+  .lang-pill .palmIcon{ margin-left: 5px; }
+}
