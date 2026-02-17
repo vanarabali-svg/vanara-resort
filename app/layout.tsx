@@ -63,13 +63,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </button>
 
               <button className="lang-pill" type="button" onClick={() => setLangOpen(true)} aria-label="Change language">
-                <span className="lang-pillText">{lang}</span> <span className="palmIcon" aria-hidden="true">
+                <span className="lang-pillText">{lang}</span> <span className="pillIcon" aria-hidden="true">
   <svg viewBox="0 0 24 24">
-    <path d="M12 21v-7" />
-    <path d="M12 14c-1.8 0-3.4.7-4.6 1.9" />
-    <path d="M12 14c1.8 0 3.4.7 4.6 1.9" />
-    <path d="M12 14c-2.8-1.6-4.7-4.4-4.9-7.7 2.3.1 4.2 1.2 5.4 2.9" />
-    <path d="M12 14c2.8-1.6 4.7-4.4 4.9-7.7-2.3.1-4.2 1.2-5.4 2.9" />
+    <circle cx="12" cy="12" r="8.5" />
+    <path d="M3.5 12h17" />
+    <path d="M12 3.5c2.3 2.3 3.6 5.3 3.6 8.5S14.3 18.7 12 20.5C9.7 18.7 8.4 15.7 8.4 12S9.7 5.8 12 3.5z" />
   </svg>
 </span>
               </button>
@@ -97,13 +95,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             <div className="nav-right">
-              <Link href="/book" className="reserve-pill"><span className="reserveText"><span className="reserveLong">Reserve</span><span className="reserveShort">Reserve</span></span><span className="palmIcon reservePalm" aria-hidden="true">
+              <Link href="/book" className="reserve-pill"><span className="reserveText"><span className="reserveLong">Reserve</span><span className="reserveShort">Reserve</span></span> <span className="pillIcon pillIcon--after" aria-hidden="true">
   <svg viewBox="0 0 24 24">
-    <path d="M12 21v-7" />
-    <path d="M12 14c-1.8 0-3.4.7-4.6 1.9" />
-    <path d="M12 14c1.8 0 3.4.7 4.6 1.9" />
-    <path d="M12 14c-2.8-1.6-4.7-4.4-4.9-7.7 2.3.1 4.2 1.2 5.4 2.9" />
-    <path d="M12 14c2.8-1.6 4.7-4.4 4.9-7.7-2.3.1-4.2 1.2-5.4 2.9" />
+    <path d="M9 15l6-6" />
+    <path d="M10 9h5v5" />
   </svg>
 </span></Link>
             </div>
