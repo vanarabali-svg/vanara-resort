@@ -1,77 +1,6 @@
 'use client'
 import { useEffect, useMemo, useRef, useState, type TouchEvent as ReactTouchEvent } from 'react'
 
-function LuxGallery() {
-  const slides = useMemo(
-    () => [
-      { src: '/hero1.jpg', alt: 'Vanara ocean view' },
-      { src: '/hero2.jpg', alt: 'Vanara architecture' },
-      { src: '/hero3.jpg', alt: 'Vanara pool and sea' },
-      { src: '/hero4.jpg', alt: 'Vanara calm interiors' },
-      { src: '/hero5.jpg', alt: 'Vanara coastline at dusk' },
-    ],
-    []
-  )
-
-  const trackRef = useRef<HTMLDivElement | null>(null)
-  const [active, setActive] = useState(0)
-
-  useEffect(() => {
-    const track = trackRef.current
-    if (!track) return
-    const items = Array.from(track.querySelectorAll<HTMLElement>('[data-lux-slide]'))
-    if (!items.length) return
-
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0))[0]
-        if (!visible) return
-        const idx = Number((visible.target as HTMLElement).dataset.luxSlide ?? '0')
-        if (!Number.isNaN(idx)) setActive(idx)
-      },
-      { root: track, threshold: [0.55, 0.65, 0.75] }
-    )
-
-    items.forEach((el) => obs.observe(el))
-    return () => obs.disconnect()
-  }, [])
-
-  return (
-    <section className="section sectionLuxGallery" aria-label="Gallery">
-      <div className="container">
-        <div className="luxGalleryHead">
-          <div className="eyebrow">GALLERY</div>
-          <h3 className="h3">A quiet sequence of light</h3>
-        </div>
-
-        <div className="luxCarousel">
-          <div className="luxCarouselTop" aria-hidden="true">
-            <div className="luxCounter">
-              {String(active + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
-            </div>
-            <div className="luxLine" />
-          </div>
-
-          <div className="luxCarouselFade luxCarouselFadeLeft" aria-hidden="true" />
-          <div className="luxCarouselFade luxCarouselFadeRight" aria-hidden="true" />
-
-          <div className="luxCarouselTrack" ref={trackRef}>
-            {slides.map((s, i) => (
-              <div key={s.src} className={`luxSlide ${i === active ? 'is-active' : ''}`} data-lux-slide={i}>
-                <img src={s.src} alt={s.alt} loading={i === 0 ? 'eager' : 'lazy'} />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="luxHint">Drag to explore</div>
-      </div>
-    </section>
-  )
-}
-
 function HeroSlider() {
   const slides = useMemo(
     () => [
@@ -90,7 +19,6 @@ function HeroSlider() {
   const [zoomKey, setZoomKey] = useState(0) // restart zoom only on the active slide
   const pausedRef = useRef(false)
   const touchStartX = useRef<number | null>(null)
-  const videoRef = useRef<HTMLVideoElement | null>(null)
   const total = slides.length
 
   const go = (nextIndex: number) => {
@@ -98,25 +26,24 @@ function HeroSlider() {
     setPrev(active)
     setActive(n)
     setZoomKey((k) => k + 1)
-    // clear prev after fade duration so it can fade out cleanly
-    window.setTimeout(() => setPrev(null), 1500)
+    window.setTimeout(() => setPrev(null), 1400)
   }
 
   const next = () => go(active + 1)
   const prevSlide = () => go(active - 1)
 
-  // Auto-advance (Six Senses pacing)
+  // Auto-advance (slow, luxury pacing)
   useEffect(() => {
     if (showVideo) return
     const id = window.setInterval(() => {
       if (pausedRef.current) return
       next()
-    }, 8200)
+    }, 9000)
     return () => window.clearInterval(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, showVideo])
 
-  // Preload hero images after the intro video finishes (user request)
+  // Preload hero images after intro video finishes
   useEffect(() => {
     if (showVideo) return
     slides.forEach((s) => {
@@ -159,10 +86,8 @@ function HeroSlider() {
     pausedRef.current = false
   }
 
-  // When the intro video ends, switch to photos
   const onVideoEnded = () => {
     setShowVideo(false)
-    // start first photo cleanly
     setPrev(null)
     setActive(0)
     setZoomKey((k) => k + 1)
@@ -177,9 +102,7 @@ function HeroSlider() {
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      {/* Intro video first (hero.mp4). After it ends, photos crossfade like Six Senses. */}
       <video
-        ref={videoRef}
         className={`ssHeroVideo ${showVideo ? 'is-active' : ''}`}
         src="/hero.mp4"
         autoPlay
@@ -207,7 +130,6 @@ function HeroSlider() {
 
       <div className="heroShade" />
 
-      {/* click zones (only when photos are active) */}
       {!showVideo && (
         <>
           <button className="ssHeroNav ssHeroNav--prev" aria-label="Previous photo" onClick={prevSlide} />
@@ -215,7 +137,6 @@ function HeroSlider() {
         </>
       )}
 
-      {/* dots (only when photos are active; CSS may hide for minimal style) */}
       {!showVideo && (
         <div className="ssHeroDots" aria-label="Hero pagination">
           {slides.map((_, i) => (
@@ -240,10 +161,8 @@ function HeroSlider() {
 export default function HomePage() {
   return (
     <div className="home">
-      {/* HERO */}
-                  <HeroSlider />
+      <HeroSlider />
 
-      {/* INTRO */}
       <section className="section sectionIntro">
         <div className="container">
           <div className="eyebrow">THE RESORT</div>
@@ -252,22 +171,15 @@ export default function HomePage() {
           <div className="copy">
             <p>
               Perched above the Indian Ocean, Vanara is shaped by wind, stone, and warm light — a retreat where
-              architecture dissolves into landscape and time slows to a breath.
+              architecture dissolves into landscape.
             </p>
-            <p>
-              Private villas open to sea air; pathways lead to shaded courts, cliffside pools, and restorative spaces.
-              Everything is intentional: calm lines, natural textures, and moments of silence between waves.
-            </p>
-            <p>
-              Here, luxury is not loud. It lives in spaciousness, in discreet service, and in the way each view is framed.
-            </p>
+            <p>Luxury is quiet here: spaciousness, discreet service, and views framed with restraint.</p>
           </div>
 
           <div className="rule" />
         </div>
       </section>
 
-      {/* PHILOSOPHY */}
       <section className="section">
         <div className="container">
           <div className="eyebrow">PHILOSOPHY</div>
@@ -277,54 +189,49 @@ export default function HomePage() {
               Vanara is built around a simple idea: the ocean is the main event. Interiors remain quiet so nature can
               speak — warm neutrals, natural textures, and soft edges that invite you to slow down.
             </p>
-            <p>
-              Days are intentionally unhurried. You can do very little and feel completely full — a long swim, a spa
-              ritual, a meal by candlelight, then silence.
-            </p>
+            <p>Days are intentionally unhurried — a swim, a ritual, a calm table, then silence.</p>
           </div>
           <div className="rule" />
         </div>
       </section>
-
-      {/* LUX PHOTO STRIP (editorial, Six Senses / Aman feel) */}
-      <LuxGallery />
-
-      {/* SIGNATURES */}
-      <section className="section sectionSignatures">
+      <section className="section sectionVillasFeature">
         <div className="container">
-          <div className="grid3">
-            <a className="card" href="/accommodation">
-              <div className="cardLabel">VILLAS</div>
-              <h3 className="cardTitle">Private, ocean-facing living</h3>
-              <p className="cardText">
-                Minimal interiors, warm stone, soft linen — designed to disappear into the view.
-              </p>
-              <span className="cardLink">Explore</span>
-            </a>
+          <div className="split split--rev">
+            <div className="imagePlaceholder" aria-label="Villas image">
+              <img className="experienceImg" src="/villas.jpg" alt="Villas at Vanara" />
+            </div>
 
-            <a className="card" href="/spa">
-              <div className="cardLabel">SPA</div>
-              <h3 className="cardTitle">Rituals for body and breath</h3>
-              <p className="cardText">
-                Slow therapies, ocean minerals, and restorative heat — guided by quiet expertise.
-              </p>
-              <span className="cardLink">Discover</span>
-            </a>
+            <div>
+              <div className="eyebrow">VILLAS</div>
+              <h3 className="h3">Private, ocean-facing living</h3>
 
-            <a className="card" href="/dine">
-              <div className="cardLabel">DINE</div>
-              <h3 className="cardTitle">Seasonal cuisine by the sea</h3>
-              <p className="cardText">
-                Fire, salt, and local harvests — elegant meals that feel effortless.
-              </p>
-              <span className="cardLink">Visit</span>
-            </a>
+              <div className="copy">
+                <p>
+                  Spacious villas shaped by warm stone, soft linen, and calm shadows — designed to disappear into the view.
+                </p>
+                <p>
+                  Mornings arrive quietly, afternoons slow down, evenings soften. Everything is discreet, effortless, unhurried.
+                </p>
+              </div>
+
+              <ul className="bullets">
+                <li>Ocean views &amp; private terraces</li>
+                <li>Minimal interiors, natural textures</li>
+                <li>In‑villa dining and curated rituals (upon request)</li>
+              </ul>
+
+              <a className="textCta" href="/accommodation">
+                Explore villas
+              </a>
+
+              <div className="smallprint" style={{ marginTop: 12 }}>
+                Replace <code>/villas.jpg</code> with your preferred villa photo.
+              </div>
+            </div>
           </div>
         </div>
       </section>
-
-      {/* DINING FEATURE (Seascape-style block) */}
-      <section className="section sectionDiningFeature">
+<section className="section sectionDiningFeature">
         <div className="container">
           <div className="split split--rev">
             <div className="imagePlaceholder" aria-label="Dining image">
@@ -340,10 +247,7 @@ export default function HomePage() {
                   Thoughtful cuisine, served with unhurried attention. From sunrise breakfasts to candlelit dinners,
                   Vanara’s dining is guided by season, ocean air, and a minimalist sense of place.
                 </p>
-                <p>
-                  Expect clean flavors, warm fire cooking, and a quiet rhythm — the kind of meal that feels like a pause
-                  in the day rather than an event.
-                </p>
+                <p>Clean flavors, warm fire cooking, and a quiet rhythm — never performative.</p>
               </div>
 
               <ul className="bullets">
@@ -352,16 +256,21 @@ export default function HomePage() {
                 <li>Private dining in-villa (upon request)</li>
               </ul>
 
-              <a className="textCta" href="/dine">Explore dining</a>
+              <a className="textCta" href="/dine">
+                Explore dining
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* YOGA */}
       <section className="section sectionYoga">
         <div className="container">
-          <div className="split">
+          <div className="split split--rev">
+            <div className="imagePlaceholder" aria-label="Experience image">
+              <img className="experienceImg" src="/yoga.jpg" alt="Yoga at Vanara" />
+            </div>
+
             <div>
               <div className="eyebrow">YOGA</div>
               <h3 className="h3">Move slowly. Breathe deeper.</h3>
@@ -370,10 +279,7 @@ export default function HomePage() {
                   Begin with ocean air and soft light. Our yoga and breathwork sessions are designed to quiet the nervous
                   system — gentle flow, grounded strength, and long exhale.
                 </p>
-                <p>
-                  Practice is unhurried and private. Choose sunrise on the terrace, a restorative session after the spa,
-                  or guided meditation before dinner.
-                </p>
+                <p>Choose sunrise on the terrace, deep rest after the spa, or a short meditation before dinner.</p>
               </div>
 
               <ul className="bullets">
@@ -383,21 +289,21 @@ export default function HomePage() {
                 <li>Private sessions in-villa (upon request)</li>
               </ul>
 
-              <a className="textCta" href="/experience">Explore experiences</a>
-            </div>
-
-            <div className="imagePlaceholder" aria-label="Experience image">
-              {/* Add /public/yoga.jpg (or replace with your filename) */}
-              <img className="experienceImg" src="/yoga.jpg" alt="Yoga at Vanara" />
+              <a className="textCta" href="/experience">
+                Explore experiences
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ✅ WEDDINGS — NEW (Luxury / Aman-style) */}
       <section className="section sectionWeddings" id="weddings">
         <div className="container">
-          <div className="split">
+          <div className="split split--rev">
+            <div className="imagePlaceholder" aria-label="Wedding image">
+              <img className="experienceImg" src="/wedding.jpg" alt="Wedding at Vanara" />
+            </div>
+
             <div>
               <div className="eyebrow">WEDDINGS</div>
               <h3 className="h3">Celebrations, quietly elevated</h3>
@@ -407,33 +313,24 @@ export default function HomePage() {
                   Vanara is an intimate setting for weddings and private celebrations — a ceremony above the ocean,
                   followed by candlelit dining in a calm, private atmosphere.
                 </p>
-                <p>
-                  We curate the details with discretion: timing, sound, florals, lighting, and service —
-                  refined, minimal, and never excessive.
-                </p>
+                <p>Details are curated with discretion — refined, minimal, never excessive.</p>
               </div>
 
               <ul className="bullets">
                 <li>Cliffside ceremony at golden hour</li>
-                <li>Private dinner reception (chef-led)</li>
-                <li>Minimal floral styling &amp; table design</li>
-                <li>Sound, lighting &amp; sunset setup</li>
+                <li>Chef-led private dinner</li>
+                <li>Minimal floral + table styling</li>
                 <li>Villa buyout options (upon request)</li>
-                <li>Photography-friendly pacing (no rush)</li>
               </ul>
 
-              <a className="textCta" href="/connect">Enquire about weddings</a>
-            </div>
-
-            <div className="imagePlaceholder" aria-label="Wedding image">
-              {/* Add /public/wedding.jpg (or replace with your filename) */}
-              <img className="experienceImg" src="/wedding.jpg" alt="Wedding at Vanara" />
+              <a className="textCta" href="/connect">
+                Enquire about weddings
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* LOCATION + NEWSLETTER */}
       <section className="section sectionBottom">
         <div className="container">
           <div className="grid2">
@@ -448,26 +345,27 @@ export default function HomePage() {
                 Close enough for exploration, far enough to feel private. We can arrange drivers, surf breaks, temple
                 visits, and hidden coastal paths.
               </p>
-              <a className="textCta" href="/connect">Plan your arrival</a>
+              <a className="textCta" href="/connect">
+                Plan your arrival
+              </a>
             </div>
 
             <div className="panel">
               <div className="eyebrow">NEWSLETTER</div>
               <h3 className="h3">A note from the coast</h3>
-              <p className="panelText">
-                Seasonal openings, villa stories, and experiences — sent rarely, always calm.
-              </p>
+              <p className="panelText">Seasonal openings, villa stories, and experiences — sent rarely, always calm.</p>
 
               <form className="newsletter" action="#" method="post">
                 <input className="newsletterInput" type="email" placeholder="Email address" />
-                <button className="newsletterBtn" type="submit">Subscribe</button>
+                <button className="newsletterBtn" type="submit">
+                  Subscribe
+                </button>
               </form>
 
               <div className="smallprint">No spam. Unsubscribe anytime.</div>
             </div>
           </div>
         </div>
-
       </section>
     </div>
   )

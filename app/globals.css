@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap');
+/* Fonts are loaded via <head> in layout.tsx */
 
 /* =========================
    BASE / RESET
@@ -14,6 +14,9 @@ body{
   background: #f6f1e8;
   color: #1f1f1d;
   overflow-x: hidden;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a{ color: inherit; text-decoration: none; }
@@ -23,8 +26,14 @@ a{ color: inherit; text-decoration: none; }
   --ink:#1f1f1d;
   --muted: rgba(31,31,29,.72);
   --border: rgba(0,0,0,.10);
-  --serif: "Playfair Display", serif;
+  --serif: "Cormorant Garamond", serif;
   --navH: 88px;
+}
+
+/* Better focus (minimal but accessible) */
+:focus-visible{
+  outline: 2px solid rgba(31,31,29,.22);
+  outline-offset: 3px;
 }
 
 /* =========================
@@ -37,13 +46,14 @@ a{ color: inherit; text-decoration: none; }
   z-index: 1000;
   background: transparent;
   border-bottom: 1px solid transparent;
-  transition: background .25s ease, border-color .25s ease, backdrop-filter .25s ease;
+  transition: background .25s ease, border-color .25s ease, backdrop-filter .25s ease, box-shadow .25s ease;
 }
 
 body.is-scrolled .nav{
   background: rgba(246,241,232,.96);
   border-bottom: 1px solid rgba(0,0,0,.10);
   backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
 }
 
 .nav-inner{
@@ -104,24 +114,6 @@ body.is-scrolled .icon-pill:hover{ background: rgba(255,255,255,.55); }
   stroke-width:1.5;
 }
 
-/* BURGER */
-.burger{
-  width:18px;
-  height:12px;
-  position:relative;
-}
-.burger::before,
-.burger::after{
-  content:"";
-  position:absolute;
-  left:0; right:0;
-  height:2px;
-  background: currentColor;
-  border-radius:2px;
-}
-.burger::before{ top:1px; }
-.burger::after{ bottom:1px; }
-
 /* RESERVE */
 .reserve-pill{
   padding:11px 18px;
@@ -143,7 +135,7 @@ body.is-scrolled .reserve-pill{
 body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-color: rgba(0,0,0,.28); }
 
 /* =========================
-   HERO (text anchored to end of video)
+   HERO (text anchored low)
 ========================= */
 .hero{
   position:relative;
@@ -152,23 +144,14 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   overflow:hidden;
 }
 
-.heroMedia{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transform: scale(1.02);
-}
-
 .heroShade{
   position:absolute;
   inset:0;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,.08),
-    rgba(0,0,0,.24),
-    rgba(0,0,0,.62)
+    rgba(0,0,0,.05),
+    rgba(0,0,0,.22),
+    rgba(0,0,0,.58)
   );
 }
 
@@ -178,7 +161,7 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   left:0;
   right:0;
   bottom:0;
-  z-index:2;
+  z-index:3;
   display:flex;
   flex-direction:column;
   justify-content:flex-end;
@@ -186,8 +169,13 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   padding-right: 8%;
   padding-bottom: 72px;
   color:#fff;
+  animation: heroIn 900ms ease 120ms both;
 }
 
+@keyframes heroIn{
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 .heroKicker{
   font-size:12px;
@@ -204,43 +192,16 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   line-height:1.02;
   margin:0 0 14px;
   max-width:980px;
+  letter-spacing: -0.01em;
 }
-
-.heroSub{
-  margin:0 0 24px;
-  font-size:16px;
-  line-height:1.7;
-  max-width:560px;
-  opacity:.92;
-}
-
-.heroLinks{
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-  max-width:420px;
-}
-
-.heroLink{
-  display:inline-block;
-  width:fit-content;
-  font-size:11px;
-  letter-spacing:.26em;
-  text-transform:uppercase;
-  color: rgba(255,255,255,.95);
-  padding-bottom:10px;
-  border-bottom:1px solid rgba(255,255,255,.50);
-}
-.heroLink:hover{ border-bottom-color: rgba(255,255,255,.82); }
 
 /* =========================
    SECTIONS
 ========================= */
 .section{
   background: var(--bg);
-  padding: 64px 0;
+  padding: 84px 0;
 }
-
 
 .container{
   max-width: 1100px;
@@ -263,8 +224,8 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   line-height: 1.1;
   margin: 0 0 16px;
   color: var(--ink);
+  letter-spacing: -0.01em;
 }
-
 
 .h3{
   font-family: var(--serif);
@@ -272,8 +233,8 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   font-weight: 500;
   margin: 0 0 12px;
   color: var(--ink);
+  letter-spacing: -0.01em;
 }
-
 
 .copy{
   max-width: 720px;
@@ -296,6 +257,7 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
 }
 
 .grid3{
+
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
@@ -305,7 +267,7 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.28);
+  background: rgba(255,255,255,.22);
   padding: 26px 22px;
   transition: transform .18s ease, background .18s ease, border-color .18s ease;
   min-height: 210px;
@@ -314,8 +276,8 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
 }
 
 .card:hover{
-  transform: translateY(-2px);
-  background: rgba(255,255,255,.42);
+  transform: translateY(-3px);
+  background: rgba(255,255,255,.26);
   border-color: rgba(0,0,0,.16);
 }
 
@@ -350,58 +312,9 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   color: rgba(31,31,29,.80);
 }
 
-/* =========================
-   GALLERY — STACKED (editorial)
-========================= */
-.sectionGallery{
-  padding-top: 40px;
-}
-
-.galleryHeader{
-  margin-bottom: 24px;
-}
-
-.galleryStack{
-  max-width: 880px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-
-.galleryItem{
-  width: 100%;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.25);
-}
-
-.galleryItem img{
-  width: 100%;
-  height: 320px;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-}
-
-
-.galleryItem.ocean img{ object-position: center 60%; }
-.galleryItem.villa img{ object-position: center 35%; }
-.galleryItem.dine img{ object-position: center 55%; }
-
-.note{
-  margin-top: 12px;
-  font-size: 12px;
-  color: rgba(31,31,29,.58);
-}
-.note code{
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  background: rgba(0,0,0,.06);
-  padding: 2px 6px;
-  border-radius: 8px;
-  margin: 0 4px;
+.sectionVillasFeature{
+  padding-top: 48px;
+  padding-bottom: 48px;
 }
 
 /* =========================
@@ -414,7 +327,6 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   align-items: start;
 }
 
-/* Image-first split (Dining feature style) */
 .split--rev{
   grid-template-columns: .85fr 1.15fr;
 }
@@ -448,12 +360,19 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   overflow: hidden;
   border-radius: 22px;
   border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.18);
+  background: rgba(255,255,255,.12);
   min-height: 360px;
-  box-shadow: 0 26px 70px rgba(0,0,0,.08);
+  box-shadow: 0 22px 60px rgba(0,0,0,.06);
 }
 
-/* soft vignette + film grain (luxury editorial) */
+.imagePlaceholder img.experienceImg{
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  object-fit: cover;
+  display: block;
+}
+
 .imagePlaceholder::before{
   content:"";
   position:absolute;
@@ -463,8 +382,8 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
     radial-gradient(120% 90% at 50% 30%, rgba(255,255,255,.10), rgba(0,0,0,.18)),
     linear-gradient(to top, rgba(0,0,0,.22), rgba(0,0,0,0) 62%);
   opacity: .55;
-  transition: opacity .6s ease;
 }
+
 .imagePlaceholder::after{
   content:"";
   position:absolute;
@@ -473,24 +392,6 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
   mix-blend-mode: soft-light;
   opacity: .22;
-}
-.imageKicker{
-  font-size: 11px;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: rgba(31,31,29,.60);
-  margin-bottom: 12px;
-}
-.imageHint{
-  color: rgba(31,31,29,.60);
-  font-size: 13px;
-  line-height: 1.6;
-}
-.imageHint code{
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  background: rgba(0,0,0,.06);
-  padding: 2px 6px;
-  border-radius: 8px;
 }
 
 /* bottom panels */
@@ -503,7 +404,7 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
 .panel{
   border-radius: 18px;
   border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.28);
+  background: rgba(255,255,255,.16);
   padding: 26px 22px;
 }
 
@@ -798,6 +699,226 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   color: rgba(31,31,29,.58);
 }
 
+/* ==================================================
+   SPECIAL MINIMAL GALLERY (STICKY EDITORIAL)
+   - Left: pinned image (quiet crossfade)
+   - Right: chapters (minimal, spacious)
+================================================== */
+.sectionGalleryAlt{
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.galleryAltTop{
+  display:flex;
+  align-items:flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.galleryAltIndex{
+  font-size: 11px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: rgba(31,31,29,.60);
+  white-space: nowrap;
+}
+.galleryAltIndex .sep{ opacity: .5; }
+
+.galleryAltGrid{
+  display:grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.galleryAltMedia{
+  position: sticky;
+  top: calc(var(--navH) + 16px);
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.12);
+  min-height: 520px;
+  box-shadow: 0 26px 70px rgba(0,0,0,.06);
+}
+
+/* Keep the photo calm: no zoom, no motion */
+.galleryAltImg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit: cover;
+  object-position: center;
+  transform: none !important;
+  animation: none !important;
+  transition: opacity 680ms ease;
+  will-change: opacity;
+  opacity: 0;
+}
+.galleryAltImg.is-prev{ opacity: 1; }
+.galleryAltImg.is-active{ opacity: 0; }
+.galleryAltImg.is-active.is-show{ opacity: 1; }
+
+.galleryAltImg.is-prev{ opacity: 1; }
+.galleryAltImg.is-active{ opacity: 1; }
+
+.galleryAltOverlay{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(120% 100% at 50% 22%, rgba(255,255,255,.12), rgba(0,0,0,.16)),
+    linear-gradient(to top, rgba(0,0,0,.18), rgba(0,0,0,0) 58%);
+  opacity: .55;
+}
+
+/* Chapters list */
+.galleryAltList{
+  display:flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(0,0,0,.12);
+}
+
+.galleryAltItem{
+  text-align: left;
+  padding: 22px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.galleryAltMeta{
+  display:flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.galleryAltLabel{
+  font-size: 11px;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: rgba(31,31,29,.58);
+}
+
+.galleryAltNum{
+  font-size: 11px;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: rgba(31,31,29,.52);
+}
+
+.galleryAltTitle{
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.12;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.galleryAltNote{
+  font-size: 14px;
+  line-height: 1.8;
+  color: rgba(31,31,29,.70);
+  max-width: 44ch;
+}
+
+.galleryAltItem.is-active .galleryAltLabel,
+.galleryAltItem.is-active .galleryAltNum{
+  color: rgba(31,31,29,.82);
+}
+
+.galleryAltItem.is-active .galleryAltTitle{
+  text-decoration: underline;
+  text-underline-offset: 14px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(31,31,29,.28);
+}
+
+.galleryAltHint{
+  margin-top: 12px;
+  font-size: 12px;
+  color: rgba(31,31,29,.58);
+}
+
+/* Mobile: stack media, then chapters */
+@media (max-width: 980px){
+  .galleryAltGrid{ grid-template-columns: 1fr; }
+  .galleryAltMedia{
+    position: relative;
+    top: auto;
+    min-height: 340px;
+  }
+}
+
+/* ==================================================
+   GALLERY CAROUSEL (DOTS + QUIET MOTION)
+   - Not scroll-driven switching
+   - Swipe-friendly, snap, dots
+================================================== */
+.sectionGalleryCarousel{
+  padding-top: 64px;
+  padding-bottom: 64px;
+}
+
+.galleryCarTrack::-webkit-scrollbar{ height: 6px; }
+.galleryCarTrack::-webkit-scrollbar-thumb{
+  background: rgba(0,0,0,.12);
+  border-radius: 999px;
+}
+.galleryCarTrack::-webkit-scrollbar-track{
+  background: rgba(0,0,0,.04);
+  border-radius: 999px;
+}
+
+.galleryCarCard img{
+  width: 100%;
+  height: auto;
+  display: block;
+
+  /* no zoom */
+  transform: none !important;
+  animation: none !important;
+
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(1.03) contrast(1.02) saturate(1.04);
+}
+
+/* quiet overlay */
+.galleryCarCard::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(120% 100% at 50% 22%, rgba(255,255,255,.10), rgba(0,0,0,.16)),
+    linear-gradient(to top, rgba(0,0,0,.16), rgba(0,0,0,0) 62%);
+  opacity: .48;
+}
+
+/* fades */
+.galleryCarFadeLeft{
+  left: 0;
+  background: linear-gradient(to right, rgba(246,241,232,1), rgba(246,241,232,0));
+}
+
+/* dots */
+
+@media (max-width: 768px){
+  .galleryCarSlide{ width: 94vw; }
+  .galleryCarFade{ width: 44px; }
+}
+
 /* =========================
    RESPONSIVE
 ========================= */
@@ -806,7 +927,7 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   .split{ grid-template-columns: 1fr; }
   .grid2{ grid-template-columns: 1fr; }
   .footer-inner{ grid-template-columns: 1fr; }
-  .imagePlaceholder{ min-height: 260px; }
+  .imagePlaceholder, .imagePlaceholder img.experienceImg{ min-height: 260px; }
 }
 
 @media (max-width: 768px){
@@ -814,1183 +935,16 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   .logo-white, .logo-dark{ height:40px; }
   .heroContent{ padding-left: 6%; padding-right: 6%; padding-bottom: 56px; }
   .section{ padding: 52px 0; }
-  .galleryStack{ max-width: 100%; gap: 14px; }
-  .galleryItem img{ height: 240px; }
 }
-
 
 @media (prefers-reduced-motion: reduce){
   *{ transition: none !important; }
-}
-
-
-/* =========================
-   FINAL POLISH (luxury micro-motion + rhythm)
-========================= */
-
-/* Subtle entrance for hero content (no JS) */
-.heroContent{
-  animation: heroIn 900ms ease 120ms both;
-}
-@keyframes heroIn{
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Softer hero shade (refined) */
-.heroShade{
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,.05),
-    rgba(0,0,0,.22),
-    rgba(0,0,0,.58)
-  );
-}
-
-/* Typography tuning */
-.heroTitle,
-.h2,
-.h3{
-  letter-spacing: -0.01em;
-}
-
-.heroKicker,
-.eyebrow,
-.cardLabel,
-.footer-head{
-  letter-spacing: .34em;
-}
-
-/* Reveal on scroll */
-.reveal{
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 800ms ease, transform 800ms ease;
-  will-change: opacity, transform;
-}
-.reveal.is-visible{
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Make cards feel more premium */
-.card{
-  background: rgba(255,255,255,.22);
-}
-.card:hover{
-  transform: translateY(-3px);
-}
-
-/* Slight nav lift on scroll */
-body.is-scrolled .nav{
-  box-shadow: 0 10px 28px rgba(0,0,0,.06);
-}
-
-/* Reduce big gaps on stacked gallery (already improved) */
-.galleryStack{
-  gap: 14px;
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce){
-  .reveal{ transition: none !important; transform: none !important; opacity: 1 !important; }
   .heroContent{ animation: none !important; }
 }
 
-
-.galleryHeader{ margin-bottom: 16px; }
-
-
-/* =========================
-   Experience image (shows /public/experience.jpg)
-========================= */
-.imagePlaceholder{
-  position: relative;
-  overflow: hidden;
-}
-
-.experienceImg{
-  width: 100%;
-  height: 100%;
-  min-height: 360px;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-  background: rgba(255,255,255,.20);
-
-  /* luxury grade */
-  filter: saturate(1.05) contrast(1.04) brightness(1.05);
-  transform: scale(1.03);
-  transition: transform 1.05s ease, filter .85s ease;
-}
-
-.imagePlaceholder:hover .experienceImg{
-  transform: scale(1.075);
-  filter: saturate(1.08) contrast(1.05) brightness(1.08);
-}
-
-.imagePlaceholder:hover::before{ opacity: .42; }
-
-/* If image fails to load, keep a calm surface (browser shows broken icon; reduce its impact) */
-.experienceImg{
-  color: transparent;
-}
-@media (max-width: 980px){
-  .experienceImg{ min-height: 260px; }
-}
-
-
-/* =========================
-   AMAN-STYLE IMAGE POSITIONING (editorial offsets)
-   - subtle asymmetry
-   - varied heights
-   - calm rhythm
-========================= */
-
-.sectionGallery{
-  padding-top: 28px;
-  padding-bottom: 72px;
-}
-
-.galleryHeader{
-  margin-bottom: 14px;
-}
-
-.galleryStack{
-  max-width: 900px;
-  margin: 0 auto;
-  gap: 14px;
-}
-
-.galleryItem{
-  border-radius: 18px;
-  border: 1px solid rgba(0,0,0,.10);
-  overflow: hidden;
-  background: rgba(255,255,255,.18);
-  box-shadow: 0 10px 26px rgba(0,0,0,.04);
-  transition: transform .22s ease, box-shadow .22s ease;
-}
-
-.galleryItem img{
-  width: 100%;
-  height: 320px;
-  object-fit: cover;
-  display: block;
-  object-position: center;
-}
-
-.galleryItem.ocean img{ height: 300px; object-position: center 62%; }
-.galleryItem.villa img{ height: 380px; object-position: center 40%; }
-.galleryItem.dine  img{ height: 320px; object-position: center 56%; }
-
-.galleryItem.is-left{
-  margin-left: -44px;
-  margin-right: 28px;
-}
-.galleryItem.is-right{
-  margin-right: -44px;
-  margin-left: 28px;
-}
-.galleryItem.is-center{
-  margin-left: 12px;
-  margin-right: 12px;
-}
-
-.galleryItem:hover{
-  transform: translateY(-2px);
-  box-shadow: 0 14px 34px rgba(0,0,0,.06);
-}
-
-@media (max-width: 980px){
-  .galleryItem.is-left,
-  .galleryItem.is-right,
-  .galleryItem.is-center{
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .galleryItem.ocean img{ height: 260px; }
-  .galleryItem.villa img{ height: 300px; }
-  .galleryItem.dine  img{ height: 260px; }
-}
-
-@media (max-width: 768px){
-  .galleryStack{ max-width: 100%; gap: 12px; }
-  .galleryItem img{ height: 240px; }
-}
-
-
-/* =========================
-   EXPERIENCE PAGE (AMAN-LEANING LUXURY)
-========================= */
-.page{ background: var(--bg); }
-.pageHero{
-  padding-top: calc(var(--navH) + 48px);
-  padding-bottom: 44px;
-}
-.pageHeroInner{
-  max-width: 1040px;
-  margin: 0 auto;
-  padding: 0 26px;
-}
-.pageTitle{
-  font-family: var(--serif);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  font-size: clamp(44px, 5.2vw, 78px);
-  line-height: 1.06;
-  margin: 0 0 14px;
-  color: var(--ink);
-}
-.pageLead{
-  margin: 0;
-  max-width: 720px;
-  color: rgba(31,31,29,.68);
-  font-size: 15px;
-  line-height: 1.75;
-}
-
-/* =========================
-   LUXURY CAROUSEL
-========================= */
-.sectionExperienceCarousel{ padding-top: 28px; }
-
-.carouselShell{
-  border-radius: 22px;
-  overflow: hidden;
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.18);
-  box-shadow: 0 18px 44px rgba(0,0,0,.06);
-  display: grid;
-  grid-template-columns: 1.2fr .8fr;
-  min-height: 520px;
-}
-
-.carouselMedia{ position: relative; background: rgba(0,0,0,.08); }
-
-.carouselImg{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transform: scale(1.02);
-  transition: opacity 700ms ease, transform 1100ms ease;
-}
-.carouselImg.is-active{ opacity: 1; transform: scale(1); }
-
-.carouselShade{
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.08), rgba(0,0,0,.22));
-  pointer-events: none;
-}
-
-.carouselContent{
-  padding: 34px 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 12px;
-}
-
-.carouselKicker{
-  font-size: 11px;
-  letter-spacing: .34em;
-  text-transform: uppercase;
-  color: rgba(31,31,29,.62);
-}
-
-.carouselTitle{
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: 34px;
-  line-height: 1.12;
-  margin: 0;
-  color: var(--ink);
-}
-
-.carouselText{
-  color: rgba(31,31,29,.70);
-  font-size: 14px;
-  line-height: 1.75;
-  max-width: 360px;
-}
-
-.carouselControls{
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.carouselBtn{
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  border: 1px solid rgba(0,0,0,.14);
-  background: rgba(255,255,255,.52);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  line-height: 1;
-  color: rgba(31,31,29,.88);
-  transition: transform .18s ease, background .18s ease, border-color .18s ease;
-}
-.carouselBtn:hover{
-  transform: translateY(-1px);
-  background: rgba(255,255,255,.72);
-  border-color: rgba(0,0,0,.22);
-}
-
-.carouselDots{ display: flex; gap: 8px; align-items: center; }
-.carouselDots .dot{
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  border: 0;
-  background: rgba(0,0,0,.18);
-  cursor: pointer;
-  transition: transform .18s ease, background .18s ease;
-}
-.carouselDots .dot.is-active{
-  background: rgba(0,0,0,.46);
-  transform: scale(1.15);
-}
-
-.carouselHint{
-  margin-top: 14px;
-  font-size: 12px;
-  color: rgba(31,31,29,.55);
-}
-.carouselHint code{
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  background: rgba(0,0,0,.06);
-  padding: 2px 6px;
-  border-radius: 8px;
-}
-
-/* CTA */
-.sectionCta{ padding-top: 28px; }
-.ctaBlock{
-  border-radius: 18px;
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.24);
-  padding: 26px 22px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-}
-.reserve-dark{
-  border-color: rgba(0,0,0,.18) !important;
-  background: rgba(255,255,255,.65) !important;
-  color: rgba(31,31,29,.92) !important;
-}
-
-@media (max-width: 980px){
-  .carouselShell{ grid-template-columns: 1fr; min-height: unset; }
-  .carouselMedia{ height: 360px; }
-  .carouselContent{ padding: 22px 18px 26px; }
-  .carouselText{ max-width: 100%; }
-  .ctaBlock{ flex-direction: column; align-items: flex-start; }
-}
-@media (max-width: 768px){
-  .pageHero{ padding-top: calc(var(--navH) + 34px); }
-  .pageTitle{ font-size: clamp(36px, 9vw, 54px); }
-  .carouselMedia{ height: 300px; }
-}
-
-
-/* EXPERIENCE HERO */
-.experienceHero{
-  position: relative;
-  height: 88vh;
-  overflow: hidden;
-}
-.experienceHero img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.experienceHeroShade{
-  position:absolute;
-  inset:0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.55));
-}
-.experienceHeroContent{
-  position:absolute;
-  bottom:72px;
-  left:8%;
-  color:#fff;
-  max-width:720px;
-}
-
-/* =========================
-   EXPERIENCE HERO (Aman-style)
-   Uses /public/experience-1.jpg as hero image
-========================= */
-.experienceHero{
-  position: relative;
-  height: 78vh;
-  min-height: 520px;
-  overflow: hidden;
-}
-.experienceHeroImg{
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 58%;
-  transform: scale(1.02);
-}
-
-/* calmer, more cinematic shade */
-.experienceHeroShade{
-  position:absolute;
-  inset:0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,.06),
-    rgba(0,0,0,.20),
-    rgba(0,0,0,.62)
-  );
-}
-
-/* subtle grain for “film” luxury */
-.experienceHeroGrain{
-  position:absolute;
-  inset:-20%;
-  opacity:.10;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
-  transform: rotate(2deg);
-  pointer-events:none;
-}
-
-.experienceHeroContent{
-  position:absolute;
-  left: 8%;
-  right: 8%;
-  bottom: 72px;
-  color:#fff;
-  max-width: 980px;
-}
-
-.experienceHeroTitle{
-  font-family: var(--serif);
-  font-weight: 500;
-  font-size: clamp(40px, 5.6vw, 82px);
-  line-height: 1.05;
-  margin: 0 0 14px;
-  letter-spacing: -0.01em;
-}
-
-.experienceHeroLead{
-  margin: 0;
-  max-width: 560px;
-  font-size: 15px;
-  line-height: 1.75;
-  opacity: .92;
-}
-
-@media (max-width: 768px){
-  .experienceHero{ height: 72vh; min-height: 460px; }
-  .experienceHeroContent{ left: 6%; right: 6%; bottom: 56px; }
-  .experienceHeroImg{ object-position: center 60%; }
-}
-
-/* =========================
-   LUXURY LOCATION MAP (exact pin)
-========================= */
-.sectionMap{
-  padding-top: 54px;
-  padding-bottom: 54px;
-}
-
-.mapShell{
-  position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.20);
-  box-shadow: 0 16px 40px rgba(0,0,0,.06);
-  height: 420px;
-}
-
-.mapFrame{
-  width: 100%;
-  height: 100%;
-  border: 0;
-  filter: grayscale(1) contrast(1.05) brightness(.98) saturate(.65);
-}
-
-.mapPin{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:46px;
-  height:46px;
-  transform:translate(-50%,-100%);
-  pointer-events:none;
-}
-.mapPin span{
-  position:absolute;
-  inset:0;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.8);
-  background:rgba(0,0,0,.22);
-  box-shadow:0 10px 24px rgba(0,0,0,.18);
-}
-.mapPin::after{
-  content:"";
-  position:absolute;
-  left:50%;
-  bottom:-12px;
-  width:10px;
-  height:10px;
-  transform:translateX(-50%) rotate(45deg);
-  background:rgba(0,0,0,.22);
-  border-right:1px solid rgba(255,255,255,.48);
-  border-bottom:1px solid rgba(255,255,255,.48);
-}
-
-/* =========================
-   LUXURY MAP (home bottom)
-========================= */
-.mapBlock{
-  margin-top: 22px;
-}
-.mapShell{
-  position: relative;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.20);
-  box-shadow: 0 16px 40px rgba(0,0,0,.06);
-  height: 380px;
-}
-.mapFrame{
-  width: 100%;
-  height: 100%;
-  border: 0;
-  filter: grayscale(1) contrast(1.05) brightness(.98) saturate(.65);
-}
-.mapPin{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:46px;
-  height:46px;
-  transform:translate(-50%,-100%);
-  pointer-events:none;
-}
-.mapPin span{
-  position:absolute;
-  inset:0;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.8);
-  background:rgba(0,0,0,.22);
-  box-shadow:0 10px 24px rgba(0,0,0,.18);
-}
-.mapPin::after{
-  content:"";
-  position:absolute;
-  left:50%;
-  bottom:-12px;
-  width:10px;
-  height:10px;
-  transform:translateX(-50%) rotate(45deg);
-  background:rgba(0,0,0,.22);
-  border-right:1px solid rgba(255,255,255,.48);
-  border-bottom:1px solid rgba(255,255,255,.48);
-}
-.mapLinks{
-  margin-top: 12px;
-}
-@media (max-width: 768px){
-  .mapShell{ height: 300px; }
-}
-
-/* =========================
-   EXPERIENCE CAROUSEL – LUXURY MODE
-========================= */
-
-/* dots refinement */
-.carouselDots{
-  margin-top: 14px;
-  display: flex;
-  gap: 10px;
-}
-.carouselDots .dot{
-  width: 6px;
-  height: 6px;
-  background: rgba(0,0,0,.25);
-}
-.carouselDots .dot.is-active{
-  background: rgba(0,0,0,.55);
-  transform: scale(1.2);
-}
-
-/* remove any arrow styles just in case */
-.carouselBtn{
-  display: none !important;
-}
-
-/* =========================
-   EXPERIENCE CAROUSEL – LUXURY MODE
-========================= */
-
-/* dots refinement */
-.carouselDots{
-  margin-top: 14px;
-  display: flex;
-  gap: 10px;
-}
-.carouselDots .dot{
-  width: 6px;
-  height: 6px;
-  background: rgba(0,0,0,.25);
-}
-.carouselDots .dot.is-active{
-  background: rgba(0,0,0,.55);
-  transform: scale(1.2);
-}
-
-/* remove any arrow styles just in case */
-.carouselBtn{
-  display: none !important;
-}
-/* =========================
-   EXPERIENCE HERO – MOBILE FIX
-========================= */
-@media (max-width: 768px){
-  .experienceHero{
-    height: auto;
-    min-height: 88svh; /* stable viewport height */
-  }
-
-  .experienceHeroImg{
-    object-position: center 62%;
-  }
-
-  .experienceHeroContent{
-    bottom: 48px;
-  }
-}
-
 /* ==================================================
-   LUXURY CAROUSEL (Index)
-   - No arrows (Aman-style restraint)
-   - Drag / trackpad scroll
-   - Scroll-snap for perfect stops
+   SIX SENSES-INSPIRED HAMBURGER (minimal)
 ================================================== */
-
-.sectionCarousel{
-  padding-top: 36px;
-}
-
-.carouselHead{
-  max-width: 860px;
-  margin: 0 auto 18px;
-}
-
-.luxCarousel{
-  position: relative;
-  margin: 0 auto;
-  max-width: 1100px;
-}
-
-.luxCarouselTrack{
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: clamp(78%, 72vw, 860px);
-  gap: 14px;
-
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding: 26px;
-  padding: 6px 26px 18px;
-
-  -webkit-overflow-scrolling: touch;
-}
-
-.luxCarouselTrack::-webkit-scrollbar{
-  height: 8px;
-}
-.luxCarouselTrack::-webkit-scrollbar-track{
-  background: rgba(0,0,0,.06);
-  border-radius: 999px;
-}
-.luxCarouselTrack::-webkit-scrollbar-thumb{
-  background: rgba(0,0,0,.18);
-  border-radius: 999px;
-}
-
-.luxSlide{
-  scroll-snap-align: start;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.22);
-  box-shadow: 0 18px 44px rgba(0,0,0,.07);
-}
-
-.luxSlide img{
-  width: 100%;
-  height: clamp(260px, 44vw, 520px);
-  display: block;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1.01);
-}
-
-.luxCarouselFade{
-  position: absolute;
-  top: 6px;
-  bottom: 26px;
-  width: 56px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.luxCarouselFadeLeft{
-  left: 0;
-  background: linear-gradient(to right, rgba(246,241,232,1), rgba(246,241,232,0));
-}
-
-.luxCarouselFadeRight{
-  right: 0;
-  background: linear-gradient(to left, rgba(246,241,232,1), rgba(246,241,232,0));
-}
-
-.carouselNote{
-  max-width: 860px;
-  margin: 10px auto 0;
-  font-size: 12px;
-  line-height: 1.7;
-  color: rgba(31,31,29,.58);
-}
-
-.carouselNote strong{
-  font-weight: 500;
-  color: rgba(31,31,29,.74);
-}
-
-@media (max-width: 768px){
-  .luxCarouselTrack{
-    grid-auto-columns: 88%;
-    padding: 6px 18px 16px;
-    scroll-padding: 18px;
-  }
-  .luxCarouselFade{
-    width: 36px;
-  }
-  .luxSlide img{
-    height: 320px;
-  }
-}
-
-/* ==================================================
-   EXPERIENCE HERO IMAGE — LESS ZOOM (OVERRIDE)
-================================================== */
-.hero--short{
-  height: 78vh;
-  min-height: 520px;
-}
-
-.heroImage{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit: cover;
-  object-position: center 28%;
-  transform: none !important;
-  filter: none !important;
-}
-
-@media (max-width: 768px){
-  .hero--short{
-    height: 64vh;
-    min-height: 420px;
-  }
-  .heroImage{
-    object-position: center 34%;
-  }
-}
-
-/* ==================================================
-   LUXURY PHOTO CAROUSEL (AMAN FEEL — BIGGER, CENTERED)
-   - drag/scroll, scroll-snap (center)
-   - large editorial frames, calm whitespace
-   - subtle active focus (no arrows)
-================================================== */
-/* ==================================================
-   AMAN GALLERY CAROUSEL — BIGGER / QUIETER (NO ARROWS)
-   - centered scroll-snap
-   - generous negative space
-   - minimal UI (counter + hairline)
-================================================== */
-.sectionLuxGallery{
-  padding-top: 54px;
-}
-
-.luxGalleryHead{
-  margin-bottom: 18px;
-}
-
-.luxCarousel{
-  position: relative;
-  border-radius: 22px;
-  overflow: hidden;
-  background: transparent;
-}
-
-/* minimal header */
-.luxCarouselTop{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding: 12px 0 0;
-}
-
-.luxCounter{
-  font-size: 11px;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: rgba(31,31,29,.58);
-  white-space: nowrap;
-}
-
-.luxLine{
-  height: 1px;
-  flex: 1;
-  background: rgba(0,0,0,.12);
-}
-
-/* track */
-.luxCarouselTrack{
-  display: grid;
-  grid-auto-flow: column;
-
-  /* BIG frames, 1-per-view feeling */
-  grid-auto-columns: minmax(640px, 72vw);
-
-  gap: 22px;
-
-  /* Aman-like breathing room */
-  padding: 18px 20vw 22px;
-
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-padding: 20vw;
-  -webkit-overflow-scrolling: touch;
-
-  scrollbar-width: none;
-  overscroll-behavior-x: contain;
-
-  cursor: grab;
-}
-.luxCarouselTrack:active{ cursor: grabbing; }
-.luxCarouselTrack::-webkit-scrollbar{ display:none; }
-
-.luxSlide{
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-
-  border-radius: 20px;
-  overflow: hidden;
-
-  /* no borders, no cards */
-  border: none;
-  background: transparent;
-
-  height: clamp(420px, 44vw, 640px);
-
-  /* very subtle focus */
-  transform: scale(.992);
-  transition: transform .55s ease, box-shadow .55s ease, opacity .55s ease;
-  will-change: transform;
-  opacity: .92;
-}
-
-.luxSlide img{
-  width: 100%;
-  height: 100%;
-  display:block;
-  object-fit: cover;
-  object-position: center;
-  transform: translateZ(0);
-
-  /* calmer grade */
-  filter: saturate(.98) contrast(1.02) brightness(1.02);
-  transition: filter .55s ease;
-}
-
-/* Active slide: held, not loud */
-.luxSlide.is-active{
-  transform: scale(1);
-  opacity: 1;
-  box-shadow: 0 26px 70px rgba(0,0,0,.10);
-}
-.luxSlide.is-active img{
-  filter: saturate(1) contrast(1.03) brightness(1.03);
-}
-
-/* soft edge fades (very subtle) */
-.luxCarouselFade{
-  position:absolute;
-  top:0; bottom:0;
-  width: 120px;
-  pointer-events:none;
-  opacity: .85;
-}
-.luxCarouselFadeLeft{
-  left:0;
-  background: linear-gradient(to right, rgba(246,241,232,.95), rgba(246,241,232,0));
-}
-.luxCarouselFadeRight{
-  right:0;
-  background: linear-gradient(to left, rgba(246,241,232,.95), rgba(246,241,232,0));
-}
-
-.luxHint{
-  margin-top: 12px;
-  padding-left: 2px;
-  font-size: 11px;
-  letter-spacing: .26em;
-  text-transform: uppercase;
-  color: rgba(31,31,29,.55);
-}
-
-/* tablet */
-@media (max-width: 980px){
-  .luxCarouselTrack{
-    grid-auto-columns: minmax(520px, 84vw);
-    padding-left: 10vw;
-    padding-right: 10vw;
-    scroll-padding: 10vw;
-  }
-  .luxSlide{
-    height: clamp(360px, 58vw, 560px);
-  }
-}
-
-/* mobile */
-@media (max-width: 768px){
-  .luxCarouselTop{ padding-left: 0; padding-right: 0; }
-  .luxCarouselTrack{
-    grid-auto-columns: minmax(280px, 92vw);
-    padding: 14px 6vw 18px;
-    scroll-padding: 6vw;
-  }
-  .luxSlide{
-    border-radius: 18px;
-    height: clamp(280px, 88vw, 480px);
-  }
-  .luxCarouselFade{ width: 64px; }
-}
-/* ==================================================
-   ULAMAN-STYLE LUX GALLERY — big photos + auto feel
-================================================== */
-.ulGallery{
-  padding-top: 44px;
-  padding-bottom: 84px;
-}
-
-.ulGalleryTop{
-  display:flex;
-  align-items:flex-end;
-  justify-content:space-between;
-  gap:18px;
-  margin-bottom: 18px;
-}
-
-.ulMeta{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  justify-content:flex-end;
-  min-width: 220px;
-}
-
-.ulCounter{
-  font-size: 11px;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: rgba(31,31,29,.62);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.ulSep{ margin: 0 6px; opacity: .55; }
-
-.ulHairline{
-  height: 1px;
-  width: 72px;
-  background: rgba(0,0,0,.14);
-}
-
-.ulHint{
-  font-size: 11px;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: rgba(31,31,29,.55);
-}
-
-.ulCarousel{
-  position: relative;
-  overflow: hidden;
-}
-
-/* Big, calm track (center snap) */
-.ulTrack{
-  display:grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(640px, 78vw);
-  gap: 18px;
-
-  padding: 10px 12vw 18px 12vw;
-
-  overflow-x:auto;
-  scroll-snap-type: x mandatory;
-  scroll-snap-stop: always;
-  -webkit-overflow-scrolling: touch;
-
-  scrollbar-width: none;
-}
-.ulTrack::-webkit-scrollbar{ display:none; }
-
-/* The slide is ONLY a photo (no border/card) */
-.ulSlide{
-  position: relative;
-  scroll-snap-align: center;
-  margin: 0;
-
-  border-radius: 18px;
-  overflow: hidden;
-
-  height: clamp(420px, 46vw, 680px);
-
-  /* subtle depth like luxury editorial */
-  box-shadow: 0 18px 56px rgba(0,0,0,.10);
-  transform: translateZ(0);
-  transition: transform .55s ease, box-shadow .55s ease;
-}
-
-.ulSlide img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit: cover;
-  object-position: center;
-
-  /* ✅ "photos see better" — subtle cinematic grade */
-  filter: brightness(1.06) contrast(1.06) saturate(1.08);
-
-  transform: translateZ(0);
-}
-
-/* Soft overlay for consistency + text-safe */
-.ulOverlay{
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(120% 70% at 50% 10%, rgba(255,255,255,.08), transparent 60%),
-    linear-gradient(to bottom, rgba(0,0,0,.10), rgba(0,0,0,.18));
-  pointer-events:none;
-}
-
-/* Active focus is very subtle (Aman-like) */
-.ulSlide.is-active{
-  transform: scale(1.01);
-  box-shadow: 0 22px 70px rgba(0,0,0,.12);
-}
-
-.ulFade{
-  position:absolute;
-  top:0; bottom:0;
-  width: 12vw;
-  pointer-events:none;
-}
-.ulFadeL{
-  left:0;
-  background: linear-gradient(to right, rgba(246,241,232,.98), rgba(246,241,232,0));
-}
-.ulFadeR{
-  right:0;
-  background: linear-gradient(to left, rgba(246,241,232,.98), rgba(246,241,232,0));
-}
-
-/* minimal progress line */
-.ulProgress{
-  position:absolute;
-  left:12vw;
-  right:12vw;
-  bottom: 6px;
-  height: 1px;
-  background: rgba(0,0,0,.12);
-  overflow:hidden;
-}
-.ulProgressFill{
-  display:block;
-  height:100%;
-  background: rgba(0,0,0,.34);
-  width: 0%;
-  transition: width .45s ease;
-}
-
-@media (max-width: 980px){
-  .ulTrack{
-    grid-auto-columns: minmax(520px, 86vw);
-    padding-left: 7vw;
-    padding-right: 7vw;
-  }
-  .ulFade{ width: 7vw; }
-  .ulProgress{ left:7vw; right:7vw; }
-}
-
-@media (max-width: 768px){
-  .ulGalleryTop{
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .ulMeta{
-    justify-content:flex-start;
-  }
-  .ulTrack{
-    grid-auto-columns: 92vw;
-    padding-left: 4vw;
-    padding-right: 4vw;
-    gap: 14px;
-  }
-  .ulFade{ display:none; }
-  .ulProgress{ left:4vw; right:4vw; }
-  .ulSlide{
-    height: 62vh;
-    max-height: 560px;
-    border-radius: 16px;
-  }
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce){
-  .ulTrack{ scroll-behavior: auto; }
-  .ulSlide{ transition:none; }
-  .ulProgressFill{ transition:none; }
-}
-
-/* ==================================================
-   SIX SENSES-INSPIRED HAMBURGER (DIFFERENT ICON)
-   3 hairlines, varied lengths, no pill
-================================================== */
-
-/* Default (on hero): white + bigger */
 .nav .ss-menuBtn{
   width: 56px;
   height: 56px;
@@ -2005,8 +959,6 @@ body.is-scrolled .nav{
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
-
-/* After scroll: match ink */
 body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
 
 .ss-burger{
@@ -2016,7 +968,6 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   flex-direction: column;
   justify-content: space-between;
 }
-
 .ss-burger span{
   display: block;
   height: 2px;
@@ -2025,12 +976,9 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   opacity: .92;
   transition: transform .28s ease, opacity .28s ease;
 }
-
-/* Luxury signature lengths */
 .ss-burger span:nth-child(1){ width: 28px; }
 .ss-burger span:nth-child(2){ width: 18px; align-self: flex-end; opacity: .80; }
 .ss-burger span:nth-child(3){ width: 22px; }
-
 @media (hover:hover){
   .ss-menuBtn:hover .ss-burger span:nth-child(1){ transform: translateX(3px); }
   .ss-menuBtn:hover .ss-burger span:nth-child(2){ transform: translateX(-2px); }
@@ -2038,116 +986,8 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
 }
 
 /* ==================================================
-   SIX SENSES–STYLE HERO (PHOTOS + KEN BURNS) — 5 PHOTOS
-   Filenames (in /public):
-   hero1.jpg, hero2.jpg, hero3.jpg, hero4.jpg, hero5.jpg
-   Uses negative delays so it starts immediately (no blank).
+   HERO SLIDER (reduced zoom)
 ================================================== */
-
-.hero.hero--photos{
-  position: relative;
-  height: 100vh;
-  min-height: 680px;
-  overflow: hidden;
-  background: #0f1211;
-}
-
-.hero--photos .heroPhotoStage{
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.hero--photos .heroPhoto{
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-
-  opacity: 0;
-  transform: scale(1.05);
-
-  will-change: transform, opacity;
-
-  animation-name: vanaraHeroFadeZoom;
-  animation-duration: 40s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-fill-mode: both;
-
-  /* luxury render */
-  filter: brightness(1.06) contrast(1.05) saturate(1.06);
-}
-
-.heroPhoto--1{ background-image: url('/hero1.jpg'); animation-delay: 0s; }
-.heroPhoto--2{ background-image: url('/hero2.jpg'); animation-delay: -8.0s; }
-.heroPhoto--3{ background-image: url('/hero3.jpg'); animation-delay: -16.0s; }
-.heroPhoto--4{ background-image: url('/hero4.jpg'); animation-delay: -24.0s; }
-.heroPhoto--5{ background-image: url('/hero5.jpg'); animation-delay: -32.0s; }
-
-/* Fade + slow zoom-in (Ken Burns) */
-@keyframes vanaraHeroFadeZoom{
-  0%   { opacity: 0; transform: scale(1.05); }
-  10%  { opacity: 1; }
-  70%  { opacity: 1; transform: scale(1.16); }
-  88%  { opacity: 0; transform: scale(1.18); }
-  100% { opacity: 0; transform: scale(1.05); }
-}
-
-.hero--photos .heroShade{
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(to bottom,
-    rgba(0,0,0,.10),
-    rgba(0,0,0,.26),
-    rgba(0,0,0,.64)
-  );
-}
-
-.hero--photos .heroContent{
-  position: absolute;
-  z-index: 2;
-}
-
-/* Very subtle film texture */
-.hero--photos::after{
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: .06;
-  mix-blend-mode: overlay;
-  background-image:
-    radial-gradient(circle at 18% 22%, rgba(255,255,255,.10) 0 1px, transparent 2px),
-    radial-gradient(circle at 72% 38%, rgba(255,255,255,.08) 0 1px, transparent 2px),
-    radial-gradient(circle at 44% 78%, rgba(255,255,255,.07) 0 1px, transparent 2px);
-  background-size: 120px 120px, 140px 140px, 160px 160px;
-}
-
-@media (max-width: 768px){
-  .hero.hero--photos{ min-height: 560px; }
-  .hero--photos .heroPhoto{ filter: brightness(1.04) contrast(1.04) saturate(1.04); }
-  .hero--photos::after{ opacity: .05; }
-}
-
-@media (prefers-reduced-motion: reduce){
-  .hero--photos .heroPhoto{ animation: none; opacity: 1; transform: none; }
-  .heroPhoto--2, .heroPhoto--3, .heroPhoto--4, .heroPhoto--5{ display: none; }
-  .hero--photos::after{ display:none; }
-}
-
-/* ==================================================
-   SIX SENSES HERO SLIDER (MANUAL + AUTO, NO BLACK FADE)
-   - Manual next/prev + dots (like luxury resorts)
-   - Auto change
-   - Zoom only (no fade to black)
-================================================== */
-
 .hero.hero--ss {
   position: relative;
   height: 100vh;
@@ -2162,7 +1002,7 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   z-index: 0;
 }
 
-/* Intro video layer (plays first, then fades out to photos) */
+/* Intro video layer */
 .ssHeroVideo{
   position:absolute;
   inset:0;
@@ -2173,47 +1013,50 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   opacity:0;
   transition: opacity 700ms ease;
   pointer-events:none;
-  /* match photo grading so the cut feels seamless */
   filter: brightness(1.12) contrast(1.03) saturate(1.06);
 }
 .ssHeroVideo.is-active{ opacity:1; }
 
-/* While video is playing, hide the photo stage to avoid any paint overlap */
 .hero.hero--ss.is-video .ssHeroStage{ opacity:0; }
 .hero.hero--ss.is-photos .ssHeroStage{ opacity:1; }
 
-.ssHeroSlide {
+.ssHeroSlide{
   position: absolute;
   inset: 0;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-
   opacity: 0;
+  z-index: 0;
   transition: opacity 900ms ease;
-  transform: scale(1.05);
+  transform: scale(1.02); /* reduced base scale */
   transform-origin: center;
   will-change: transform, opacity;
-
-  animation: ssKenBurns 8s ease-out forwards;
-  /* Lighter, more airy resort feel (keeps detail, avoids muddy shadows) */
   filter: brightness(1.18) contrast(1.03) saturate(1.08);
+  animation: none;
 }
 
-.ssHeroSlide.is-active {
+.ssHeroSlide.is-prev{
   opacity: 1;
-}
-
-@keyframes ssKenBurns {
-  0%   { transform: scale(1.05); }
-  100% { transform: scale(1.16); }
-}
-
-.hero.hero--ss .heroShade {
-  position: absolute;
-  inset: 0;
   z-index: 1;
-  /* Softer overlay so photos stay bright (still readable text) */
+  transform: scale(1.02);
+}
+
+.ssHeroSlide.is-active{
+  opacity: 1;
+  z-index: 2;
+  animation: ssKenBurns 8.8s ease-out forwards;
+}
+
+@keyframes ssKenBurns{
+  0%   { transform: scale(1.02); }
+  100% { transform: scale(1.08); } /* reduced zoom */
+}
+
+.hero.hero--ss .heroShade{
+  position:absolute;
+  inset:0;
+  z-index:1;
   background: linear-gradient(to bottom,
     rgba(0,0,0,.04),
     rgba(0,0,0,.14),
@@ -2221,9 +1064,8 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   );
 }
 
-/* Extra lift on small screens (iPhone photos often appear darker) */
 @media (max-width: 480px){
-  .ssHeroSlide{ filter: brightness(1.24) contrast(1.02) saturate(1.08); }
+  .ssHeroSlide{ filter: brightness(1.22) contrast(1.02) saturate(1.07); }
   .hero.hero--ss .heroShade{
     background: linear-gradient(to bottom,
       rgba(0,0,0,.03),
@@ -2233,12 +1075,7 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   }
 }
 
-.hero.hero--ss .heroContent {
-  position: absolute;
-  z-index: 3;
-}
-
-.ssHeroNav {
+.ssHeroNav{
   position: absolute;
   top: 0;
   bottom: 0;
@@ -2251,22 +1088,21 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
-.ssHeroNav--prev { left: 0; }
-.ssHeroNav--next { right: 0; }
+.ssHeroNav--prev{ left:0; }
+.ssHeroNav--next{ right:0; }
 
-.ssHeroDots {
+.ssHeroDots{
   position: absolute;
-  left: 28px;
-  bottom: 22px;
+  left: 26px;
+  bottom: 28px;
   z-index: 3;
   display: inline-flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
 }
-
-.ssDot {
-  width: 18px;
-  height: 18px;
+.ssDot{
+  width: 22px;
+  height: 22px;
   border: 0;
   padding: 0;
   margin: 0;
@@ -2276,148 +1112,56 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   -webkit-tap-highlight-color: transparent;
   position: relative;
 }
-
-.ssDot::after {
-  content: '';
-  position: absolute;
-  inset: 7px;
+.ssDot::after{
+  content:'';
+  position:absolute;
+  inset: 9px;
   border-radius: 999px;
-  background: rgba(255,255,255,.40);
+  background: rgba(255,255,255,.38);
   transition: background .25s ease, transform .25s ease;
 }
-
-.ssDot.is-active::after {
+.ssDot.is-active::after{
   background: rgba(255,255,255,.86);
   transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
-  .hero.hero--ss {
-    min-height: 560px;
-  }
-  .ssHeroNav {
-    width: 28%;
-  }
-  .ssHeroDots {
-    left: 18px;
-    bottom: 18px;
-  }
-}
-
-/* ==================================================
-   HERO TOP TEXT MINIMAL (ULUWATU + VANARA)
-   - Only small location + brand name at top
-================================================== */
+/* hero placement */
 .hero.hero--ss .heroContent{
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  transform: translate(-50%, -50%);
-  max-width: 760px;
-  text-align: center;
-  align-items: center;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 64px;
+  transform: none;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: left;
+  align-items: flex-start;
   padding-left: 26px;
   padding-right: 26px;
-  padding-bottom: 0;
 }
-
-.hero.hero--ss .heroKicker{
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  font-size: 11px;
-  opacity: .88;
-  margin-bottom: 10px;
-}
-
-.hero.hero--ss .heroTitle{
-  /* bigger, more cinematic hero title */
-  font-size: clamp(46px, 5.2vw, 84px);
-  line-height: 1.03;
-  margin: 0;
-  white-space: nowrap;
-  max-width: none;
-}
-
-/* If any dots exist from older builds, keep hidden */
-.hero.hero--ss .ssHeroDots{ display:none !important; }
 
 @media (max-width: 768px){
+  .hero.hero--ss { min-height: 560px; }
+  .ssHeroNav{ width: 28%; }
   .hero.hero--ss .heroContent{
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 92vw;
+    bottom: 54px;
     padding-left: 18px;
     padding-right: 18px;
   }
-  .hero.hero--ss .heroKicker{
-    font-size: 11px;
-  }
-
-  .hero.hero--ss .heroTitle{
-    font-size: clamp(38px, 9.2vw, 56px);
-    line-height: 1.05;
-    white-space: nowrap;
+  .ssHeroDots{
+    left: 18px;
+    bottom: 20px;
   }
 }
 
-@media (max-width: 420px){
-  .hero.hero--ss .heroContent{
-    max-width: none;
-    width: calc(100vw - 28px);
-    padding-left: 14px;
-    padding-right: 14px;
-  }
+/* Home signatures: 2 columns when Spa is removed */
 
-  .hero.hero--ss .heroTitle{
-    font-size: clamp(30px, 8.4vw, 40px);
-    line-height: 1.08;
-    letter-spacing: -0.01em;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
+/* Home signatures: single card centered (Dining card removed) */
+.grid3--home{
+  grid-template-columns: 1fr;
+  max-width: 620px;
+  margin: 0 auto;
 }
-
-/* Very small iPhones: keep it readable and never cropped */
-@media (max-width: 360px){
-  .hero.hero--ss .heroTitle{
-    font-size: clamp(26px, 9.2vw, 34px);
-  }
-}
-
-
-/* ==================================================
-   HERO SLIDER TRANSITION (SIX SENSES CROSSFADE)
-   - Real crossfade (prev stays visible while active fades in)
-   - Zoom only on active
-================================================== */
-
-.ssHeroSlide{
-  opacity: 0;
-  z-index: 0;
-  transition: opacity 900ms ease;
-  transform: scale(1.05);
-  animation: none;
-}
-
-/* previous slide stays visible during transition */
-.ssHeroSlide.is-prev{
-  opacity: 1;
-  z-index: 1;
-  animation: none;
-  transform: scale(1.06);
-}
-
-/* active slide fades in and zooms */
-.ssHeroSlide.is-active{
-  opacity: 1;
-  z-index: 2;
-  animation: ssKenBurns 8.2s ease-out forwards;
-}
-
-@keyframes ssKenBurns{
-  0%   { transform: scale(1.05); }
-  100% { transform: scale(1.16); }
+@media (max-width: 980px){
+  .grid3--home{ max-width: 100%; }
 }
