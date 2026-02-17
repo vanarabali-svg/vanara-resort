@@ -270,6 +270,11 @@ body.is-scrolled .icon-pill:hover{ background: rgba(255,255,255,.55); }
   letter-spacing:.24em;
   text-transform:uppercase;
   transition: transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+  overflow: visible;
 }
 
 
@@ -1624,8 +1629,14 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   .reserveShort{ display:inline; }
   .reserve-pill{
     padding: 0 12px;
-    height: 40px;
+    height: auto;
+    gap: 5px;
+    line-height: 1;
   }
   .reservePalm{ margin-left: 5px; }
   .palmIcon svg{ width: 15px; height: 15px; }
+}
+
+@media (max-width: 420px){
+  .reservePalm svg{ width: 16px; height: 16px; }
 }
