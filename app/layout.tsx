@@ -97,7 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             <div className="nav-right">
-              <Link href="/book" className="reserve-pill"><span className="reserveText"><span className="reserveLong">Reserve now</span><span className="reserveShort">Reserve</span></span> <span className="palmIcon reservePalm" aria-hidden="true">
+              <Link href="/book" className="reserve-pill"><span className="reserveText"><span className="reserveLong">Reserve</span><span className="reserveShort">Reserve</span></span> <span className="palmIcon reservePalm" aria-hidden="true">
   <svg viewBox="0 0 24 24">
     <path d="M12 21v-7" />
     <path d="M12 14c-1.8 0-3.4.7-4.6 1.9" />
