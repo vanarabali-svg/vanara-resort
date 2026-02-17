@@ -1623,18 +1623,6 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
 .reserveShort{ display:none; }
 .reserveLong{ display:inline; }
 
-  .reserveShort{ display:inline; }
-  .reserve-pill{
-    padding: 0 12px;
-    height: auto;
-    gap: 5px;
-    line-height: 1;
-  }
-  .reservePalm{ margin-left: 5px; }
-  .palmIcon svg{ width: 15px; height: 15px; }
-}
-
-}
 
 
 /* =========================
