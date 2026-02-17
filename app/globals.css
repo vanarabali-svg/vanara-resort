@@ -96,7 +96,7 @@ body.is-scrolled .logo-dark{ display:block; }
   color: #fff;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
   cursor: pointer;
   transition: transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
 }
@@ -272,14 +272,14 @@ body.is-scrolled .icon-pill:hover{ background: rgba(255,255,255,.55); }
   transition: transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   line-height: 1;
   overflow: visible;
 }
 
 
 /* Reserve palm icon (Six Senses-like mark) */
-.reservePalm{ margin-left: 6px; }
+.reservePalm{ margin-left: 1px; }
 
 .reservePalm svg{
   width: 16px;
@@ -292,8 +292,8 @@ body.is-scrolled .icon-pill:hover{ background: rgba(255,255,255,.55); }
 }
 
 @media (max-width: 480px){
-  .reservePalm{ margin-left: 6px; }
-  .reservePalm svg{ width: 15px; height: 15px; }
+  .reservePalm{ margin-left: 1px; }
+  .reservePalm svg{ width: 14px; height: 14px; }
 }
 
 body.is-scrolled .reserve-pill{
@@ -1598,8 +1598,8 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   opacity: .92;
 }
 .palmIcon svg{
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   stroke: currentColor;
   fill: none;
   stroke-width: 1.4;
@@ -1607,7 +1607,7 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   stroke-linejoin: round;
 }
 
-.lang-pill .palmIcon{ margin-left: 8px; }
+.lang-pill .palmIcon{ margin-left: 2px; }
 
 
 /* Reserve text responsive */
@@ -1647,10 +1647,7 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
     margin-left: 4px;
     opacity: .92;
   }
-  .reservePalm svg{
-    width: 15px;
-    height: 15px;
-  }
+  .reservePalm svg{ width: 14px; height: 14px; }
 }
 
 /* Very small screens: keep it super clean */
@@ -1703,60 +1700,9 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   .lang-pill, .reserve-pill{
     height: 38px;
     padding: 0 12px;
+    gap: 5px;
   }
 }
 
 
-/* =========================
-   MOBILE HEADER SPACING
-   - shift the whole header slightly left via padding
-   - keep logo centered with grid
-========================= */
-@media (max-width: 520px){
-  /* reduce side padding so everything sits a bit more left/right like Six Senses */
-  .nav{
-    padding-left: 14px;
-    padding-right: 14px;
-  }
-
-  /* keep left button close to edge without breaking center */
-  .nav-left{
-    margin-left: -4px;
-  }
-
-  /* slightly tighter right cluster */
-  .nav-right{ gap: 8px; }
-
-  .lang-pill, .reserve-pill{
-    height: 38px;
-    padding: 0 11px;
-  }
-}
-
-
-/* Luxury Palm Icon (refined) */
-.palmIcon svg,
-.reservePalm svg{
-  width: 14px;
-  height: 14px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.15;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: .95;
-}
-
-.reservePalm{ margin-left: 5px; }
-.lang-pill .palmIcon{ margin-left: 6px; }
-
-@media (max-width: 520px){
-  .palmIcon svg,
-  .reservePalm svg{
-    width: 13px;
-    height: 13px;
-    stroke-width: 1.1;
-  }
-  .reservePalm{ margin-left: 4px; }
-  .lang-pill .palmIcon{ margin-left: 5px; }
-}
+.reserveText{ margin: 0; }

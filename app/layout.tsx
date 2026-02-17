@@ -65,11 +65,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <button className="lang-pill" type="button" onClick={() => setLangOpen(true)} aria-label="Change language">
                 <span className="lang-pillText">{lang}</span> <span className="palmIcon" aria-hidden="true">
   <svg viewBox="0 0 24 24">
-    <path d="M12 21V13" />
-    <path d="M12 13c-2.6-1.6-4.4-4.3-4.6-7.2 2.3.1 4 1.2 5 2.8" />
-    <path d="M12 13c2.6-1.6 4.4-4.3 4.6-7.2-2.3.1-4 1.2-5 2.8" />
-    <path d="M12 13c-1.6 0-3 .6-4 1.6" />
-    <path d="M12 13c1.6 0 3 .6 4 1.6" />
+    <path d="M12 21v-7" />
+    <path d="M12 14c-1.8 0-3.4.7-4.6 1.9" />
+    <path d="M12 14c1.8 0 3.4.7 4.6 1.9" />
+    <path d="M12 14c-2.8-1.6-4.7-4.4-4.9-7.7 2.3.1 4.2 1.2 5.4 2.9" />
+    <path d="M12 14c2.8-1.6 4.7-4.4 4.9-7.7-2.3.1-4.2 1.2-5.4 2.9" />
   </svg>
 </span>
               </button>
@@ -97,13 +97,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             <div className="nav-right">
-              <Link href="/book" className="reserve-pill"><span className="reserveText"><span className="reserveLong">Reserve</span><span className="reserveShort">Reserve</span></span> <span className="palmIcon reservePalm" aria-hidden="true">
+              <Link href="/book" className="reserve-pill"><span className="reserveText"><span className="reserveLong">Reserve</span><span className="reserveShort">Reserve</span></span><span className="palmIcon reservePalm" aria-hidden="true">
   <svg viewBox="0 0 24 24">
-    <path d="M12 21V13" />
-    <path d="M12 13c-2.6-1.6-4.4-4.3-4.6-7.2 2.3.1 4 1.2 5 2.8" />
-    <path d="M12 13c2.6-1.6 4.4-4.3 4.6-7.2-2.3.1-4 1.2-5 2.8" />
-    <path d="M12 13c-1.6 0-3 .6-4 1.6" />
-    <path d="M12 13c1.6 0 3 .6 4 1.6" />
+    <path d="M12 21v-7" />
+    <path d="M12 14c-1.8 0-3.4.7-4.6 1.9" />
+    <path d="M12 14c1.8 0 3.4.7 4.6 1.9" />
+    <path d="M12 14c-2.8-1.6-4.7-4.4-4.9-7.7 2.3.1 4.2 1.2 5.4 2.9" />
+    <path d="M12 14c2.8-1.6 4.7-4.4 4.9-7.7-2.3.1-4.2 1.2-5.4 2.9" />
   </svg>
 </span></Link>
             </div>
