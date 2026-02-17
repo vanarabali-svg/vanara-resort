@@ -1665,3 +1665,44 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   }
 }
 
+
+/* =========================
+   MOBILE NAV CENTERING
+========================= */
+.nav-inner{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.nav-left, .nav-center, .nav-right{
+  display:flex;
+  align-items:center;
+}
+
+.nav-right{
+  gap: 12px;
+}
+
+/* Mobile: 3-column grid so logo stays perfectly centered */
+@media (max-width: 520px){
+  .nav-inner{
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items:center;
+    gap: 10px;
+  }
+
+  .nav-left{ justify-content: flex-start; }
+  .nav-center{ justify-content: center; }
+  .nav-right{ justify-content: flex-end; gap: 10px; }
+
+  .lang-pill, .reserve-pill{ flex: 0 0 auto; }
+
+  .lang-pill, .reserve-pill{
+    height: 38px;
+    padding: 0 12px;
+  }
+}
+
