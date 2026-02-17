@@ -1,6 +1,77 @@
 'use client'
 import { useEffect, useMemo, useRef, useState, type TouchEvent as ReactTouchEvent } from 'react'
 
+function LuxGallery() {
+  const slides = useMemo(
+    () => [
+      { src: '/hero1.jpg', alt: 'Vanara ocean view' },
+      { src: '/hero2.jpg', alt: 'Vanara architecture' },
+      { src: '/hero3.jpg', alt: 'Vanara pool and sea' },
+      { src: '/hero4.jpg', alt: 'Vanara calm interiors' },
+      { src: '/hero5.jpg', alt: 'Vanara coastline at dusk' },
+    ],
+    []
+  )
+
+  const trackRef = useRef<HTMLDivElement | null>(null)
+  const [active, setActive] = useState(0)
+
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    const items = Array.from(track.querySelectorAll<HTMLElement>('[data-lux-slide]'))
+    if (!items.length) return
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0))[0]
+        if (!visible) return
+        const idx = Number((visible.target as HTMLElement).dataset.luxSlide ?? '0')
+        if (!Number.isNaN(idx)) setActive(idx)
+      },
+      { root: track, threshold: [0.55, 0.65, 0.75] }
+    )
+
+    items.forEach((el) => obs.observe(el))
+    return () => obs.disconnect()
+  }, [])
+
+  return (
+    <section className="section sectionLuxGallery" aria-label="Gallery">
+      <div className="container">
+        <div className="luxGalleryHead">
+          <div className="eyebrow">GALLERY</div>
+          <h3 className="h3">A quiet sequence of light</h3>
+        </div>
+
+        <div className="luxCarousel">
+          <div className="luxCarouselTop" aria-hidden="true">
+            <div className="luxCounter">
+              {String(active + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
+            </div>
+            <div className="luxLine" />
+          </div>
+
+          <div className="luxCarouselFade luxCarouselFadeLeft" aria-hidden="true" />
+          <div className="luxCarouselFade luxCarouselFadeRight" aria-hidden="true" />
+
+          <div className="luxCarouselTrack" ref={trackRef}>
+            {slides.map((s, i) => (
+              <div key={s.src} className={`luxSlide ${i === active ? 'is-active' : ''}`} data-lux-slide={i}>
+                <img src={s.src} alt={s.alt} loading={i === 0 ? 'eager' : 'lazy'} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="luxHint">Drag to explore</div>
+      </div>
+    </section>
+  )
+}
+
 function HeroSlider() {
   const slides = useMemo(
     () => [
@@ -13,11 +84,13 @@ function HeroSlider() {
     []
   )
 
+  const [showVideo, setShowVideo] = useState(true)
   const [active, setActive] = useState(0)
   const [prev, setPrev] = useState<number | null>(null)
   const [zoomKey, setZoomKey] = useState(0) // restart zoom only on the active slide
   const pausedRef = useRef(false)
   const touchStartX = useRef<number | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
   const total = slides.length
 
   const go = (nextIndex: number) => {
@@ -26,7 +99,7 @@ function HeroSlider() {
     setActive(n)
     setZoomKey((k) => k + 1)
     // clear prev after fade duration so it can fade out cleanly
-    window.setTimeout(() => setPrev(null), 950)
+    window.setTimeout(() => setPrev(null), 1500)
   }
 
   const next = () => go(active + 1)
@@ -34,31 +107,44 @@ function HeroSlider() {
 
   // Auto-advance (Six Senses pacing)
   useEffect(() => {
+    if (showVideo) return
     const id = window.setInterval(() => {
       if (pausedRef.current) return
       next()
     }, 8200)
     return () => window.clearInterval(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active])
+  }, [active, showVideo])
+
+  // Preload hero images after the intro video finishes (user request)
+  useEffect(() => {
+    if (showVideo) return
+    slides.forEach((s) => {
+      const img = new Image()
+      img.src = s.src
+    })
+  }, [slides, showVideo])
 
   // Keyboard arrows
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
+      if (showVideo) return
       if (e.key === 'ArrowRight') next()
       if (e.key === 'ArrowLeft') prevSlide()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active])
+  }, [active, showVideo])
 
   // Touch swipe
   const onTouchStart = (e: ReactTouchEvent<HTMLElement>) => {
+    if (showVideo) return
     pausedRef.current = true
     touchStartX.current = e.touches[0]?.clientX ?? null
   }
   const onTouchMove = (e: ReactTouchEvent<HTMLElement>) => {
+    if (showVideo) return
     if (touchStartX.current == null) return
     const x = e.touches[0]?.clientX ?? touchStartX.current
     const dx = x - touchStartX.current
@@ -73,15 +159,37 @@ function HeroSlider() {
     pausedRef.current = false
   }
 
+  // When the intro video ends, switch to photos
+  const onVideoEnded = () => {
+    setShowVideo(false)
+    // start first photo cleanly
+    setPrev(null)
+    setActive(0)
+    setZoomKey((k) => k + 1)
+  }
+
   return (
     <section
-      className="hero hero--ss"
+      className={`hero hero--ss ${showVideo ? 'is-video' : 'is-photos'}`}
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
+      {/* Intro video first (hero.mp4). After it ends, photos crossfade like Six Senses. */}
+      <video
+        ref={videoRef}
+        className={`ssHeroVideo ${showVideo ? 'is-active' : ''}`}
+        src="/hero.mp4"
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+        onEnded={onVideoEnded}
+        aria-label="Vanara hero video"
+      />
+
       <div className="ssHeroStage" aria-hidden="true">
         {slides.map((s, i) => {
           const isActive = i === active
@@ -99,21 +207,27 @@ function HeroSlider() {
 
       <div className="heroShade" />
 
-      {/* click zones */}
-      <button className="ssHeroNav ssHeroNav--prev" aria-label="Previous photo" onClick={prevSlide} />
-      <button className="ssHeroNav ssHeroNav--next" aria-label="Next photo" onClick={next} />
+      {/* click zones (only when photos are active) */}
+      {!showVideo && (
+        <>
+          <button className="ssHeroNav ssHeroNav--prev" aria-label="Previous photo" onClick={prevSlide} />
+          <button className="ssHeroNav ssHeroNav--next" aria-label="Next photo" onClick={next} />
+        </>
+      )}
 
-      {/* dots */}
-      <div className="ssHeroDots" aria-label="Hero pagination">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            className={`ssDot ${i === active ? 'is-active' : ''}`}
-            aria-label={`Go to slide ${i + 1}`}
-            onClick={() => go(i)}
-          />
-        ))}
-      </div>
+      {/* dots (only when photos are active; CSS may hide for minimal style) */}
+      {!showVideo && (
+        <div className="ssHeroDots" aria-label="Hero pagination">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              className={`ssDot ${i === active ? 'is-active' : ''}`}
+              aria-label={`Go to slide ${i + 1}`}
+              onClick={() => go(i)}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="heroContent">
         <div className="heroKicker">ULUWATU · BALI</div>
@@ -172,6 +286,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* LUX PHOTO STRIP (editorial, Six Senses / Aman feel) */}
+      <LuxGallery />
+
       {/* SIGNATURES */}
       <section className="section sectionSignatures">
         <div className="container">
@@ -206,63 +323,72 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* GALLERY — STACKED */}
-      <section className="section sectionGallery">
+      {/* DINING FEATURE (Seascape-style block) */}
+      <section className="section sectionDiningFeature">
         <div className="container">
-          <div className="galleryHeader">
-            <div className="eyebrow">GLIMPSES</div>
-            <h3 className="h3">Light, water, and texture</h3>
-          </div>
+          <div className="split split--rev">
+            <div className="imagePlaceholder" aria-label="Dining image">
+              <img className="experienceImg" src="/dining.jpg" alt="Dining at Vanara" />
+            </div>
 
-          <div className="galleryStack">
-            <figure className="galleryItem ocean is-left">
-              <img src="/gallery-1.jpg" alt="Ocean view" />
-            </figure>
-
-            <figure className="galleryItem villa is-right">
-              <img src="/gallery-2.jpg" alt="Villa ritual" />
-            </figure>
-
-            <figure className="galleryItem dine is-center">
-              <img src="/gallery-3.jpg" alt="Dining atmosphere" />
-            </figure>
-          </div>
-
-          <div className="copy" style={{ marginTop: 22 }}>
-            <p>
-              A palette of sand, stone, and sea. Minimalism here is not an aesthetic — it is a way to create room for
-              breath, light, and the quiet rhythm of tides.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* EXPERIENCE PREVIEW */}
-      <section className="section sectionExperience">
-        <div className="container">
-          <div className="split">
             <div>
-              <div className="eyebrow">EXPERIENCE</div>
-              <h3 className="h3">The day, unhurried</h3>
+              <div className="eyebrow">DINING</div>
+              <h3 className="h3">A calm table by the ocean</h3>
+
               <div className="copy">
                 <p>
-                  Sunrise silence. Warm water. Slow dining. Evenings that arrive softly.
-                  Choose a rhythm that feels like you — and let everything else fall away.
+                  Thoughtful cuisine, served with unhurried attention. From sunrise breakfasts to candlelit dinners,
+                  Vanara’s dining is guided by season, ocean air, and a minimalist sense of place.
+                </p>
+                <p>
+                  Expect clean flavors, warm fire cooking, and a quiet rhythm — the kind of meal that feels like a pause
+                  in the day rather than an event.
                 </p>
               </div>
 
               <ul className="bullets">
-                <li>Cliffside sunrise meditation</li>
-                <li>Ocean sound bathing</li>
-                <li>Private chef’s table</li>
-                <li>Handcrafted local excursions</li>
+                <li>Cliffside breakfasts &amp; slow morning coffee</li>
+                <li>Fresh seafood, local harvests, and clean grilling</li>
+                <li>Private dining in-villa (upon request)</li>
+              </ul>
+
+              <a className="textCta" href="/dine">Explore dining</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* YOGA */}
+      <section className="section sectionYoga">
+        <div className="container">
+          <div className="split">
+            <div>
+              <div className="eyebrow">YOGA</div>
+              <h3 className="h3">Move slowly. Breathe deeper.</h3>
+              <div className="copy">
+                <p>
+                  Begin with ocean air and soft light. Our yoga and breathwork sessions are designed to quiet the nervous
+                  system — gentle flow, grounded strength, and long exhale.
+                </p>
+                <p>
+                  Practice is unhurried and private. Choose sunrise on the terrace, a restorative session after the spa,
+                  or guided meditation before dinner.
+                </p>
+              </div>
+
+              <ul className="bullets">
+                <li>Sunrise &amp; sunset yoga (all levels)</li>
+                <li>Breathwork &amp; guided meditation</li>
+                <li>Sound healing and deep rest</li>
+                <li>Private sessions in-villa (upon request)</li>
               </ul>
 
               <a className="textCta" href="/experience">Explore experiences</a>
             </div>
 
             <div className="imagePlaceholder" aria-label="Experience image">
-              <img className="experienceImg" src="/experience.jpg" alt="Experience at Vanara" />
+              {/* Add /public/yoga.jpg (or replace with your filename) */}
+              <img className="experienceImg" src="/yoga.jpg" alt="Yoga at Vanara" />
             </div>
           </div>
         </div>
@@ -342,30 +468,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* MAP */}
-        <div className="mapBlock">
-          <div className="mapShell">
-            <div className="mapPin" aria-hidden="true"><span /></div>
-            <iframe
-              className="mapFrame"
-              title="Vanara Resort & Spa location"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps?q=-8.84194133249861,115.11168032877258&z=17&output=embed"
-            />
-          </div>
-
-          <div className="mapLinks">
-            <a
-              className="textCta"
-              href="https://www.google.com/maps/place/VANARA+Resort+%26+Spa/@-8.8421164,115.1117122,17z"
-              target="_blank"
-              rel="noreferrer"
-            >
-              View on Google Maps
-            </a>
-          </div>
-        </div>
       </section>
     </div>
   )

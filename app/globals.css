@@ -414,6 +414,16 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   align-items: start;
 }
 
+/* Image-first split (Dining feature style) */
+.split--rev{
+  grid-template-columns: .85fr 1.15fr;
+}
+
+.sectionDiningFeature{
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
 .bullets{
   margin: 18px 0 0;
   padding-left: 18px;
@@ -434,16 +444,35 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
 .textCta:hover{ border-bottom-color: rgba(31,31,29,.50); }
 
 .imagePlaceholder{
-  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
   border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.28);
+  background: rgba(255,255,255,.18);
   min-height: 360px;
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align:center;
-  padding: 22px;
+  box-shadow: 0 26px 70px rgba(0,0,0,.08);
+}
+
+/* soft vignette + film grain (luxury editorial) */
+.imagePlaceholder::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 50% 30%, rgba(255,255,255,.10), rgba(0,0,0,.18)),
+    linear-gradient(to top, rgba(0,0,0,.22), rgba(0,0,0,0) 62%);
+  opacity: .55;
+  transition: opacity .6s ease;
+}
+.imagePlaceholder::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+  opacity: .22;
 }
 .imageKicker{
   font-size: 11px;
@@ -888,7 +917,19 @@ body.is-scrolled .nav{
   object-fit: cover;
   object-position: center;
   background: rgba(255,255,255,.20);
+
+  /* luxury grade */
+  filter: saturate(1.05) contrast(1.04) brightness(1.05);
+  transform: scale(1.03);
+  transition: transform 1.05s ease, filter .85s ease;
 }
+
+.imagePlaceholder:hover .experienceImg{
+  transform: scale(1.075);
+  filter: saturate(1.08) contrast(1.05) brightness(1.08);
+}
+
+.imagePlaceholder:hover::before{ opacity: .42; }
 
 /* If image fails to load, keep a calm surface (browser shows broken icon; reduce its impact) */
 .experienceImg{
@@ -2121,6 +2162,26 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   z-index: 0;
 }
 
+/* Intro video layer (plays first, then fades out to photos) */
+.ssHeroVideo{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:0;
+  opacity:0;
+  transition: opacity 700ms ease;
+  pointer-events:none;
+  /* match photo grading so the cut feels seamless */
+  filter: brightness(1.12) contrast(1.03) saturate(1.06);
+}
+.ssHeroVideo.is-active{ opacity:1; }
+
+/* While video is playing, hide the photo stage to avoid any paint overlap */
+.hero.hero--ss.is-video .ssHeroStage{ opacity:0; }
+.hero.hero--ss.is-photos .ssHeroStage{ opacity:1; }
+
 .ssHeroSlide {
   position: absolute;
   inset: 0;
@@ -2135,7 +2196,8 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   will-change: transform, opacity;
 
   animation: ssKenBurns 8s ease-out forwards;
-  filter: brightness(1.06) contrast(1.05) saturate(1.06);
+  /* Lighter, more airy resort feel (keeps detail, avoids muddy shadows) */
+  filter: brightness(1.18) contrast(1.03) saturate(1.08);
 }
 
 .ssHeroSlide.is-active {
@@ -2151,11 +2213,24 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   position: absolute;
   inset: 0;
   z-index: 1;
+  /* Softer overlay so photos stay bright (still readable text) */
   background: linear-gradient(to bottom,
-    rgba(0,0,0,.08),
-    rgba(0,0,0,.22),
-    rgba(0,0,0,.58)
+    rgba(0,0,0,.04),
+    rgba(0,0,0,.14),
+    rgba(0,0,0,.42)
   );
+}
+
+/* Extra lift on small screens (iPhone photos often appear darker) */
+@media (max-width: 480px){
+  .ssHeroSlide{ filter: brightness(1.24) contrast(1.02) saturate(1.08); }
+  .hero.hero--ss .heroShade{
+    background: linear-gradient(to bottom,
+      rgba(0,0,0,.03),
+      rgba(0,0,0,.12),
+      rgba(0,0,0,.36)
+    );
+  }
 }
 
 .hero.hero--ss .heroContent {
@@ -2245,8 +2320,6 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   padding-left: 26px;
   padding-right: 26px;
   padding-bottom: 0;
-  box-sizing: border-box;
-  width: min(760px, calc(100vw - 48px));
 }
 
 .hero.hero--ss .heroKicker{
@@ -2298,20 +2371,19 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   }
 
   .hero.hero--ss .heroTitle{
-    /* iPhone-sized screens: smaller so the full line fits */
-    font-size: clamp(16px, 5.4vw, 22px);
-    letter-spacing: -0.015em;
-    white-space: nowrap;
-  }
-
-  .hero.hero--ss .heroTitle{
-    /* iPhone: never clip — allow wrap + smaller type */
-    font-size: clamp(22px, 6.3vw, 30px);
+    font-size: clamp(30px, 8.4vw, 40px);
     line-height: 1.08;
     letter-spacing: -0.01em;
     white-space: normal;
     overflow-wrap: anywhere;
     word-break: break-word;
+  }
+}
+
+/* Very small iPhones: keep it readable and never cropped */
+@media (max-width: 360px){
+  .hero.hero--ss .heroTitle{
+    font-size: clamp(26px, 9.2vw, 34px);
   }
 }
 
