@@ -317,6 +317,15 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   padding-bottom: 48px;
 }
 
+
+/* Villas feature: photo more dominant */
+.sectionVillasFeature .split--rev{
+  grid-template-columns: 1.15fr .85fr;
+}
+@media (max-width: 980px){
+  .sectionVillasFeature .split--rev{ grid-template-columns: 1fr; }
+}
+
 /* =========================
    EXPERIENCE split + panels
 ========================= */
@@ -918,6 +927,273 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
   .galleryCarSlide{ width: 94vw; }
   .galleryCarFade{ width: 44px; }
 }
+
+
+
+
+
+
+/* ==================================================
+   SCROLL ZOOM (non-hero photos)
+   - subtle zoom-in on reveal while scrolling down
+================================================== */
+.imagePlaceholder img.experienceImg{
+  transform: scale(1.0);
+  will-change: transform;
+}
+
+/* Default reveal */
+.imagePlaceholder.is-inview img.experienceImg{
+  animation: vnrZoomIn 2200ms ease-out forwards;
+}
+
+@keyframes vnrZoomIn{
+  from { transform: scale(1.0); }
+  to   { transform: scale(1.10); }
+}
+
+/* Stronger zoom on Yoga photo only */
+.sectionYoga .imagePlaceholder.is-inview img.experienceImg{
+  animation: vnrZoomInYoga 2400ms ease-out forwards;
+}
+@keyframes vnrZoomInYoga{
+  from { transform: scale(1.0); }
+  to   { transform: scale(1.18); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .imagePlaceholder img.experienceImg{
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+
+
+
+/* ==================================================
+   VILLAS PHOTO SLIDER (3 photos, auto)
+================================================== */
+.imagePlaceholder.villasSlider{
+  min-height: clamp(520px, 68vh, 760px);
+  border-radius: 26px;
+}
+
+.villasSliderStage{
+  position:absolute;
+  inset:0;
+}
+
+.villasSlide{
+  background-position: center 40%;
+  position:absolute;
+  inset:0;
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+  opacity:0;
+  transition: opacity 900ms ease;
+  transform: none !important;
+  animation: none !important;
+  filter: brightness(1.10) contrast(1.03) saturate(1.06);
+}
+
+.villasSlide.is-prev{
+  opacity: 1;
+}
+
+.villasSlide.is-active{
+  opacity: 1;
+}
+
+/* Dots (minimal) */
+.villasSliderDots{
+  position:absolute;
+  left: 18px;
+  bottom: 16px;
+  z-index: 3;
+  display:flex;
+  gap: 10px;
+  align-items:center;
+}
+
+.villasDot{
+  width: 22px;
+  height: 22px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  border-radius: 999px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.villasDot::after{
+  content:"";
+  position:absolute;
+  inset: 9px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.38);
+  transition: background .25s ease, transform .25s ease;
+}
+
+.villasDot.is-active::after{
+  background: rgba(255,255,255,.88);
+  transform: scale(1.06);
+}
+
+/* Tiny label (optional, very subtle) */
+.villasSliderHint{
+  position:absolute;
+  right: 18px;
+  bottom: 16px;
+  z-index: 3;
+  font-size: 11px;
+  letter-spacing: .30em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.82);
+}
+
+@media (max-width: 980px){
+  .imagePlaceholder.villasSlider{
+  min-height: clamp(520px, 68vh, 760px);
+  border-radius: 26px;
+}
+  .villasSliderDots{ left: 14px; bottom: 14px; }
+  .villasSliderHint{ right: 14px; bottom: 14px; }
+}
+
+
+
+/* ==================================================
+   VILLAS PHOTO SLIDER (4 photos, auto) — refined
+================================================== */
+.imagePlaceholder.villasSlider{
+  min-height: clamp(520px, 68vh, 760px);
+  border-radius: 26px;
+}
+
+/* Layered slides (background) */
+.villasSliderStage{
+  position:absolute;
+  inset:0;
+}
+
+.villasSlide{
+  position:absolute;
+  inset:0;
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+  opacity:0;
+  transition: opacity 1100ms ease;
+
+  /* Vanara grading */
+  filter: brightness(1.16) contrast(1.06) saturate(1.10);
+  transform: scale(1.02);
+  transform-origin: center;
+  will-change: opacity, transform;
+}
+
+/* crossfade */
+.villasSlide.is-prev{ opacity: 1; }
+.villasSlide.is-active{
+  opacity: 1;
+  animation: villasKenBurns 7.2s ease-out forwards;
+}
+
+@keyframes villasKenBurns{
+  from { transform: scale(1.02); }
+  to   { transform: scale(1.12); } /* subtle luxury zoom */
+}
+
+/* cinematic overlay (depth) */
+.villasSliderOverlay{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+  background:
+    radial-gradient(120% 110% at 50% 20%, rgba(255,255,255,.12), rgba(0,0,0,.18)),
+    linear-gradient(to top, rgba(0,0,0,.22), rgba(0,0,0,0) 58%);
+  opacity:.55;
+}
+
+/* soft grain (very subtle) */
+.villasSliderOverlay::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.14'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+  opacity:.22;
+}
+
+/* Dots (more luxury) */
+.villasSliderDots{
+  position:absolute;
+  left: 18px;
+  bottom: 16px;
+  z-index: 3;
+  display:flex;
+  gap: 10px;
+  align-items:center;
+}
+
+.villasDot{
+  width: 26px;
+  height: 26px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  border-radius: 999px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.villasDot::after{
+  content:"";
+  position:absolute;
+  inset: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.34);
+  transition: background .25s ease, transform .25s ease;
+}
+
+.villasDot.is-active::after{
+  background: rgba(255,255,255,.92);
+  transform: scale(1.12);
+}
+
+/* Tiny label (optional, very subtle) */
+.villasSliderHint{
+  position:absolute;
+  right: 18px;
+  bottom: 16px;
+  z-index: 3;
+  font-size: 11px;
+  letter-spacing: .30em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.84);
+  opacity: .92;
+}
+
+@media (max-width: 980px){
+  .imagePlaceholder.villasSlider{
+  min-height: clamp(520px, 68vh, 760px);
+  border-radius: 26px;
+}
+  .villasSliderDots{ left: 14px; bottom: 14px; }
+  .villasSliderHint{ right: 14px; bottom: 14px; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .villasSlide.is-active{ animation: none !important; transform: none !important; }
+}
+
 
 /* =========================
    RESPONSIVE

@@ -1,6 +1,83 @@
 'use client'
 import { useEffect, useMemo, useRef, useState, type TouchEvent as ReactTouchEvent } from 'react'
 
+function VillasSlider() {
+  const photos = useMemo(
+    () => [
+      { src: '/villas-1.jpg', alt: 'Vanara villa view' },
+      { src: '/villas-2.jpg', alt: 'Vanara villa interior' },
+      { src: '/villas-3.jpg', alt: 'Vanara villa terrace' },
+      { src: '/villas-4.jpg', alt: 'Vanara villa at dusk' },
+    ],
+    []
+  )
+
+  const [active, setActive] = useState(0)
+  const [prev, setPrev] = useState<number | null>(null)
+  const pausedRef = useRef(false)
+  const total = photos.length
+
+  const go = (nextIndex: number) => {
+    const n = (nextIndex + total) % total
+    setPrev(active)
+    setActive(n)
+    window.setTimeout(() => setPrev(null), 900)
+  }
+
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      if (pausedRef.current) return
+      go(active + 1)
+    }, 7200)
+    return () => window.clearInterval(id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active])
+
+  return (
+    <div
+      className="imagePlaceholder villasSlider"
+      onMouseEnter={() => (pausedRef.current = true)}
+      onMouseLeave={() => (pausedRef.current = false)}
+      onTouchStart={() => (pausedRef.current = true)}
+      onTouchEnd={() => (pausedRef.current = false)}
+      aria-label="Villas photo slider"
+    >
+      <div className="villasSliderStage" aria-hidden="true">
+        {photos.map((p, i) => {
+          const isActive = i === active
+          const isPrev = prev !== null && i === prev
+          return (
+            <div
+              key={p.src}
+              className={`villasSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}
+              style={{ backgroundImage: `url(${p.src})` }}
+              aria-hidden="true"
+            />
+          )
+        })}
+      </div>
+
+      <div className="villasSliderOverlay" aria-hidden="true" />
+
+      <div className="villasSliderDots" aria-label="Villas slider pagination">
+        {photos.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            className={`villasDot ${i === active ? 'is-active' : ''}`}
+            aria-label={`Show villa photo ${i + 1}`}
+            onClick={() => go(i)}
+          />
+        ))}
+      </div>
+
+      <div className="villasSliderHint" aria-hidden="true">
+        Villas
+      </div>
+    </div>
+  )
+}
+
 function HeroSlider() {
   const slides = useMemo(
     () => [
@@ -159,7 +236,36 @@ function HeroSlider() {
 }
 
 export default function HomePage() {
+  // Scroll zoom for non-hero photos (six-senses-like subtle motion)
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll<HTMLElement>('.imagePlaceholder'))
+    if (!els.length) return
+
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const el = e.target as HTMLElement
+          if (e.isIntersecting) {
+            // retrigger animation each time it enters view
+            el.classList.remove('is-inview')
+            requestAnimationFrame(() => el.classList.add('is-inview'))
+          } else {
+            el.classList.remove('is-inview')
+          }
+        }
+      },
+      { threshold: 0.18, rootMargin: '0px 0px -15% 0px' }
+    )
+
+    els.forEach((el) => obs.observe(el))
+    return () => obs.disconnect()
+  }, [])
+
   return (
+
     <div className="home">
       <HeroSlider />
 
@@ -197,9 +303,7 @@ export default function HomePage() {
       <section className="section sectionVillasFeature">
         <div className="container">
           <div className="split split--rev">
-            <div className="imagePlaceholder" aria-label="Villas image">
-              <img className="experienceImg" src="/villas.jpg" alt="Villas at Vanara" />
-            </div>
+            <VillasSlider />
 
             <div>
               <div className="eyebrow">VILLAS</div>
