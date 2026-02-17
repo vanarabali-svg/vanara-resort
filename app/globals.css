@@ -1394,3 +1394,28 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
 @media (max-width: 980px){
   .grid3--home{ max-width: 100%; }
 }
+
+
+
+/* Villas slider: better mobile crop + proportions */
+@media (max-width: 600px){
+  .imagePlaceholder.villasSlider{
+    min-height: 360px;
+    border-radius: 22px;
+  }
+
+  .villasSlide{
+    background-position: center 32%;
+    filter: brightness(1.10) contrast(1.05) saturate(1.08);
+  }
+
+  .villasSliderDots{
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+  }
+
+  .villasSliderHint{
+    display: none;
+  }
+}
