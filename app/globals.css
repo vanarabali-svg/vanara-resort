@@ -1732,3 +1732,19 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
     transform: translateX(-1px);
   }
 }
+
+
+/* Hero: video only */
+.heroVideo{
+  position: absolute;
+  inset: 0;
+}
+
+.heroVideoEl{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
