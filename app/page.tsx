@@ -83,20 +83,23 @@ export default function HomePage() {
   return (
 
     <div className="home">
+      
       <section className="hero hero--video" aria-label="Hero">
         <div className="heroVideo" aria-label="Vanara hero video">
-              <video
-                className="heroVideoEl"
-                src="/hero.mp4"
-                autoPlay
-                muted
-                playsInline
-                loop
-                preload="auto"
-              />
-            </div>
+          <video
+            className="heroVideoEl"
+            src="/hero.mp4"
+            autoPlay
+            muted
+            playsInline
+            loop
+            preload="auto"
+          />
+        </div>
+
         <div className="heroShade" aria-hidden="true" />
       </section>
+
 
       <section className="section sectionIntro">
         <div className="container">

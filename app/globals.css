@@ -301,7 +301,8 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
 .heroShade{
   position:absolute;
   inset:0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.06), rgba(0,0,0,.14) 60%, rgba(0,0,0,.22));
+  pointer-events:none;
+  background: linear-gradient(to bottom, rgba(0,0,0,.06), rgba(0,0,0,.16) 60%, rgba(0,0,0,.28));
 }
 
 /* anchored */
@@ -1728,18 +1729,18 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   }
 }
 
-
 /* Hero: video only */
+
 .heroVideo{
   position: absolute;
   inset: 0;
 }
 
+/* Hero: video only (classic) */
 .heroVideoEl{
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 70% center;
+  object-position: center; /* like before */
   display: block;
 }
-
