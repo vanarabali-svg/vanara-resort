@@ -119,7 +119,7 @@ const go = (i: number) => {
       </div>
 
       <div
-        className="uDiningCarousel" ref={zoomRef} ref={zoomRef}
+        className="uDiningCarousel" ref={zoomRef}
         onMouseEnter={() => (pausedRef.current = true)}
         onMouseLeave={() => (pausedRef.current = false)}
         onTouchStart={onTouchStart}
@@ -211,7 +211,7 @@ function VillasUlamanCarousel() {
 
   return (
     <div
-      className="uVillasCarousel" ref={zoomRef} ref={zoomRef}
+      className="uVillasCarousel" ref={zoomRef}
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
       onTouchStart={onTouchStart}
@@ -253,10 +253,18 @@ export default function HomePage() {
 useEffect(() => {
   const choose = () => {
     const w = window.innerWidth
-    // Phones + tablets: light video. Desktop: full video.
-    const src = w < 1024 ? '/hero-light.mp4' : '/hero.mp4'
+
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    // @ts-ignore
+    const saveData = (navigator as any)?.connection?.saveData === true
+
+    // Phones + tablets: lighter video. Desktop: full video.
+    // If user asks for reduced motion or data saving, also use the light version.
+    const src = (w < 1024 || prefersReducedMotion || saveData) ? '/hero-light.mp4' : '/hero.mp4'
+
     setHeroSrc(src)
     setHeroVideoOk(true)
+    setNeedsTap(false)
   }
   choose()
   window.addEventListener('resize', choose)
@@ -264,7 +272,25 @@ useEffect(() => {
 }, [])
   const [heroVideoOk, setHeroVideoOk] = useState(true)
   const [heroSrc, setHeroSrc] = useState('/hero.mp4')
+  const [needsTap, setNeedsTap] = useState(false)
   const heroVideoRef = useRef<HTMLVideoElement | null>(null)
+
+  // Try to start playback (some phones block autoplay even when muted)
+  useEffect(() => {
+    const v = heroVideoRef.current
+    if (!v) return
+    const tryPlay = async () => {
+      try {
+        await v.play()
+        setNeedsTap(false)
+      } catch {
+        setNeedsTap(true)
+      }
+    }
+    const id = window.setTimeout(tryPlay, 50)
+    return () => window.clearTimeout(id)
+  }, [heroSrc])
+
 return (
 
     <div className="home">
@@ -272,22 +298,48 @@ return (
       <section className="hero hero--video" aria-label="Hero">
         <div className="heroVideo" aria-label="Vanara hero media">
   {heroVideoOk ? (
-    <video key={heroSrc}
+    <video
+      key={heroSrc}
       ref={heroVideoRef}
       className="heroVideoEl"
       autoPlay
       muted
       playsInline
       loop
-      preload="metadata"
+      preload="auto"
+      controls={false}
+      disablePictureInPicture
+      // @ts-ignore - supported by most browsers
+      controlsList="nodownload noplaybackrate noremoteplayback"
       poster="/hero-poster.jpg"
-      onError={() => setHeroVideoOk(false)}
-      onLoadedData={() => setHeroVideoOk(true)}
->
+      onError={() => {
+        setHeroVideoOk(false)
+        setNeedsTap(false)
+      }}
+      onCanPlay={() => {
+        setHeroVideoOk(true)
+      }}
+    >
       <source src={heroSrc} type="video/mp4" />
     </video>
   ) : (
     <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />
+  )}
+  {needsTap && heroVideoOk && (
+    <button
+      type="button"
+      className="heroVideoTap"
+      aria-label="Play intro video"
+      onClick={() => {
+        const v = heroVideoRef.current
+        if (!v) return
+        v.play()
+          .then(() => setNeedsTap(false))
+          .catch(() => setNeedsTap(true))
+      }}
+    >
+      Tap to play
+    </button>
   )}
 
 </div>
