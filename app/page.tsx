@@ -70,21 +70,26 @@ function DiningUlamanCarousel4() {
   )
 
   const [active, setActive] = useState(0)
-  const [prevIdx, setPrevIdx] = useState<number | null>(null)
+  const [prev, setPrev] = useState<number | null>(null)
+  const pausedRef = useRef(false)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
-
   const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
-
-  const go = (i: number) => {
+const go = (i: number) => {
     const idx = (i + photos.length) % photos.length
-    setPrevIdx(active)
+    setPrev(active)
     setActive(idx)
-    window.setTimeout(() => setPrevIdx(null), 700)
+    window.setTimeout(() => setPrev(null), 650)
   }
 
-  const next = () => go(active + 1)
-  const prev = () => go(active - 1)
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      if (pausedRef.current) return
+      go(active + 1)
+    }, 5200)
+    return () => window.clearInterval(id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, photos.length])
 
   const onTouchStart = (e: React.TouchEvent) => {
     const t = e.touches[0]
@@ -99,17 +104,24 @@ function DiningUlamanCarousel4() {
     const dx = t.clientX - start.x
     const dy = t.clientY - start.y
     if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
-    if (dx < 0) next()
-    else prev()
+    if (dx < 0) go(active + 1)
+    else go(active - 1)
   }
 
   return (
     <section className="uDining" aria-label="Dining">
-      <div className="uDiningSpacer" aria-hidden="true" />
+      <div className="uDiningIntro">
+        <div className="uDiningEyebrow">DINING</div>
+        <h3 className="uDiningTitle">A refined coastal table</h3>
+        <p className="uDiningText">
+          Seasonal ingredients, open views, and understated service — an experience shaped by light and ocean air.
+        </p>
+      </div>
 
       <div
-        className="uDiningCarousel"
-        ref={zoomRef}
+        className="uDiningCarousel" ref={zoomRef} ref={zoomRef}
+        onMouseEnter={() => (pausedRef.current = true)}
+        onMouseLeave={() => (pausedRef.current = false)}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         aria-label="Dining carousel"
@@ -117,7 +129,7 @@ function DiningUlamanCarousel4() {
         <div className="uDiningStage" aria-hidden="true">
           {photos.map((p, i) => {
             const isActive = i === active
-            const isPrev = prevIdx !== null && i === prevIdx
+            const isPrev = prev !== null && i === prev
             return (
               <div key={p.src} className={`uDiningSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}>
                 <img className="uDiningImg" src={p.src} alt={p.alt} draggable={false} />
@@ -128,14 +140,7 @@ function DiningUlamanCarousel4() {
 
         <div className="uDiningShade" aria-hidden="true" />
 
-        <button type="button" className="uDiningArrow uDiningArrow--prev" aria-label="Previous" onClick={prev}>
-          ‹
-        </button>
-        <button type="button" className="uDiningArrow uDiningArrow--next" aria-label="Next" onClick={next}>
-          ›
-        </button>
-
-        <div className="uDiningDots" aria-label="Dining navigation">
+        <div className="uDiningDots" aria-label="Dining carousel navigation">
           {photos.map((_, i) => (
             <button
               key={i}
@@ -147,12 +152,11 @@ function DiningUlamanCarousel4() {
           ))}
         </div>
 
-        <div className="uDiningHint" aria-hidden="true">Swipe • Arrows • Dots</div>
+        <div className="uDiningHint" aria-hidden="true">Swipe • Tap dots</div>
       </div>
     </section>
   )
 }
-
 
 
 function VillasUlamanCarousel() {
@@ -166,21 +170,27 @@ function VillasUlamanCarousel() {
   )
 
   const [active, setActive] = useState(0)
-  const [prevIdx, setPrevIdx] = useState<number | null>(null)
+  const [prev, setPrev] = useState<number | null>(null)
+  const pausedRef = useRef(false)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
 
   const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
-
   const go = (i: number) => {
     const idx = (i + photos.length) % photos.length
-    setPrevIdx(active)
+    setPrev(active)
     setActive(idx)
-    window.setTimeout(() => setPrevIdx(null), 700)
+    window.setTimeout(() => setPrev(null), 650)
   }
 
-  const next = () => go(active + 1)
-  const prev = () => go(active - 1)
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      if (pausedRef.current) return
+      go(active + 1)
+    }, 5600)
+    return () => window.clearInterval(id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active, photos.length])
 
   const onTouchStart = (e: React.TouchEvent) => {
     const t = e.touches[0]
@@ -195,14 +205,15 @@ function VillasUlamanCarousel() {
     const dx = t.clientX - start.x
     const dy = t.clientY - start.y
     if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
-    if (dx < 0) next()
-    else prev()
+    if (dx < 0) go(active + 1)
+    else go(active - 1)
   }
 
   return (
     <div
-      className="uVillasCarousel"
-      ref={zoomRef}
+      className="uVillasCarousel" ref={zoomRef} ref={zoomRef}
+      onMouseEnter={() => (pausedRef.current = true)}
+      onMouseLeave={() => (pausedRef.current = false)}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       aria-label="Villas carousel"
@@ -210,7 +221,7 @@ function VillasUlamanCarousel() {
       <div className="uVillasStage" aria-hidden="true">
         {photos.map((p, i) => {
           const isActive = i === active
-          const isPrev = prevIdx !== null && i === prevIdx
+          const isPrev = prev !== null && i === prev
           return (
             <div key={p.src} className={`uVillasSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}>
               <img className="uVillasImg" src={p.src} alt={p.alt} draggable={false} />
@@ -221,14 +232,7 @@ function VillasUlamanCarousel() {
 
       <div className="uVillasShade" aria-hidden="true" />
 
-      <button type="button" className="uVillasArrow uVillasArrow--prev" aria-label="Previous" onClick={prev}>
-        ‹
-      </button>
-      <button type="button" className="uVillasArrow uVillasArrow--next" aria-label="Next" onClick={next}>
-        ›
-      </button>
-
-      <div className="uVillasDots" aria-label="Villas navigation">
+      <div className="uVillasDots" aria-label="Villas carousel navigation">
         {photos.map((_, i) => (
           <button
             key={i}
@@ -239,17 +243,63 @@ function VillasUlamanCarousel() {
           />
         ))}
       </div>
-
-      <div className="uVillasHint" aria-hidden="true">Swipe • Arrows • Dots</div>
     </div>
   )
 }
 
 
+export default function HomePage() {/* HERO — bad mobile signal detection only */
+  const heroVideoRef = useRef<HTMLVideoElement | null>(null)
+  const [heroSrc, setHeroSrc] = useState('/hero.mp4')
+  const [heroVideoOk, setHeroVideoOk] = useState(true)
+useEffect(() => {
+  const navAny = typeof navigator !== 'undefined' ? (navigator as any) : null
+  const conn = navAny?.connection || navAny?.mozConnection || navAny?.webkitConnection
+  const effectiveType: string | undefined = conn?.effectiveType
+  const saveData: boolean | undefined = conn?.saveData
 
-export default function HomePage() {
+  const isBadSignal = !!saveData || effectiveType === 'slow-2g' || effectiveType === '2g' || effectiveType === '3g'
 
-  
+  // Only switch to light version when connection is bad. Otherwise always use hero.mp4 (even on mobile).
+  setHeroSrc(isBadSignal ? '/hero-light.mp4' : '/hero.mp4')
+  setHeroVideoOk(true)
+
+  const onConnChange = () => {
+    try {
+      const c = navAny?.connection || navAny?.mozConnection || navAny?.webkitConnection
+      const et: string | undefined = c?.effectiveType
+      const sd: boolean | undefined = c?.saveData
+      const bad = !!sd || et === 'slow-2g' || et === '2g' || et === '3g'
+      setHeroSrc(bad ? '/hero-light.mp4' : '/hero.mp4')
+      setHeroVideoOk(true)
+    } catch {}
+  }
+
+  if (conn?.addEventListener) conn.addEventListener('change', onConnChange)
+  else if (conn) conn.onchange = onConnChange
+
+  return () => {
+    if (conn?.removeEventListener) conn.removeEventListener('change', onConnChange)
+    else if (conn) conn.onchange = null
+  }
+}, [])
+
+// If video still doesn't buffer quickly (device/autoplay quirks), fall back to image.
+useEffect(() => {
+  const v = heroVideoRef.current
+  if (!v) return
+  try {
+    v.load()
+    const p = v.play()
+    if (p && typeof (p as any).catch === 'function') (p as any).catch(() => {})
+  } catch {}
+  const t = window.setTimeout(() => {
+    const vv = heroVideoRef.current
+    if (!vv) return
+    if (vv.readyState < 2) setHeroVideoOk(false)
+  }, 6000)
+  return () => window.clearTimeout(t)
+}, [heroSrc])
 useEffect(() => {
   const setVh = () => {
     // Fix mobile 100vh issues (iOS/Android address bar)
@@ -269,18 +319,25 @@ return (
     <div className="home">
       
       <section className="hero hero--video" aria-label="Hero">
-        <div className="heroVideo" aria-label="Vanara hero video">
-  <video
-    className="heroVideoEl"
-    autoPlay
-    muted
-    playsInline
-    loop
-    preload="auto"
-    poster="/hero-poster.jpg"
-  >
-    <source src="/hero.mp4" type="video/mp4" />
-  </video>
+        <div className="heroVideo" aria-label="Vanara hero media">
+  {heroVideoOk ? (
+    <video key={heroSrc}
+      ref={heroVideoRef}
+      className="heroVideoEl"
+      autoPlay
+      muted
+      playsInline
+      loop
+      preload="metadata"
+      poster="/hero-poster.jpg"
+      onError={() => setHeroVideoOk(false)}
+      onLoadedData={() => setHeroVideoOk(true)}
+    >
+      <source src={heroSrc} type="video/mp4" />
+    </video>
+  ) : (
+    <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />
+  )}
 </div>
 
         <div className="heroShade" aria-hidden="true" />

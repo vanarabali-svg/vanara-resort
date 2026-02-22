@@ -2275,5 +2275,16 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 /* End villas ulaman carousel */
 
 
-.uDiningSpacer{height:40px;}
-@media (max-width: 980px){.uDiningSpacer{height:22px;}}
+/* Pro hero video */
+.heroVideoEl{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.heroVideoFallback{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
