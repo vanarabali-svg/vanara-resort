@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
  * horizontal scroll with snap, and optional mouse drag (desktop).
  * Mobile uses native swipe.
  */
-function DiningSnap4() {
+function DiningUlamanCarousel4() {
   const photos = useMemo(
     () => [
       { src: '/dining-1.jpg', alt: 'Dining at Vanara' },
@@ -18,112 +18,101 @@ function DiningSnap4() {
     []
   )
 
-  const trackRef = useRef<HTMLDivElement | null>(null)
-  const slideRefs = useRef<Array<HTMLDivElement | null>>([])
   const [active, setActive] = useState(0)
+  const [prev, setPrev] = useState<number | null>(null)
+  const pausedRef = useRef(false)
+  const touchRef = useRef<{ x: number; y: number } | null>(null)
 
-  const scrollTo = (i: number) => {
-    const el = slideRefs.current[i]
-    el?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' })
+  const go = (i: number) => {
+    const idx = (i + photos.length) % photos.length
+    setPrev(active)
+    setActive(idx)
+    window.setTimeout(() => setPrev(null), 650)
   }
 
   useEffect(() => {
-    const track = trackRef.current
-    if (!track) return
-
-    // Convert vertical mouse wheel to horizontal scrolling (desktop, no drag needed)
-    const onWheel = (e: WheelEvent) => {
-      // Let trackpads that already scroll horizontally pass through
-      const absX = Math.abs(e.deltaX)
-      const absY = Math.abs(e.deltaY)
-      if (absX > absY) return
-      e.preventDefault()
-      track.scrollLeft += e.deltaY
-    }
-
-    track.addEventListener('wheel', onWheel, { passive: false })
-
-    // Track active slide using IntersectionObserver (snap-friendly)
-    const slides = Array.from(track.querySelectorAll<HTMLElement>('.dSnapSlide'))
-    const io = new IntersectionObserver(
-      (entries) => {
-        // pick the most visible
-        let bestIdx = active
-        let bestRatio = 0
-        for (const entry of entries) {
-          const idx = Number((entry.target as HTMLElement).dataset.index || 0)
-          if (entry.intersectionRatio > bestRatio) {
-            bestRatio = entry.intersectionRatio
-            bestIdx = idx
-          }
-        }
-        if (bestRatio > 0.55) setActive(bestIdx)
-      },
-      { root: track, threshold: [0.55, 0.7, 0.85] }
-    )
-
-    slides.forEach((s) => io.observe(s))
-
-    return () => {
-      track.removeEventListener('wheel', onWheel as any)
-      io.disconnect()
-    }
+    const id = window.setInterval(() => {
+      if (pausedRef.current) return
+      go(active + 1)
+    }, 5200)
+    return () => window.clearInterval(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [active, photos.length])
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0]
+    touchRef.current = { x: t.clientX, y: t.clientY }
+  }
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchRef.current
+    touchRef.current = null
+    if (!start) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - start.x
+    const dy = t.clientY - start.y
+    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
+    if (dx < 0) go(active + 1)
+    else go(active - 1)
+  }
 
   return (
-    <section className="dSnap" aria-label="Dining">
-      <div className="dSnapIntro">
-        <div className="dSnapEyebrow">DINING</div>
-        <h3 className="dSnapTitle">A refined coastal table</h3>
-        <p className="dSnapText">
+    <section className="uDining" aria-label="Dining">
+      <div className="uDiningIntro">
+        <div className="uDiningEyebrow">DINING</div>
+        <h3 className="uDiningTitle">A refined coastal table</h3>
+        <p className="uDiningText">
           Seasonal ingredients, open views, and understated service — an experience shaped by light and ocean air.
         </p>
       </div>
 
-      <div className="dSnapFrame">
-        <div ref={trackRef} className="dSnapTrack" role="list" aria-label="Dining photos">
-          {photos.map((p, i) => (
-            <div
-              key={p.src}
-              className="dSnapSlide"
-              role="listitem"
-              data-index={i}
-              ref={(el) => {
-                slideRefs.current[i] = el
-              }}
-            >
-              <img className="dSnapImg" src={p.src} alt={p.alt} draggable={false} />
-            </div>
-          ))}
+      <div
+        className="uDiningCarousel"
+        onMouseEnter={() => (pausedRef.current = true)}
+        onMouseLeave={() => (pausedRef.current = false)}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        aria-label="Dining carousel"
+      >
+        <div className="uDiningStage" aria-hidden="true">
+          {photos.map((p, i) => {
+            const isActive = i === active
+            const isPrev = prev !== null && i === prev
+            return (
+              <div key={p.src} className={`uDiningSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}>
+                <img className="uDiningImg" src={p.src} alt={p.alt} draggable={false} />
+              </div>
+            )
+          })}
         </div>
 
-        <div className="dSnapDots" aria-label="Dining photo navigation">
+        <div className="uDiningShade" aria-hidden="true" />
+
+        <div className="uDiningDots" aria-label="Dining carousel navigation">
           {photos.map((_, i) => (
             <button
               key={i}
               type="button"
-              className={`dSnapDot ${i === active ? 'is-active' : ''}`}
+              className={`uDiningDot ${i === active ? 'is-active' : ''}`}
               aria-label={`Show dining photo ${i + 1}`}
-              onClick={() => scrollTo(i)}
+              onClick={() => go(i)}
             />
           ))}
         </div>
-      </div>
 
-      <div className="dSnapHint">Scroll / trackpad • Mouse wheel • Tap dots</div>
+        <div className="uDiningHint" aria-hidden="true">Swipe • Tap dots</div>
+      </div>
     </section>
   )
 }
 
 
-function VillasSlider() {
+function VillasUlamanCarousel() {
   const photos = useMemo(
     () => [
-      { src: '/villas-1.jpg', alt: 'Vanara villa view' },
-      { src: '/villas-2.jpg', alt: 'Vanara villa interior' },
-      { src: '/villas-3.jpg', alt: 'Vanara villa terrace' },
-      { src: '/villas-4.jpg', alt: 'Vanara villa at dusk' },
+      { src: '/villas-1.jpg', alt: 'Villa at Vanara' },
+      { src: '/villas-2.jpg', alt: 'Villa terrace' },
+      { src: '/villas-3.jpg', alt: 'Ocean view villa' },
     ],
     []
   )
@@ -131,68 +120,79 @@ function VillasSlider() {
   const [active, setActive] = useState(0)
   const [prev, setPrev] = useState<number | null>(null)
   const pausedRef = useRef(false)
-  const total = photos.length
+  const touchRef = useRef<{ x: number; y: number } | null>(null)
 
-  const go = (nextIndex: number) => {
-    const n = (nextIndex + total) % total
+  const go = (i: number) => {
+    const idx = (i + photos.length) % photos.length
     setPrev(active)
-    setActive(n)
-    window.setTimeout(() => setPrev(null), 900)
+    setActive(idx)
+    window.setTimeout(() => setPrev(null), 650)
   }
 
   useEffect(() => {
     const id = window.setInterval(() => {
       if (pausedRef.current) return
       go(active + 1)
-    }, 7200)
+    }, 5600)
     return () => window.clearInterval(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active])
+  }, [active, photos.length])
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0]
+    touchRef.current = { x: t.clientX, y: t.clientY }
+  }
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchRef.current
+    touchRef.current = null
+    if (!start) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - start.x
+    const dy = t.clientY - start.y
+    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
+    if (dx < 0) go(active + 1)
+    else go(active - 1)
+  }
 
   return (
     <div
-      className="imagePlaceholder villasSlider"
+      className="uVillasCarousel"
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
-      onTouchStart={() => (pausedRef.current = true)}
-      onTouchEnd={() => (pausedRef.current = false)}
-      aria-label="Villas photo slider"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      aria-label="Villas carousel"
     >
-      <div className="villasSliderStage" aria-hidden="true">
+      <div className="uVillasStage" aria-hidden="true">
         {photos.map((p, i) => {
           const isActive = i === active
           const isPrev = prev !== null && i === prev
           return (
-            <div
-              key={p.src}
-              className={`villasSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}
-              style={{ backgroundImage: `url(${p.src})` }}
-              aria-hidden="true"
-            />
+            <div key={p.src} className={`uVillasSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}>
+              <img className="uVillasImg" src={p.src} alt={p.alt} draggable={false} />
+            </div>
           )
         })}
       </div>
 
-      <div className="villasSliderOverlay" aria-hidden="true" />
+      <div className="uVillasShade" aria-hidden="true" />
 
-      <div className="villasSliderDots" aria-label="Villas slider pagination">
+      <div className="uVillasDots" aria-label="Villas carousel navigation">
         {photos.map((_, i) => (
           <button
             key={i}
             type="button"
-            className={`villasDot ${i === active ? 'is-active' : ''}`}
+            className={`uVillasDot ${i === active ? 'is-active' : ''}`}
             aria-label={`Show villa photo ${i + 1}`}
             onClick={() => go(i)}
           />
         ))}
       </div>
-
-      <div className="villasSliderHint" aria-hidden="true">
-        Villas
-      </div>
     </div>
   )
 }
+
 
 export default function HomePage() {
 
@@ -256,7 +256,7 @@ export default function HomePage() {
       <section className="section sectionVillasFeature">
         <div className="container">
           <div className="split split--rev">
-            <VillasSlider />
+            <VillasUlamanCarousel />
 
             <div>
               <div className="eyebrow">VILLAS</div>
@@ -291,7 +291,7 @@ export default function HomePage() {
 <section className="section sectionDiningFeature">
         <div className="container">
           <div className="split split--rev">
-            <DiningSnap4 />
+            <DiningUlamanCarousel4 />
 
             <div>
               <div className="eyebrow">DINING</div>

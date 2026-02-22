@@ -2065,18 +2065,18 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 .jDiningTrack::-webkit-scrollbar{ display:none; }
 .jDiningTrack.is-dragging{ cursor: grabbing; }
 
-/* Dining — snap gallery (no drag, no arrows, no grid) */
-.dSnap{
+/* Dining — Ulaman-like cinematic carousel */
+.uDining{
   width: 100%;
 }
 
-.dSnapIntro{
+.uDiningIntro{
   max-width: 980px;
   margin: 0 auto 18px auto;
   padding: 0 24px;
 }
 
-.dSnapEyebrow{
+.uDiningEyebrow{
   font-size: 11px;
   letter-spacing: .32em;
   text-transform: uppercase;
@@ -2084,7 +2084,7 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   margin-bottom: 12px;
 }
 
-.dSnapTitle{
+.uDiningTitle{
   font-family: var(--serif);
   font-size: 36px;
   font-weight: 500;
@@ -2092,87 +2092,190 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   line-height: 1.08;
 }
 
-.dSnapText{
+.uDiningText{
   font-size: 15px;
   color: rgba(31,31,29,.72);
   line-height: 1.7;
   max-width: 60ch;
 }
 
-.dSnapFrame{
+.uDiningCarousel{
   position: relative;
-}
-
-.dSnapTrack{
-  display: flex;
-  gap: 18px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 0 24px 16px 24px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  overscroll-behavior-x: contain;
-}
-.dSnapTrack::-webkit-scrollbar{ display:none; }
-
-.dSnapSlide{
-  flex: 0 0 auto;
-  width: min(1100px, 86vw);
-  scroll-snap-align: start;
-  border-radius: 28px;
+  max-width: 1560px;          /* huge */
+  margin: 0 auto;
+  border-radius: 34px;
   overflow: hidden;
   border: 1px solid rgba(0,0,0,.08);
   background: #e7dfd2;
-  box-shadow: 0 42px 140px rgba(0,0,0,.16);
+  box-shadow: 0 56px 180px rgba(0,0,0,.20);
+  height: min(92vh, 1100px);  /* huge height */
 }
 
-.dSnapImg{
+
+
+.uDiningStage{
+  position: absolute;
+  inset: 0;
+}
+
+.uDiningSlide{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 650ms ease;
+}
+
+.uDiningSlide.is-active{
+  opacity: 1;
+}
+
+.uDiningImg{
   width: 100%;
-  height: min(72vh, 760px);
+  height: 100%;
   object-fit: cover;
-  display:block;
+  display: block;
+  transform: scale(1.03);
+  transition: transform 5200ms ease;
   -webkit-user-drag: none;
   user-select: none;
 }
 
-.dSnapDots{
-  display:flex;
-  gap: 10px;
-  justify-content: center;
-  padding: 12px 24px 0;
+.uDiningSlide.is-active .uDiningImg{
+  transform: scale(1.00);
 }
 
-.dSnapDot{
+.uDiningShade{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,.05), rgba(0,0,0,.12) 55%, rgba(0,0,0,.26));
+}
+
+.uDiningDots{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 5;
+}
+
+.uDiningDot{
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  border: 1px solid rgba(31,31,29,.28);
-  background: rgba(31,31,29,.10);
+  border: 1px solid rgba(255,255,255,.60);
+  background: rgba(0,0,0,.22);
   cursor: pointer;
   transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
 }
 
-.dSnapDot.is-active{
-  background: rgba(31,31,29,.62);
-  border-color: rgba(31,31,29,.62);
+.uDiningDot.is-active{
+  background: rgba(255,255,255,.80);
+  border-color: rgba(255,255,255,.80);
   transform: scale(1.12);
 }
 
-.dSnapHint{
-  padding: 0 24px;
-  margin-top: 8px;
+.uDiningHint{
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  z-index: 5;
   font-size: 11px;
   letter-spacing: .22em;
   text-transform: uppercase;
-  color: rgba(31,31,29,.55);
-  max-width: 980px;
-  margin-left: auto;
-  margin-right: auto;
+  color: rgba(255,255,255,.78);
 }
 
 @media (max-width: 980px){
-  .dSnapTitle{ font-size: 30px; }
-  .dSnapImg{ height: min(62vh, 640px); }
+  .uDiningTitle{ font-size: 30px; }
+  .uDiningCarousel{ height: min(68vh, 720px); border-radius: 22px; }
 }
-/* End dining snap */
+/* End dining ulaman carousel */
+
+/* Villas — Ulaman-like cinematic carousel (same vibe as Dining) */
+.uVillasCarousel{
+  position: relative;
+  width: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.10);
+  background: #e7dfd2;
+  box-shadow: 0 42px 140px rgba(0,0,0,.16);
+  height: min(74vh, 820px);
+}
+
+.uVillasStage{
+  position: absolute;
+  inset: 0;
+}
+
+.uVillasSlide{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 650ms ease;
+}
+
+.uVillasSlide.is-active{
+  opacity: 1;
+}
+
+.uVillasImg{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.03);
+  transition: transform 5600ms ease;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.uVillasSlide.is-active .uVillasImg{
+  transform: scale(1.00);
+}
+
+.uVillasShade{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,.04), rgba(0,0,0,.10) 55%, rgba(0,0,0,.22));
+}
+
+.uVillasDots{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 5;
+}
+
+.uVillasDot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.60);
+  background: rgba(0,0,0,.22);
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.uVillasDot.is-active{
+  background: rgba(255,255,255,.80);
+  border-color: rgba(255,255,255,.80);
+  transform: scale(1.12);
+}
+
+@media (max-width: 980px){
+  .uVillasCarousel{
+    height: min(62vh, 640px);
+    border-radius: 22px;
+  }
+}
+/* End villas ulaman carousel */
