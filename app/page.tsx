@@ -7,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
  * horizontal scroll with snap, and optional mouse drag (desktop).
  * Mobile uses native swipe.
  */
-function DiningGrid4() {
+function DiningSnap4() {
   const photos = useMemo(
     () => [
       { src: '/dining-1.jpg', alt: 'Dining at Vanara' },
@@ -18,93 +18,100 @@ function DiningGrid4() {
     []
   )
 
-  const [open, setOpen] = useState(false)
+  const trackRef = useRef<HTMLDivElement | null>(null)
+  const slideRefs = useRef<Array<HTMLDivElement | null>>([])
   const [active, setActive] = useState(0)
 
-  const openAt = (i: number) => {
-    setActive(i)
-    setOpen(true)
+  const scrollTo = (i: number) => {
+    const el = slideRefs.current[i]
+    el?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' })
   }
 
   useEffect(() => {
-    if (!open) return
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false)
+    const track = trackRef.current
+    if (!track) return
+
+    // Convert vertical mouse wheel to horizontal scrolling (desktop, no drag needed)
+    const onWheel = (e: WheelEvent) => {
+      // Let trackpads that already scroll horizontally pass through
+      const absX = Math.abs(e.deltaX)
+      const absY = Math.abs(e.deltaY)
+      if (absX > absY) return
+      e.preventDefault()
+      track.scrollLeft += e.deltaY
     }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [open])
+
+    track.addEventListener('wheel', onWheel, { passive: false })
+
+    // Track active slide using IntersectionObserver (snap-friendly)
+    const slides = Array.from(track.querySelectorAll<HTMLElement>('.dSnapSlide'))
+    const io = new IntersectionObserver(
+      (entries) => {
+        // pick the most visible
+        let bestIdx = active
+        let bestRatio = 0
+        for (const entry of entries) {
+          const idx = Number((entry.target as HTMLElement).dataset.index || 0)
+          if (entry.intersectionRatio > bestRatio) {
+            bestRatio = entry.intersectionRatio
+            bestIdx = idx
+          }
+        }
+        if (bestRatio > 0.55) setActive(bestIdx)
+      },
+      { root: track, threshold: [0.55, 0.7, 0.85] }
+    )
+
+    slides.forEach((s) => io.observe(s))
+
+    return () => {
+      track.removeEventListener('wheel', onWheel as any)
+      io.disconnect()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
-    <section className="diningGrid4" aria-label="Dining photos">
-      <div className="diningGrid4Intro">
-        <div className="diningGrid4Eyebrow">DINING</div>
-        <h3 className="diningGrid4Title">A refined coastal table</h3>
-        <p className="diningGrid4Text">
+    <section className="dSnap" aria-label="Dining">
+      <div className="dSnapIntro">
+        <div className="dSnapEyebrow">DINING</div>
+        <h3 className="dSnapTitle">A refined coastal table</h3>
+        <p className="dSnapText">
           Seasonal ingredients, open views, and understated service — an experience shaped by light and ocean air.
         </p>
       </div>
 
-      <div className="diningGrid4Wrap" role="list" aria-label="Dining photo grid">
-        <button
-          type="button"
-          className="diningGrid4Tile diningGrid4Tile--hero"
-          onClick={() => openAt(0)}
-          aria-label="Open dining photo 1"
-        >
-          <img className="diningGrid4Img" src={photos[0].src} alt={photos[0].alt} />
-          <span className="diningGrid4Overlay" aria-hidden="true" />
-        </button>
+      <div className="dSnapFrame">
+        <div ref={trackRef} className="dSnapTrack" role="list" aria-label="Dining photos">
+          {photos.map((p, i) => (
+            <div
+              key={p.src}
+              className="dSnapSlide"
+              role="listitem"
+              data-index={i}
+              ref={(el) => {
+                slideRefs.current[i] = el
+              }}
+            >
+              <img className="dSnapImg" src={p.src} alt={p.alt} draggable={false} />
+            </div>
+          ))}
+        </div>
 
-        <button
-          type="button"
-          className="diningGrid4Tile diningGrid4Tile--a"
-          onClick={() => openAt(1)}
-          aria-label="Open dining photo 2"
-        >
-          <img className="diningGrid4Img" src={photos[1].src} alt={photos[1].alt} />
-          <span className="diningGrid4Overlay" aria-hidden="true" />
-        </button>
-
-        <button
-          type="button"
-          className="diningGrid4Tile diningGrid4Tile--b"
-          onClick={() => openAt(2)}
-          aria-label="Open dining photo 3"
-        >
-          <img className="diningGrid4Img" src={photos[2].src} alt={photos[2].alt} />
-          <span className="diningGrid4Overlay" aria-hidden="true" />
-        </button>
-
-        <button
-          type="button"
-          className="diningGrid4Tile diningGrid4Tile--c"
-          onClick={() => openAt(3)}
-          aria-label="Open dining photo 4"
-        >
-          <img className="diningGrid4Img" src={photos[3].src} alt={photos[3].alt} />
-          <span className="diningGrid4Overlay" aria-hidden="true" />
-        </button>
+        <div className="dSnapDots" aria-label="Dining photo navigation">
+          {photos.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              className={`dSnapDot ${i === active ? 'is-active' : ''}`}
+              aria-label={`Show dining photo ${i + 1}`}
+              onClick={() => scrollTo(i)}
+            />
+          ))}
+        </div>
       </div>
 
-      <div className="diningGrid4Hint">Click to view</div>
-
-      {open && (
-        <div className="diningLightbox" role="dialog" aria-modal="true" onClick={() => setOpen(false)}>
-          <button
-            type="button"
-            className="diningLightboxClose"
-            aria-label="Close"
-            onClick={() => setOpen(false)}
-          >
-            ×
-          </button>
-
-          <div className="diningLightboxInner" onClick={(e) => e.stopPropagation()}>
-            <img className="diningLightboxImg" src={photos[active].src} alt={photos[active].alt} />
-          </div>
-        </div>
-      )}
+      <div className="dSnapHint">Scroll / trackpad • Mouse wheel • Tap dots</div>
     </section>
   )
 }
@@ -284,7 +291,7 @@ export default function HomePage() {
 <section className="section sectionDiningFeature">
         <div className="container">
           <div className="split split--rev">
-            <DiningGrid4 />
+            <DiningSnap4 />
 
             <div>
               <div className="eyebrow">DINING</div>
