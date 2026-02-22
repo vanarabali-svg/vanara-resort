@@ -1995,13 +1995,14 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   overflow-x: auto;
   overflow-y: hidden;
   padding: 0 24px 18px 24px;
-  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  touch-action: pan-y; /* allow natural swipe; pointer drag handles desktop */
+  touch-action: pan-y; /* allow native swipe; desktop drag uses mousemove */
   cursor: grab;
+  user-select: none;
 }
-
+.jDiningTrack::-webkit-scrollbar{ display:none; }
+.jDiningTrack.is-dragging{ cursor: grabbing; }
 .jDiningTrack::-webkit-scrollbar{ display: none; }
 .jDiningTrack.is-dragging{ cursor: grabbing; }
 
@@ -2047,3 +2048,41 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
 
 
 body.is-dragging-x{ user-select: none; cursor: grabbing; }
+
+
+.jDiningTrack{
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 24px 18px 24px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  touch-action: pan-y; /* allow native swipe; desktop drag uses mousemove */
+  cursor: grab;
+  user-select: none;
+}
+.jDiningTrack::-webkit-scrollbar{ display:none; }
+.jDiningTrack.is-dragging{ cursor: grabbing; }
+
+/* --- Dining desktop scroll override (forces real overflow) --- */
+.jDining .jDiningTrack{
+  flex-wrap: nowrap !important;
+  overflow-x: scroll !important;
+  overflow-y: hidden !important;
+}
+
+.jDining .jDiningTrack > .jDiningSlide{
+  flex: 0 0 auto !important;
+  flex-shrink: 0 !important;
+  width: min(1200px, 86vw) !important;
+  min-width: 820px !important;  /* this is what your live site shows as 0px right now */
+}
+
+@media (max-width: 980px){
+  .jDining .jDiningTrack > .jDiningSlide{
+    min-width: 0 !important;
+    width: 90vw !important;
+  }
+}
+/* --- End Dining desktop scroll override --- */

@@ -22,7 +22,7 @@ function DiningJumeirahDragGallery() {
   const trackRef = useRef<HTMLDivElement | null>(null)
   const isDownRef = useRef(false)
   const startXRef = useRef(0)
-  const startScrollRef = useRef(0)
+  const startScrollLeftRef = useRef(0)
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -30,7 +30,7 @@ function DiningJumeirahDragGallery() {
       if (!el || !isDownRef.current) return
       e.preventDefault()
       const walk = (e.clientX - startXRef.current) * 1.15
-      el.scrollLeft = startScrollRef.current - walk
+      el.scrollLeft = startScrollLeftRef.current - walk
     }
 
     const onUp = () => {
@@ -44,9 +44,12 @@ function DiningJumeirahDragGallery() {
 
     window.addEventListener('mousemove', onMove, { passive: false })
     window.addEventListener('mouseup', onUp, { passive: true })
+    window.addEventListener('blur', onUp, { passive: true })
+
     return () => {
       window.removeEventListener('mousemove', onMove)
       window.removeEventListener('mouseup', onUp)
+      window.removeEventListener('blur', onUp)
     }
   }, [])
 
@@ -54,19 +57,13 @@ function DiningJumeirahDragGallery() {
     const el = trackRef.current
     if (!el) return
     if (e.button !== 0) return
-    // stop native image/text drag selection
+    // prevent selecting text/images
     e.preventDefault()
     isDownRef.current = true
     startXRef.current = e.clientX
-    startScrollRef.current = el.scrollLeft
+    startScrollLeftRef.current = el.scrollLeft
     el.classList.add('is-dragging')
     document.body.classList.add('is-dragging-x')
-  }
-
-  // Keep mobile swipe native; pointer events are optional.
-  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    // Let touch behave natively; desktop handled by mouse drag above.
-    if (e.pointerType !== 'touch') return
   }
 
   return (
@@ -79,16 +76,10 @@ function DiningJumeirahDragGallery() {
         </p>
       </div>
 
-      <div className="jDiningFrame" aria-hidden="true">
-        <div className="jDiningFade jDiningFadeLeft" />
-        <div className="jDiningFade jDiningFadeRight" />
-      </div>
-
       <div
         ref={trackRef}
         className="jDiningTrack"
         onMouseDown={onMouseDown}
-        onPointerDown={onPointerDown}
         role="list"
         aria-label="Dining photo list"
       >
@@ -99,7 +90,7 @@ function DiningJumeirahDragGallery() {
         ))}
       </div>
 
-      <div className="jDiningHint">Drag / swipe</div>
+      <div className="jDiningHint">Drag on desktop • Swipe on mobile</div>
     </div>
   )
 }
