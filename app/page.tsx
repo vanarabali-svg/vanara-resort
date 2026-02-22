@@ -2,6 +2,57 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+function useScrollZoom(
+  ref: any,
+  opts?: { min?: number; max?: number; start?: number; end?: number }
+) {
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const min = opts?.min ?? 1.0
+    const max = opts?.max ?? 1.06
+    // start/end are viewport progress positions (0..1). 0.15 means start zoom when element enters a bit.
+    const start = opts?.start ?? 0.15
+    const end = opts?.end ?? 0.85
+
+    let raf: number | null = null
+
+    const clamp = (n: number, a: number, b: number) => Math.max(a, Math.min(b, n))
+
+    const update = () => {
+      raf = null
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight || 1
+
+      // progress: 0 when top is below viewport, 1 when bottom is above viewport
+      const raw = 1 - rect.top / vh
+      // normalize within [start,end]
+      const t = clamp((raw - start) / (end - start), 0, 1)
+
+      // Six Senses-like: very subtle ease-out
+      const eased = 1 - Math.pow(1 - t, 3)
+      const scale = max - (max - min) * eased
+      el.style.setProperty('--scrollZoom', String(scale))
+    }
+
+    const onScroll = () => {
+      if (raf != null) return
+      raf = requestAnimationFrame(update)
+    }
+
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+
+    return () => {
+      if (raf != null) cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [ref, opts?.min, opts?.max, opts?.start, opts?.end])
+}
+
 /**
  * Dining gallery — Jumeirah-inspired: large immersive frames,
  * horizontal scroll with snap, and optional mouse drag (desktop).
@@ -22,8 +73,9 @@ function DiningUlamanCarousel4() {
   const [prev, setPrev] = useState<number | null>(null)
   const pausedRef = useRef(false)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
-
-  const go = (i: number) => {
+  const zoomRef = useRef<HTMLDivElement | null>(null)
+  useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
+const go = (i: number) => {
     const idx = (i + photos.length) % photos.length
     setPrev(active)
     setActive(idx)
@@ -67,7 +119,7 @@ function DiningUlamanCarousel4() {
       </div>
 
       <div
-        className="uDiningCarousel"
+        className="uDiningCarousel" ref={zoomRef} ref={zoomRef}
         onMouseEnter={() => (pausedRef.current = true)}
         onMouseLeave={() => (pausedRef.current = false)}
         onTouchStart={onTouchStart}
@@ -122,6 +174,8 @@ function VillasUlamanCarousel() {
   const pausedRef = useRef(false)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
 
+  const zoomRef = useRef<HTMLDivElement | null>(null)
+  useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
   const go = (i: number) => {
     const idx = (i + photos.length) % photos.length
     setPrev(active)
@@ -157,7 +211,7 @@ function VillasUlamanCarousel() {
 
   return (
     <div
-      className="uVillasCarousel"
+      className="uVillasCarousel" ref={zoomRef} ref={zoomRef}
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
       onTouchStart={onTouchStart}
@@ -196,7 +250,22 @@ function VillasUlamanCarousel() {
 
 export default function HomePage() {
 
-  return (
+  
+useEffect(() => {
+  const setVh = () => {
+    // Fix mobile 100vh issues (iOS/Android address bar)
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
+  }
+  setVh()
+  window.addEventListener('resize', setVh)
+  window.addEventListener('orientationchange', setVh)
+  return () => {
+    window.removeEventListener('resize', setVh)
+    window.removeEventListener('orientationchange', setVh)
+  }
+}, [])
+
+return (
 
     <div className="home">
       
@@ -209,7 +278,7 @@ export default function HomePage() {
             muted
             playsInline
             loop
-            preload="auto"
+            preload="metadata"
           />
         </div>
 
