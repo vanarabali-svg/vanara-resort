@@ -248,72 +248,23 @@ function VillasUlamanCarousel() {
 }
 
 
-export default function HomePage() {/* HERO — bad mobile signal detection only */
-  const heroVideoRef = useRef<HTMLVideoElement | null>(null)
-  const [heroSrc, setHeroSrc] = useState('/hero.mp4')
+export default function HomePage() {
+/* HERO — desktop vs phone/tablet */
+useEffect(() => {
+  const choose = () => {
+    const w = window.innerWidth
+    // Phones + tablets: light video. Desktop: full video.
+    const src = w < 1024 ? '/hero-light.mp4' : '/hero.mp4'
+    setHeroSrc(src)
+    setHeroVideoOk(true)
+  }
+  choose()
+  window.addEventListener('resize', choose)
+  return () => window.removeEventListener('resize', choose)
+}, [])
   const [heroVideoOk, setHeroVideoOk] = useState(true)
-useEffect(() => {
-  const navAny = typeof navigator !== 'undefined' ? (navigator as any) : null
-  const conn = navAny?.connection || navAny?.mozConnection || navAny?.webkitConnection
-  const effectiveType: string | undefined = conn?.effectiveType
-  const saveData: boolean | undefined = conn?.saveData
-
-  const isBadSignal = !!saveData || effectiveType === 'slow-2g' || effectiveType === '2g' || effectiveType === '3g'
-
-  // Only switch to light version when connection is bad. Otherwise always use hero.mp4 (even on mobile).
-  setHeroSrc(isBadSignal ? '/hero-light.mp4' : '/hero.mp4')
-  setHeroVideoOk(true)
-
-  const onConnChange = () => {
-    try {
-      const c = navAny?.connection || navAny?.mozConnection || navAny?.webkitConnection
-      const et: string | undefined = c?.effectiveType
-      const sd: boolean | undefined = c?.saveData
-      const bad = !!sd || et === 'slow-2g' || et === '2g' || et === '3g'
-      setHeroSrc(bad ? '/hero-light.mp4' : '/hero.mp4')
-      setHeroVideoOk(true)
-    } catch {}
-  }
-
-  if (conn?.addEventListener) conn.addEventListener('change', onConnChange)
-  else if (conn) conn.onchange = onConnChange
-
-  return () => {
-    if (conn?.removeEventListener) conn.removeEventListener('change', onConnChange)
-    else if (conn) conn.onchange = null
-  }
-}, [])
-
-// If video still doesn't buffer quickly (device/autoplay quirks), fall back to image.
-useEffect(() => {
-  const v = heroVideoRef.current
-  if (!v) return
-  try {
-    v.load()
-    const p = v.play()
-    if (p && typeof (p as any).catch === 'function') (p as any).catch(() => {})
-  } catch {}
-  const t = window.setTimeout(() => {
-    const vv = heroVideoRef.current
-    if (!vv) return
-    if (vv.readyState < 2) setHeroVideoOk(false)
-  }, 6000)
-  return () => window.clearTimeout(t)
-}, [heroSrc])
-useEffect(() => {
-  const setVh = () => {
-    // Fix mobile 100vh issues (iOS/Android address bar)
-    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
-  }
-  setVh()
-  window.addEventListener('resize', setVh)
-  window.addEventListener('orientationchange', setVh)
-  return () => {
-    window.removeEventListener('resize', setVh)
-    window.removeEventListener('orientationchange', setVh)
-  }
-}, [])
-
+  const [heroSrc, setHeroSrc] = useState('/hero.mp4')
+  const heroVideoRef = useRef<HTMLVideoElement | null>(null)
 return (
 
     <div className="home">
@@ -332,12 +283,13 @@ return (
       poster="/hero-poster.jpg"
       onError={() => setHeroVideoOk(false)}
       onLoadedData={() => setHeroVideoOk(true)}
-    >
+>
       <source src={heroSrc} type="video/mp4" />
     </video>
   ) : (
     <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />
   )}
+
 </div>
 
         <div className="heroShade" aria-hidden="true" />
