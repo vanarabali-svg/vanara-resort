@@ -70,26 +70,21 @@ function DiningUlamanCarousel4() {
   )
 
   const [active, setActive] = useState(0)
-  const [prev, setPrev] = useState<number | null>(null)
-  const pausedRef = useRef(false)
+  const [prevIdx, setPrevIdx] = useState<number | null>(null)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
+
   const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
-const go = (i: number) => {
+
+  const go = (i: number) => {
     const idx = (i + photos.length) % photos.length
-    setPrev(active)
+    setPrevIdx(active)
     setActive(idx)
-    window.setTimeout(() => setPrev(null), 650)
+    window.setTimeout(() => setPrevIdx(null), 700)
   }
 
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      if (pausedRef.current) return
-      go(active + 1)
-    }, 5200)
-    return () => window.clearInterval(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, photos.length])
+  const next = () => go(active + 1)
+  const prev = () => go(active - 1)
 
   const onTouchStart = (e: React.TouchEvent) => {
     const t = e.touches[0]
@@ -104,24 +99,17 @@ const go = (i: number) => {
     const dx = t.clientX - start.x
     const dy = t.clientY - start.y
     if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
-    if (dx < 0) go(active + 1)
-    else go(active - 1)
+    if (dx < 0) next()
+    else prev()
   }
 
   return (
     <section className="uDining" aria-label="Dining">
-      <div className="uDiningIntro">
-        <div className="uDiningEyebrow">DINING</div>
-        <h3 className="uDiningTitle">A refined coastal table</h3>
-        <p className="uDiningText">
-          Seasonal ingredients, open views, and understated service — an experience shaped by light and ocean air.
-        </p>
-      </div>
+      <div className="uDiningSpacer" aria-hidden="true" />
 
       <div
-        className="uDiningCarousel" ref={zoomRef} ref={zoomRef}
-        onMouseEnter={() => (pausedRef.current = true)}
-        onMouseLeave={() => (pausedRef.current = false)}
+        className="uDiningCarousel"
+        ref={zoomRef}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         aria-label="Dining carousel"
@@ -129,7 +117,7 @@ const go = (i: number) => {
         <div className="uDiningStage" aria-hidden="true">
           {photos.map((p, i) => {
             const isActive = i === active
-            const isPrev = prev !== null && i === prev
+            const isPrev = prevIdx !== null && i === prevIdx
             return (
               <div key={p.src} className={`uDiningSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}>
                 <img className="uDiningImg" src={p.src} alt={p.alt} draggable={false} />
@@ -140,7 +128,14 @@ const go = (i: number) => {
 
         <div className="uDiningShade" aria-hidden="true" />
 
-        <div className="uDiningDots" aria-label="Dining carousel navigation">
+        <button type="button" className="uDiningArrow uDiningArrow--prev" aria-label="Previous" onClick={prev}>
+          ‹
+        </button>
+        <button type="button" className="uDiningArrow uDiningArrow--next" aria-label="Next" onClick={next}>
+          ›
+        </button>
+
+        <div className="uDiningDots" aria-label="Dining navigation">
           {photos.map((_, i) => (
             <button
               key={i}
@@ -152,11 +147,12 @@ const go = (i: number) => {
           ))}
         </div>
 
-        <div className="uDiningHint" aria-hidden="true">Swipe • Tap dots</div>
+        <div className="uDiningHint" aria-hidden="true">Swipe • Arrows • Dots</div>
       </div>
     </section>
   )
 }
+
 
 
 function VillasUlamanCarousel() {
@@ -170,27 +166,21 @@ function VillasUlamanCarousel() {
   )
 
   const [active, setActive] = useState(0)
-  const [prev, setPrev] = useState<number | null>(null)
-  const pausedRef = useRef(false)
+  const [prevIdx, setPrevIdx] = useState<number | null>(null)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
 
   const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
+
   const go = (i: number) => {
     const idx = (i + photos.length) % photos.length
-    setPrev(active)
+    setPrevIdx(active)
     setActive(idx)
-    window.setTimeout(() => setPrev(null), 650)
+    window.setTimeout(() => setPrevIdx(null), 700)
   }
 
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      if (pausedRef.current) return
-      go(active + 1)
-    }, 5600)
-    return () => window.clearInterval(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, photos.length])
+  const next = () => go(active + 1)
+  const prev = () => go(active - 1)
 
   const onTouchStart = (e: React.TouchEvent) => {
     const t = e.touches[0]
@@ -205,15 +195,14 @@ function VillasUlamanCarousel() {
     const dx = t.clientX - start.x
     const dy = t.clientY - start.y
     if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
-    if (dx < 0) go(active + 1)
-    else go(active - 1)
+    if (dx < 0) next()
+    else prev()
   }
 
   return (
     <div
-      className="uVillasCarousel" ref={zoomRef} ref={zoomRef}
-      onMouseEnter={() => (pausedRef.current = true)}
-      onMouseLeave={() => (pausedRef.current = false)}
+      className="uVillasCarousel"
+      ref={zoomRef}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       aria-label="Villas carousel"
@@ -221,7 +210,7 @@ function VillasUlamanCarousel() {
       <div className="uVillasStage" aria-hidden="true">
         {photos.map((p, i) => {
           const isActive = i === active
-          const isPrev = prev !== null && i === prev
+          const isPrev = prevIdx !== null && i === prevIdx
           return (
             <div key={p.src} className={`uVillasSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}>
               <img className="uVillasImg" src={p.src} alt={p.alt} draggable={false} />
@@ -232,7 +221,14 @@ function VillasUlamanCarousel() {
 
       <div className="uVillasShade" aria-hidden="true" />
 
-      <div className="uVillasDots" aria-label="Villas carousel navigation">
+      <button type="button" className="uVillasArrow uVillasArrow--prev" aria-label="Previous" onClick={prev}>
+        ‹
+      </button>
+      <button type="button" className="uVillasArrow uVillasArrow--next" aria-label="Next" onClick={next}>
+        ›
+      </button>
+
+      <div className="uVillasDots" aria-label="Villas navigation">
         {photos.map((_, i) => (
           <button
             key={i}
@@ -243,9 +239,12 @@ function VillasUlamanCarousel() {
           />
         ))}
       </div>
+
+      <div className="uVillasHint" aria-hidden="true">Swipe • Arrows • Dots</div>
     </div>
   )
 }
+
 
 
 export default function HomePage() {
@@ -271,16 +270,18 @@ return (
       
       <section className="hero hero--video" aria-label="Hero">
         <div className="heroVideo" aria-label="Vanara hero video">
-          <video
-            className="heroVideoEl"
-            src="/hero.mp4"
-            autoPlay
-            muted
-            playsInline
-            loop
-            preload="metadata"
-          />
-        </div>
+  <video
+    className="heroVideoEl"
+    autoPlay
+    muted
+    playsInline
+    loop
+    preload="auto"
+    poster="/hero-poster.jpg"
+  >
+    <source src="/hero.mp4" type="video/mp4" />
+  </video>
+</div>
 
         <div className="heroShade" aria-hidden="true" />
       

@@ -293,13 +293,10 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
 ========================= */
 .hero{
   position:relative;
-  height: 100svh;
-  height: 100dvh;
-  height: calc(var(--vh, 1vh) * 100);
+  height:100vh;
   width:100%;
   overflow:hidden;
 }
-
 
 .heroShade{
   position:absolute;
@@ -1821,14 +1818,12 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
 
 /* Hero: video only (classic) */
 .heroVideoEl{
-width: 100%;
+  width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center; /* like before */
   display: block;
-  background: #0f1417;
 }
-
 
 
 /* ==================================================
@@ -2106,19 +2101,15 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 
 .uDiningCarousel{
   position: relative;
-  max-width: 100%;
-  width: calc(100vw - 48px);  /* near full-bleed */
+  max-width: 1560px;          /* huge */
   margin: 0 auto;
-  border-radius: 36px;
+  border-radius: 34px;
   overflow: hidden;
   border: 1px solid rgba(0,0,0,.08);
   background: #e7dfd2;
-  box-shadow: 0 60px 200px rgba(0,0,0,.22);
-  height: calc(var(--vh, 1vh) * 100 - 120px); /* stable on mobile */
-  min-height: 560px;
-  max-height: 1200px;
+  box-shadow: 0 56px 180px rgba(0,0,0,.20);
+  height: min(92vh, 1100px);  /* huge height */
 }
-
 
 
 
@@ -2210,11 +2201,8 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   border: 1px solid rgba(0,0,0,.10);
   background: #e7dfd2;
   box-shadow: 0 42px 140px rgba(0,0,0,.16);
-  height: calc(var(--vh, 1vh) * 100 - 140px);
-  min-height: 520px;
-  max-height: 900px;
+  height: min(74vh, 820px);
 }
-
 
 .uVillasStage{
   position: absolute;
@@ -2280,10 +2268,12 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 
 @media (max-width: 980px){
   .uVillasCarousel{
-    height: calc(var(--vh, 1vh) * 100 - 200px);
-    min-height: 460px;
-    max-height: 720px;
+    height: min(62vh, 640px);
     border-radius: 22px;
   }
 }
 /* End villas ulaman carousel */
+
+
+.uDiningSpacer{height:40px;}
+@media (max-width: 980px){.uDiningSpacer{height:22px;}}
