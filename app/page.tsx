@@ -1,5 +1,109 @@
 'use client'
-import { useEffect, useMemo, useRef, useState, type TouchEvent as ReactTouchEvent } from 'react'
+
+import { useEffect, useMemo, useRef, useState } from 'react'
+
+/**
+ * Dining gallery — Jumeirah-inspired: large immersive frames,
+ * horizontal scroll with snap, and optional mouse drag (desktop).
+ * Mobile uses native swipe.
+ */
+function DiningJumeirahDragGallery() {
+  const photos = useMemo(
+    () => [
+      { src: '/dining-1.jpg', alt: 'Dining at Vanara' },
+      { src: '/dining-2.jpg', alt: 'Dining setting' },
+      { src: '/dining-3.jpg', alt: 'Chef & fresh cuisine' },
+      { src: '/dining-4.jpg', alt: 'Sunset dining' },
+      { src: '/dining-5.jpg', alt: 'Coastal flavors' },
+    ],
+    []
+  )
+
+  const trackRef = useRef<HTMLDivElement | null>(null)
+  const isDownRef = useRef(false)
+  const startXRef = useRef(0)
+  const startScrollRef = useRef(0)
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      const el = trackRef.current
+      if (!el || !isDownRef.current) return
+      e.preventDefault()
+      const walk = (e.clientX - startXRef.current) * 1.15
+      el.scrollLeft = startScrollRef.current - walk
+    }
+
+    const onUp = () => {
+      const el = trackRef.current
+      if (!el) return
+      if (!isDownRef.current) return
+      isDownRef.current = false
+      el.classList.remove('is-dragging')
+      document.body.classList.remove('is-dragging-x')
+    }
+
+    window.addEventListener('mousemove', onMove, { passive: false })
+    window.addEventListener('mouseup', onUp, { passive: true })
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseup', onUp)
+    }
+  }, [])
+
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = trackRef.current
+    if (!el) return
+    if (e.button !== 0) return
+    // stop native image/text drag selection
+    e.preventDefault()
+    isDownRef.current = true
+    startXRef.current = e.clientX
+    startScrollRef.current = el.scrollLeft
+    el.classList.add('is-dragging')
+    document.body.classList.add('is-dragging-x')
+  }
+
+  // Keep mobile swipe native; pointer events are optional.
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    // Let touch behave natively; desktop handled by mouse drag above.
+    if (e.pointerType !== 'touch') return
+  }
+
+  return (
+    <div className="jDining" aria-label="Dining">
+      <div className="jDiningIntro">
+        <div className="jDiningEyebrow">DINING</div>
+        <h3 className="jDiningTitle">A refined coastal table</h3>
+        <p className="jDiningText">
+          Seasonal ingredients, open views, and understated service — an experience shaped by light and ocean air.
+        </p>
+      </div>
+
+      <div className="jDiningFrame" aria-hidden="true">
+        <div className="jDiningFade jDiningFadeLeft" />
+        <div className="jDiningFade jDiningFadeRight" />
+      </div>
+
+      <div
+        ref={trackRef}
+        className="jDiningTrack"
+        onMouseDown={onMouseDown}
+        onPointerDown={onPointerDown}
+        role="list"
+        aria-label="Dining photo list"
+      >
+        {photos.map((p) => (
+          <div key={p.src} className="jDiningSlide" role="listitem">
+            <img className="jDiningImg" src={p.src} alt={p.alt} draggable={false} />
+          </div>
+        ))}
+      </div>
+
+      <div className="jDiningHint">Drag / swipe</div>
+    </div>
+  )
+}
+
 
 function VillasSlider() {
   const photos = useMemo(
@@ -98,6 +202,11 @@ export default function HomePage() {
         </div>
 
         <div className="heroShade" aria-hidden="true" />
+      
+        <div className="heroContent">
+          <div className="heroKicker">ULUWATU · BALI</div>
+          <h1 className="heroTitle">VANARA RESORT &amp; SPA</h1>
+        </div>
       </section>
 
 
@@ -170,9 +279,7 @@ export default function HomePage() {
 <section className="section sectionDiningFeature">
         <div className="container">
           <div className="split split--rev">
-            <div className="imagePlaceholder" aria-label="Dining image">
-              <img className="experienceImg" src="/dining.jpg" alt="Dining at Vanara" />
-            </div>
+            <DiningJumeirahDragGallery />
 
             <div>
               <div className="eyebrow">DINING</div>
