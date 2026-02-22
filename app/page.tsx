@@ -7,91 +7,105 @@ import { useEffect, useMemo, useRef, useState } from 'react'
  * horizontal scroll with snap, and optional mouse drag (desktop).
  * Mobile uses native swipe.
  */
-function DiningJumeirahDragGallery() {
+function DiningGrid4() {
   const photos = useMemo(
     () => [
       { src: '/dining-1.jpg', alt: 'Dining at Vanara' },
       { src: '/dining-2.jpg', alt: 'Dining setting' },
       { src: '/dining-3.jpg', alt: 'Chef & fresh cuisine' },
       { src: '/dining-4.jpg', alt: 'Sunset dining' },
-      { src: '/dining-5.jpg', alt: 'Coastal flavors' },
     ],
     []
   )
 
-  const trackRef = useRef<HTMLDivElement | null>(null)
-  const isDownRef = useRef(false)
-  const startXRef = useRef(0)
-  const startScrollLeftRef = useRef(0)
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(0)
 
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      const el = trackRef.current
-      if (!el || !isDownRef.current) return
-      e.preventDefault()
-      const walk = (e.clientX - startXRef.current) * 1.15
-      el.scrollLeft = startScrollLeftRef.current - walk
-    }
-
-    const onUp = () => {
-      const el = trackRef.current
-      if (!el) return
-      if (!isDownRef.current) return
-      isDownRef.current = false
-      el.classList.remove('is-dragging')
-      document.body.classList.remove('is-dragging-x')
-    }
-
-    window.addEventListener('mousemove', onMove, { passive: false })
-    window.addEventListener('mouseup', onUp, { passive: true })
-    window.addEventListener('blur', onUp, { passive: true })
-
-    return () => {
-      window.removeEventListener('mousemove', onMove)
-      window.removeEventListener('mouseup', onUp)
-      window.removeEventListener('blur', onUp)
-    }
-  }, [])
-
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = trackRef.current
-    if (!el) return
-    if (e.button !== 0) return
-    // prevent selecting text/images
-    e.preventDefault()
-    isDownRef.current = true
-    startXRef.current = e.clientX
-    startScrollLeftRef.current = el.scrollLeft
-    el.classList.add('is-dragging')
-    document.body.classList.add('is-dragging-x')
+  const openAt = (i: number) => {
+    setActive(i)
+    setOpen(true)
   }
 
+  useEffect(() => {
+    if (!open) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [open])
+
   return (
-    <div className="jDining" aria-label="Dining">
-      <div className="jDiningIntro">
-        <div className="jDiningEyebrow">DINING</div>
-        <h3 className="jDiningTitle">A refined coastal table</h3>
-        <p className="jDiningText">
+    <section className="diningGrid4" aria-label="Dining photos">
+      <div className="diningGrid4Intro">
+        <div className="diningGrid4Eyebrow">DINING</div>
+        <h3 className="diningGrid4Title">A refined coastal table</h3>
+        <p className="diningGrid4Text">
           Seasonal ingredients, open views, and understated service — an experience shaped by light and ocean air.
         </p>
       </div>
 
-      <div
-        ref={trackRef}
-        className="jDiningTrack"
-        onMouseDown={onMouseDown}
-        role="list"
-        aria-label="Dining photo list"
-      >
-        {photos.map((p) => (
-          <div key={p.src} className="jDiningSlide" role="listitem">
-            <img className="jDiningImg" src={p.src} alt={p.alt} draggable={false} />
-          </div>
-        ))}
+      <div className="diningGrid4Wrap" role="list" aria-label="Dining photo grid">
+        <button
+          type="button"
+          className="diningGrid4Tile diningGrid4Tile--hero"
+          onClick={() => openAt(0)}
+          aria-label="Open dining photo 1"
+        >
+          <img className="diningGrid4Img" src={photos[0].src} alt={photos[0].alt} />
+          <span className="diningGrid4Overlay" aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          className="diningGrid4Tile diningGrid4Tile--a"
+          onClick={() => openAt(1)}
+          aria-label="Open dining photo 2"
+        >
+          <img className="diningGrid4Img" src={photos[1].src} alt={photos[1].alt} />
+          <span className="diningGrid4Overlay" aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          className="diningGrid4Tile diningGrid4Tile--b"
+          onClick={() => openAt(2)}
+          aria-label="Open dining photo 3"
+        >
+          <img className="diningGrid4Img" src={photos[2].src} alt={photos[2].alt} />
+          <span className="diningGrid4Overlay" aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          className="diningGrid4Tile diningGrid4Tile--c"
+          onClick={() => openAt(3)}
+          aria-label="Open dining photo 4"
+        >
+          <img className="diningGrid4Img" src={photos[3].src} alt={photos[3].alt} />
+          <span className="diningGrid4Overlay" aria-hidden="true" />
+        </button>
       </div>
 
-      <div className="jDiningHint">Drag on desktop • Swipe on mobile</div>
-    </div>
+      <div className="diningGrid4Hint">Click to view</div>
+
+      {open && (
+        <div className="diningLightbox" role="dialog" aria-modal="true" onClick={() => setOpen(false)}>
+          <button
+            type="button"
+            className="diningLightboxClose"
+            aria-label="Close"
+            onClick={() => setOpen(false)}
+          >
+            ×
+          </button>
+
+          <div className="diningLightboxInner" onClick={(e) => e.stopPropagation()}>
+            <img className="diningLightboxImg" src={photos[active].src} alt={photos[active].alt} />
+          </div>
+        </div>
+      )}
+    </section>
   )
 }
 
@@ -270,7 +284,7 @@ export default function HomePage() {
 <section className="section sectionDiningFeature">
         <div className="container">
           <div className="split split--rev">
-            <DiningJumeirahDragGallery />
+            <DiningGrid4 />
 
             <div>
               <div className="eyebrow">DINING</div>
