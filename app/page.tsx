@@ -61,10 +61,10 @@ function useScrollZoom(
 function DiningUlamanCarousel4() {
   const photos = useMemo(
     () => [
-      { src: '/dining-1.jpg', alt: 'Dining at Vanara' },
-      { src: '/dining-2.jpg', alt: 'Dining setting' },
-      { src: '/dining-3.jpg', alt: 'Chef & fresh cuisine' },
-      { src: '/dining-4.jpg', alt: 'Sunset dining' },
+      { src: '/dining-1.webp', alt: 'Dining at Vanara' },
+      { src: '/dining-2.webp', alt: 'Dining setting' },
+      { src: '/dining-3.webp', alt: 'Chef & fresh cuisine' },
+      { src: '/dining-4.webp', alt: 'Sunset dining' },
     ],
     []
   )
@@ -162,9 +162,9 @@ const go = (i: number) => {
 function VillasUlamanCarousel() {
   const photos = useMemo(
     () => [
-      { src: '/villas-1.jpg', alt: 'Villa at Vanara' },
-      { src: '/villas-2.jpg', alt: 'Villa terrace' },
-      { src: '/villas-3.jpg', alt: 'Ocean view villa' },
+      { src: '/villas-1.webp', alt: 'Villa at Vanara' },
+      { src: '/villas-2.webp', alt: 'Villa terrace' },
+      { src: '/villas-3.webp', alt: 'Ocean view villa' },
     ],
     []
   )
