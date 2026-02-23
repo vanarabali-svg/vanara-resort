@@ -253,20 +253,60 @@ export default function HomePage() {
   const [needsTap, setNeedsTap] = useState(false)
   const heroVideoRef = useRef<HTMLVideoElement | null>(null)
 
-  // Try to start playback (some phones block autoplay even when muted)
+  // Try to start playback (some phones pause background videos in low power / data saver).
+  // We also attempt to auto-resume when Safari/Android pauses it.
   useEffect(() => {
     const v = heroVideoRef.current
     if (!v) return
+
+    let resumeTimer: number | null = null
+    const clearResumeTimer = () => {
+      if (resumeTimer != null) window.clearTimeout(resumeTimer)
+      resumeTimer = null
+    }
+
     const tryPlay = async () => {
+      clearResumeTimer()
       try {
+        // iOS needs muted for autoplay
+        v.muted = true
         await v.play()
         setNeedsTap(false)
       } catch {
         setNeedsTap(true)
       }
     }
-    const id = window.setTimeout(tryPlay, 50)
-    return () => window.clearTimeout(id)
+
+    const scheduleResume = () => {
+      clearResumeTimer()
+      resumeTimer = window.setTimeout(() => {
+        if (document.hidden) return
+        if (v.paused) tryPlay()
+      }, 350)
+    }
+
+    const onVisibility = () => {
+      if (!document.hidden) tryPlay()
+    }
+
+    // First attempt after mount
+    const id = window.setTimeout(tryPlay, 60)
+
+    document.addEventListener('visibilitychange', onVisibility)
+    v.addEventListener('pause', scheduleResume)
+    v.addEventListener('waiting', scheduleResume)
+    v.addEventListener('stalled', scheduleResume)
+    v.addEventListener('canplay', tryPlay)
+
+    return () => {
+      window.clearTimeout(id)
+      clearResumeTimer()
+      document.removeEventListener('visibilitychange', onVisibility)
+      v.removeEventListener('pause', scheduleResume)
+      v.removeEventListener('waiting', scheduleResume)
+      v.removeEventListener('stalled', scheduleResume)
+      v.removeEventListener('canplay', tryPlay)
+    }
   }, [])
 
   return (

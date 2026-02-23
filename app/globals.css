@@ -1825,6 +1825,33 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   display: block;
 }
 
+/* If autoplay is blocked on some phones, show a subtle "Tap to play" pill */
+.heroVideoTap{
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  z-index: 3;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.38);
+  background: rgba(0,0,0,.22);
+  color: rgba(255,255,255,.92);
+  font-size: 12px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.heroVideoTap:hover{ background: rgba(0,0,0,.30); }
+
+@media (max-width: 520px){
+  .heroVideoTap{ bottom: 16px; height: 40px; padding: 0 14px; font-size: 11px; }
+}
+
 
 /* ==================================================
    DINING PHOTO SLIDER (3 photos, auto)
@@ -2290,24 +2317,3 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 }
 
 
-
-
-/* Hero video tap-to-play (for phones that block autoplay) */
-.heroVideoTap{
-  position: absolute;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%);
-  z-index: 4;
-  padding: 12px 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.40);
-  background: rgba(0,0,0,.28);
-  color: #fff;
-  font-size: 11px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  backdrop-filter: blur(6px);
-  -webkit-tap-highlight-color: transparent;
-}
-.heroVideoTap:active{ transform: translateX(-50%) scale(.99); }
