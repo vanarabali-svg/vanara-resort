@@ -249,29 +249,7 @@ function VillasUlamanCarousel() {
 
 
 export default function HomePage() {
-/* HERO — desktop vs phone/tablet */
-useEffect(() => {
-  const choose = () => {
-    const w = window.innerWidth
-
-    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    // @ts-ignore
-    const saveData = (navigator as any)?.connection?.saveData === true
-
-    // Phones + tablets: lighter video. Desktop: full video.
-    // If user asks for reduced motion or data saving, also use the light version.
-    const src = (w < 1024 || prefersReducedMotion || saveData) ? '/hero-light.mp4' : '/hero.mp4'
-
-    setHeroSrc(src)
-    setHeroVideoOk(true)
-    setNeedsTap(false)
-  }
-  choose()
-  window.addEventListener('resize', choose)
-  return () => window.removeEventListener('resize', choose)
-}, [])
   const [heroVideoOk, setHeroVideoOk] = useState(true)
-  const [heroSrc, setHeroSrc] = useState('/hero.mp4')
   const [needsTap, setNeedsTap] = useState(false)
   const heroVideoRef = useRef<HTMLVideoElement | null>(null)
 
@@ -289,63 +267,62 @@ useEffect(() => {
     }
     const id = window.setTimeout(tryPlay, 50)
     return () => window.clearTimeout(id)
-  }, [heroSrc])
+  }, [])
 
-return (
-
+  return (
     <div className="home">
       
       <section className="hero hero--video" aria-label="Hero">
         <div className="heroVideo" aria-label="Vanara hero media">
-  {heroVideoOk ? (
-    <video
-      key={heroSrc}
-      ref={heroVideoRef}
-      className="heroVideoEl"
-      autoPlay
-      muted
-      playsInline
-      loop
-      preload="auto"
-      controls={false}
-      disablePictureInPicture
-      // @ts-ignore - supported by most browsers
-      controlsList="nodownload noplaybackrate noremoteplayback"
-      poster="/hero-poster.jpg"
-      onError={() => {
-        setHeroVideoOk(false)
-        setNeedsTap(false)
-      }}
-      onCanPlay={() => {
-        setHeroVideoOk(true)
-      }}
-    >
-      <source src={heroSrc} type="video/mp4" />
-    </video>
-  ) : (
-    <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />
-  )}
-  {needsTap && heroVideoOk && (
-    <button
-      type="button"
-      className="heroVideoTap"
-      aria-label="Play intro video"
-      onClick={() => {
-        const v = heroVideoRef.current
-        if (!v) return
-        v.play()
-          .then(() => setNeedsTap(false))
-          .catch(() => setNeedsTap(true))
-      }}
-    >
-      Tap to play
-    </button>
-  )}
+          {heroVideoOk ? (
+            <video
+              key="hero"
+              ref={heroVideoRef}
+              className="heroVideoEl"
+              autoPlay
+              muted
+              playsInline
+              loop
+              preload="auto"
+              controls={false}
+              disablePictureInPicture
+              // @ts-ignore - supported by most browsers
+              controlsList="nodownload noplaybackrate noremoteplayback"
+              poster="/hero-poster.jpg"
+              onError={() => {
+                setHeroVideoOk(false)
+                setNeedsTap(false)
+              }}
+              onCanPlay={() => {
+                setHeroVideoOk(true)
+              }}
+            >
+              <source src="/hero.mp4" type="video/mp4" />
+            </video>
+          ) : (
+            <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />
+          )}
 
-</div>
+          {needsTap && heroVideoOk && (
+            <button
+              type="button"
+              className="heroVideoTap"
+              aria-label="Play intro video"
+              onClick={() => {
+                const v = heroVideoRef.current
+                if (!v) return
+                v.play()
+                  .then(() => setNeedsTap(false))
+                  .catch(() => setNeedsTap(true))
+              }}
+            >
+              Tap to play
+            </button>
+          )}
+        </div>
 
         <div className="heroShade" aria-hidden="true" />
-      
+
         <div className="heroContent">
           <div className="heroKicker">ULUWATU · BALI</div>
           <h1 className="heroTitle">VANARA RESORT &amp; SPA</h1>
