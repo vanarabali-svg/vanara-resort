@@ -110,13 +110,7 @@ const go = (i: number) => {
 
   return (
     <section className="uDining" aria-label="Dining">
-      <div className="uDiningIntro">
-        <div className="uDiningEyebrow">DINING</div>
-        <h3 className="uDiningTitle">A refined coastal table</h3>
-        <p className="uDiningText">
-          Seasonal ingredients, open views, and understated service — an experience shaped by light and ocean air.
-        </p>
-      </div>
+ 
 
       <div
         className="uDiningCarousel" ref={zoomRef}
@@ -429,9 +423,6 @@ export default function HomePage() {
                 Explore villas
               </a>
 
-              <div className="smallprint" style={{ marginTop: 12 }}>
-                Replace <code>/villas.jpg</code> with your preferred villa photo.
-              </div>
             </div>
           </div>
         </div>
