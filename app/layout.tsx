@@ -3,7 +3,7 @@
 import './globals.css'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 function startOfDay(date: Date) {
   const d = new Date(date)
@@ -85,6 +85,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [adults, setAdults] = useState(2)
   const [rooms, setRooms] = useState(1)
   const [visibleMonth, setVisibleMonth] = useState(startOfMonth(today))
+  const [calendarOpen, setCalendarOpen] = useState(true)
+  const [activeField, setActiveField] = useState<'checkin' | 'checkout'>('checkin')
+  const calendarRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     const onScroll = () => {
@@ -134,7 +137,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     ? `${totalNights} ${totalNights === 1 ? 'night' : 'nights'} · ${adults} ${adults === 1 ? 'adult' : 'adults'} · ${rooms} ${rooms === 1 ? 'room' : 'rooms'}`
     : 'Select your dates, then continue to live availability.'
 
-  const openBooking = () => setBookingOpen(true)
+  const openBooking = () => {
+    setBookingOpen(true)
+    setCalendarOpen(true)
+    setActiveField(checkIn && !checkOut ? 'checkout' : 'checkin')
+  }
+
+  const openCalendarFor = (field: 'checkin' | 'checkout') => {
+    setActiveField(field)
+    setCalendarOpen(true)
+    window.requestAnimationFrame(() => {
+      calendarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }
 
   const handleDaySelect = (date: Date) => {
     const candidate = startOfDay(date)
@@ -142,9 +157,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
     const value = formatDateInput(candidate)
 
-    if (!checkIn || (checkIn && checkOut)) {
+    if (!checkIn || (checkIn && checkOut) || activeField === 'checkin') {
       setCheckIn(value)
       setCheckOut('')
+      setActiveField('checkout')
       return
     }
 
@@ -152,10 +168,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     if (candidate <= start) {
       setCheckIn(value)
       setCheckOut('')
+      setActiveField('checkout')
       return
     }
 
     setCheckOut(value)
+    setCalendarOpen(false)
   }
 
   const handleBookingRedirect = () => {
@@ -421,10 +439,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <div className="booking-selectionRow">
                 <button
                   type="button"
-                  className={`booking-selection ${!checkIn ? 'is-active' : ''}`}
+                  className={`booking-selection ${activeField === 'checkin' ? 'is-active' : ''}`}
                   onClick={() => {
                     setCheckIn('')
                     setCheckOut('')
+                    openCalendarFor('checkin')
                   }}
                 >
                   <span className="booking-selectionLabel">Check-in</span>
@@ -433,9 +452,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
                 <button
                   type="button"
-                  className={`booking-selection ${checkIn && !checkOut ? 'is-active' : ''}`}
+                  className={`booking-selection ${activeField === 'checkout' ? 'is-active' : ''}`}
                   onClick={() => {
-                    if (checkIn) setCheckOut('')
+                    if (checkIn) {
+                      setCheckOut('')
+                      openCalendarFor('checkout')
+                    } else {
+                      openCalendarFor('checkin')
+                    }
                   }}
                 >
                   <span className="booking-selectionLabel">Check-out</span>
@@ -443,7 +467,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </button>
               </div>
 
-              <div className="booking-calendarWrap">
+              <div
+                ref={calendarRef}
+                className={`booking-calendarWrap ${calendarOpen ? 'is-open' : 'is-collapsed'}`}
+              >
                 <div className="booking-calendarNav">
                   <button
                     type="button"
@@ -458,8 +485,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </button>
 
                   <div className="booking-rangeHint">
-                    {!checkIn && 'Select check-in'}
-                    {checkIn && !checkOut && 'Select check-out'}
+                    {activeField === 'checkin' && 'Select check-in'}
+                    {activeField === 'checkout' && !checkOut && 'Select check-out'}
                     {checkIn && checkOut && `${totalNights} ${totalNights === 1 ? 'night' : 'nights'} selected`}
                   </div>
 
@@ -475,10 +502,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </button>
                 </div>
 
-                <div className="booking-calendarGrid">
-                  {renderMonth(visibleMonth)}
-                  {renderMonth(addMonths(visibleMonth, 1))}
-                </div>
+                {calendarOpen && (
+                  <div className="booking-calendarGrid">
+                    {renderMonth(visibleMonth)}
+                    {renderMonth(addMonths(visibleMonth, 1))}
+                  </div>
+                )}
               </div>
 
               <div className="booking-controls">
