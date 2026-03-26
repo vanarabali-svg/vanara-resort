@@ -3,13 +3,89 @@
 import './globals.css'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+
+function startOfDay(date: Date) {
+  const d = new Date(date)
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+function startOfMonth(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1)
+}
+
+function addMonths(date: Date, amount: number) {
+  return new Date(date.getFullYear(), date.getMonth() + amount, 1)
+}
+
+function addDays(date: Date, amount: number) {
+  const d = new Date(date)
+  d.setDate(d.getDate() + amount)
+  return d
+}
+
+function formatDateInput(date: Date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+function parseDateInput(value: string) {
+  const [y, m, d] = value.split('-').map(Number)
+  return new Date(y, (m || 1) - 1, d || 1)
+}
+
+function isSameDay(a: Date, b: Date) {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  )
+}
+
+function nightsBetween(start: string, end: string) {
+  if (!start || !end) return 0
+  const a = startOfDay(parseDateInput(start)).getTime()
+  const b = startOfDay(parseDateInput(end)).getTime()
+  return Math.max(0, Math.round((b - a) / 86400000))
+}
+
+function buildMonthGrid(month: Date) {
+  const first = startOfMonth(month)
+  const monthIndex = first.getMonth()
+  const mondayOffset = (first.getDay() + 6) % 7
+  const gridStart = addDays(first, -mondayOffset)
+
+  return Array.from({ length: 42 }, (_, i) => {
+    const date = addDays(gridStart, i)
+    return {
+      date,
+      inMonth: date.getMonth() === monthIndex,
+    }
+  })
+}
+
+function clampCount(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, value))
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [bookingOpen, setBookingOpen] = useState(false)
   const [lang, setLang] = useState<'EN' | 'ID' | 'RU'>('EN')
-    // Transparent header until scroll (adds body.is-scrolled)
+
+  const today = useMemo(() => startOfDay(new Date()), [])
+  const bookingMerchantUrl = 'https://book-directonline.com/properties/vanararesortspa'
+
+  const [checkIn, setCheckIn] = useState('')
+  const [checkOut, setCheckOut] = useState('')
+  const [adults, setAdults] = useState(2)
+  const [rooms, setRooms] = useState(1)
+  const [visibleMonth, setVisibleMonth] = useState(startOfMonth(today))
+
   useEffect(() => {
     const onScroll = () => {
       document.body.classList.toggle('is-scrolled', window.scrollY > 10)
@@ -24,6 +100,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       if (e.key === 'Escape') {
         setMenuOpen(false)
         setLangOpen(false)
+        setBookingOpen(false)
       }
     }
     window.addEventListener('keydown', onKeyDown)
@@ -31,11 +108,140 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen || langOpen ? 'hidden' : ''
+    document.body.style.overflow = menuOpen || langOpen || bookingOpen ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [menuOpen, langOpen])
+  }, [menuOpen, langOpen, bookingOpen])
+
+  useEffect(() => {
+    if (!bookingOpen) return
+    const anchor = checkIn ? parseDateInput(checkIn) : today
+    setVisibleMonth(startOfMonth(anchor))
+  }, [bookingOpen, checkIn, today])
+
+  const formattedCheckIn = checkIn
+    ? new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).format(parseDateInput(checkIn))
+    : 'Add date'
+
+  const formattedCheckOut = checkOut
+    ? new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).format(parseDateInput(checkOut))
+    : 'Add date'
+
+  const totalNights = nightsBetween(checkIn, checkOut)
+
+  const bookingSummary = checkIn && checkOut
+    ? `${totalNights} ${totalNights === 1 ? 'night' : 'nights'} · ${adults} ${adults === 1 ? 'adult' : 'adults'} · ${rooms} ${rooms === 1 ? 'room' : 'rooms'}`
+    : 'Select your dates, then continue to live availability.'
+
+  const openBooking = () => setBookingOpen(true)
+
+  const handleDaySelect = (date: Date) => {
+    const candidate = startOfDay(date)
+    if (candidate < today) return
+
+    const value = formatDateInput(candidate)
+
+    if (!checkIn || (checkIn && checkOut)) {
+      setCheckIn(value)
+      setCheckOut('')
+      return
+    }
+
+    const start = parseDateInput(checkIn)
+    if (candidate <= start) {
+      setCheckIn(value)
+      setCheckOut('')
+      return
+    }
+
+    setCheckOut(value)
+  }
+
+  const handleBookingRedirect = () => {
+    if (!checkIn || !checkOut) return
+
+    const safeAdults = clampCount(adults, 1, 8)
+    const safeRooms = clampCount(rooms, 1, 4)
+
+    if (safeAdults < safeRooms) {
+      window.alert('Adults cannot be fewer than rooms.')
+      return
+    }
+
+    const url = new URL(bookingMerchantUrl)
+    url.searchParams.set('checkInDate', checkIn)
+    url.searchParams.set('checkOutDate', checkOut)
+    url.searchParams.set('locale', 'en')
+    url.searchParams.set('trackPage', 'no')
+
+    const baseAdultsPerRoom = Math.floor(safeAdults / safeRooms)
+    const extraAdults = safeAdults % safeRooms
+
+    for (let i = 0; i < safeRooms; i += 1) {
+      const adultsForThisRoom = baseAdultsPerRoom + (i < extraAdults ? 1 : 0)
+      url.searchParams.set(`items[${i}][adults]`, String(adultsForThisRoom))
+      url.searchParams.set(`items[${i}][children]`, '0')
+      url.searchParams.set(`items[${i}][infants]`, '0')
+    }
+
+    window.location.href = url.toString()
+  }
+
+  const renderMonth = (monthDate: Date) => {
+    const cells = buildMonthGrid(monthDate)
+    const checkInDate = checkIn ? parseDateInput(checkIn) : null
+    const checkOutDate = checkOut ? parseDateInput(checkOut) : null
+    const monthTitle = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(monthDate)
+
+    return (
+      <div className="booking-calendarMonth" key={monthTitle}>
+        <div className="booking-calendarMonthTitle">{monthTitle}</div>
+
+        <div className="booking-weekdays" aria-hidden="true">
+          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
+            <div key={day}>{day}</div>
+          ))}
+        </div>
+
+        <div className="booking-days">
+          {cells.map(({ date, inMonth }) => {
+            const isDisabled = startOfDay(date) < today
+            const isSelectedStart = !!checkInDate && isSameDay(date, checkInDate)
+            const isSelectedEnd = !!checkOutDate && isSameDay(date, checkOutDate)
+            const isInRange = !!checkInDate && !!checkOutDate && date > checkInDate && date < checkOutDate
+            const isToday = isSameDay(date, today)
+
+            return (
+              <button
+                key={date.toISOString()}
+                type="button"
+                className={[
+                  'booking-day',
+                  !inMonth ? 'is-outside' : '',
+                  isDisabled ? 'is-disabled' : '',
+                  isSelectedStart ? 'is-checkin' : '',
+                  isSelectedEnd ? 'is-checkout' : '',
+                  isInRange ? 'is-inrange' : '',
+                  isToday ? 'is-today' : '',
+                ].filter(Boolean).join(' ')}
+                disabled={isDisabled}
+                onClick={() => handleDaySelect(date)}
+                aria-label={new Intl.DateTimeFormat('en-US', {
+                  weekday: 'long',
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                }).format(date)}
+              >
+                <span>{date.getDate()}</span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <html lang="en">
@@ -52,7 +258,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body>
-        {/* TOP BAR (transparent until scroll) */}
         <header className="nav">
           <div className="nav-inner">
             <div className="nav-left">
@@ -65,13 +270,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </button>
 
               <button className="lang-pill" type="button" onClick={() => setLangOpen(true)} aria-label="Change language">
-                <span className="lang-pillText">{lang}</span> <span className="pillIcon" aria-hidden="true">
-  <svg viewBox="0 0 24 24">
-    <circle cx="12" cy="12" r="8.5" />
-    <path d="M3.5 12h17" />
-    <path d="M12 3.5c2.3 2.3 3.6 5.3 3.6 8.5S14.3 18.7 12 20.5C9.7 18.7 8.4 15.7 8.4 12S9.7 5.8 12 3.5z" />
-  </svg>
-</span>
+                <span className="lang-pillText">{lang}</span>{' '}
+                <span className="pillIcon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="8.5" />
+                    <path d="M3.5 12h17" />
+                    <path d="M12 3.5c2.3 2.3 3.6 5.3 3.6 8.5S14.3 18.7 12 20.5C9.7 18.7 8.4 15.7 8.4 12S9.7 5.8 12 3.5z" />
+                  </svg>
+                </span>
               </button>
             </div>
 
@@ -97,17 +303,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             <div className="nav-right">
-              <Link href="/book" className="reserve-pill"><span className="reserveText"><span className="reserveLong">Reserve</span><span className="reserveShort">Reserve</span></span> <span className="pillIcon pillIcon--after" aria-hidden="true">
-  <svg viewBox="0 0 24 24">
-    <path d="M9 15l6-6" />
-    <path d="M10 9h5v5" />
-  </svg>
-</span></Link>
+              <button type="button" className="reserve-pill" onClick={openBooking} aria-label="Open reservation form">
+                <span className="reserveText">
+                  <span className="reserveLong">Reserve</span>
+                  <span className="reserveShort">Reserve</span>
+                </span>{' '}
+                <span className="pillIcon pillIcon--after" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M9 15l6-6" />
+                    <path d="M10 9h5v5" />
+                  </svg>
+                </span>
+              </button>
             </div>
           </div>
         </header>
 
-        {/* MENU OVERLAY */}
         {menuOpen && (
           <div className="menu-overlay" onClick={() => setMenuOpen(false)} role="dialog" aria-modal="true">
             <div className="menu-panel" onClick={(e) => e.stopPropagation()}>
@@ -130,7 +341,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </Link>
                 <Link href="/accommodation" onClick={() => setMenuOpen(false)}>
                   Villas
-                </Link>                <Link href="/connect" onClick={() => setMenuOpen(false)}>
+                </Link>
+                <Link href="/connect" onClick={() => setMenuOpen(false)}>
                   Connect
                 </Link>
               </nav>
@@ -144,8 +356,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         )}
 
-
-        {/* LANGUAGE OVERLAY */}
         {langOpen && (
           <div className="lang-overlay" onClick={() => setLangOpen(false)} role="dialog" aria-modal="true">
             <div className="lang-panel" onClick={(e) => e.stopPropagation()}>
@@ -182,7 +392,149 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         )}
 
-        {/* SEARCH OVERLAY */}
+        {bookingOpen && (
+          <div className="booking-overlay" onClick={() => setBookingOpen(false)} role="dialog" aria-modal="true" aria-label="Reservation form">
+            <div className="booking-panel booking-panel--calendar" onClick={(e) => e.stopPropagation()}>
+              <button className="booking-x" type="button" onClick={() => setBookingOpen(false)} aria-label="Close reservation form">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                </svg>
+              </button>
+
+              <div className="booking-topbar">
+                <div>
+                  <div className="booking-kicker">Reserve</div>
+                  <div className="booking-title">Choose your dates</div>
+                  <p className="booking-text">
+                    A calmer, Airbnb-style date picker for arrivals and departures, followed by guests and room count before redirecting to DirectOnline.
+                  </p>
+                </div>
+
+                <div className="booking-summaryCard">
+                  <div className="booking-summaryLabel">Stay summary</div>
+                  <div className="booking-summaryDates">{formattedCheckIn} — {formattedCheckOut}</div>
+                  <div className="booking-summaryMeta">{bookingSummary}</div>
+                </div>
+              </div>
+
+              <div className="booking-selectionRow">
+                <button
+                  type="button"
+                  className={`booking-selection ${!checkIn ? 'is-active' : ''}`}
+                  onClick={() => {
+                    setCheckIn('')
+                    setCheckOut('')
+                  }}
+                >
+                  <span className="booking-selectionLabel">Check-in</span>
+                  <span className="booking-selectionValue">{formattedCheckIn}</span>
+                </button>
+
+                <button
+                  type="button"
+                  className={`booking-selection ${checkIn && !checkOut ? 'is-active' : ''}`}
+                  onClick={() => {
+                    if (checkIn) setCheckOut('')
+                  }}
+                >
+                  <span className="booking-selectionLabel">Check-out</span>
+                  <span className="booking-selectionValue">{formattedCheckOut}</span>
+                </button>
+              </div>
+
+              <div className="booking-calendarWrap">
+                <div className="booking-calendarNav">
+                  <button
+                    type="button"
+                    className="booking-navBtn"
+                    onClick={() => setVisibleMonth((current) => addMonths(current, -1))}
+                    disabled={visibleMonth <= startOfMonth(today)}
+                    aria-label="Show previous month"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                  </button>
+
+                  <div className="booking-rangeHint">
+                    {!checkIn && 'Select check-in'}
+                    {checkIn && !checkOut && 'Select check-out'}
+                    {checkIn && checkOut && `${totalNights} ${totalNights === 1 ? 'night' : 'nights'} selected`}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="booking-navBtn"
+                    onClick={() => setVisibleMonth((current) => addMonths(current, 1))}
+                    aria-label="Show next month"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M9 6l6 6-6 6" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="booking-calendarGrid">
+                  {renderMonth(visibleMonth)}
+                  {renderMonth(addMonths(visibleMonth, 1))}
+                </div>
+              </div>
+
+              <div className="booking-controls">
+                <div className="booking-counterCard">
+                  <div>
+                    <div className="booking-counterLabel">Adults</div>
+                    <div className="booking-counterHint">Ages 13+</div>
+                  </div>
+                  <div className="booking-stepper">
+                    <button type="button" onClick={() => setAdults((value) => clampCount(value - 1, 1, 8))} aria-label="Decrease adults">−</button>
+                    <span>{adults}</span>
+                    <button type="button" onClick={() => setAdults((value) => clampCount(value + 1, 1, 8))} aria-label="Increase adults">+</button>
+                  </div>
+                </div>
+
+                <div className="booking-counterCard">
+                  <div>
+                    <div className="booking-counterLabel">Rooms</div>
+                    <div className="booking-counterHint">Up to 4 rooms</div>
+                  </div>
+                  <div className="booking-stepper">
+                    <button type="button" onClick={() => setRooms((value) => clampCount(value - 1, 1, 4))} aria-label="Decrease rooms">−</button>
+                    <span>{rooms}</span>
+                    <button type="button" onClick={() => setRooms((value) => clampCount(value + 1, 1, 4))} aria-label="Increase rooms">+</button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="booking-actions booking-actions--split">
+                <button
+                  type="button"
+                  className="booking-reset"
+                  onClick={() => {
+                    setCheckIn('')
+                    setCheckOut('')
+                    setAdults(2)
+                    setRooms(1)
+                    setVisibleMonth(startOfMonth(today))
+                  }}
+                >
+                  Clear
+                </button>
+
+                <button
+                  type="button"
+                  className="booking-submit"
+                  onClick={handleBookingRedirect}
+                  disabled={!checkIn || !checkOut}
+                >
+                  Check availability
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <main>{children}</main>
 
         <footer className="footer">
@@ -233,7 +585,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </Link>
               <Link className="footer-link" href="/dine">
                 Dine
-              </Link>            </div>
+              </Link>
+            </div>
           </div>
 
           <div className="footer-copy">© {new Date().getFullYear()} Vanara Resort &amp; Spa</div>
