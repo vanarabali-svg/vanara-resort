@@ -137,7 +137,6 @@ function DiningUlamanCarousel4() {
   const [active, setActive] = useState(0)
   const [prev, setPrev] = useState<number | null>(null)
   const pausedRef = useRef(false)
-  const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
 
@@ -183,8 +182,6 @@ function DiningUlamanCarousel4() {
         ref={zoomRef}
         onMouseEnter={() => (pausedRef.current = true)}
         onMouseLeave={() => (pausedRef.current = false)}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
         aria-label="Dining carousel"
       >
         <div className="uDiningStage" aria-hidden="true">
@@ -254,7 +251,6 @@ function VillasUlamanCarousel() {
   const [active, setActive] = useState(0)
   const [prev, setPrev] = useState<number | null>(null)
   const pausedRef = useRef(false)
-  const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
 
@@ -299,8 +295,6 @@ function VillasUlamanCarousel() {
       ref={zoomRef}
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
       aria-label="Villas carousel"
     >
       <div className="uVillasStage" aria-hidden="true">
