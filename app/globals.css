@@ -2531,19 +2531,54 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 }
 
 
-
-/* Arrows-only carousels */
+/* Responsive carousel controls */
 .uDiningDots,
-.uVillasDots,
+.uVillasDots{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  display: none;
+  justify-content: center;
+  gap: 10px;
+  z-index: 8;
+}
+
+.uDiningDot,
+.uVillasDot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.72);
+  background: rgba(0,0,0,.28);
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.uDiningDot.is-active,
+.uVillasDot.is-active{
+  background: rgba(255,255,255,.92);
+  border-color: rgba(255,255,255,.92);
+  transform: scale(1.08);
+}
+
 .uDiningHint{
-  display: none !important;
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  z-index: 8;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.78);
+  display: none;
 }
 
 .carouselArrow{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 7;
+  z-index: 9;
   width: 48px;
   height: 48px;
   border-radius: 999px;
@@ -2556,7 +2591,7 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   cursor: pointer;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: background .18s ease, transform .18s ease, border-color .18s ease;
+  transition: background .18s ease, transform .18s ease, border-color .18s ease, opacity .18s ease;
 }
 
 .carouselArrow:hover{
@@ -2581,18 +2616,7 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   stroke-linejoin: round;
 }
 
-@media (max-width: 768px){
-  .carouselArrow{
-    width: 40px;
-    height: 40px;
-  }
-
-  .carouselArrow--prev{ left: 12px; }
-  .carouselArrow--next{ right: 12px; }
-}
-
-
-/* Mobile + tablet carousel controls */
+/* mobile + tablet: swipe + dots, no arrows */
 @media (max-width: 1024px){
   .uDiningDots,
   .uVillasDots{
@@ -2608,7 +2632,7 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   }
 }
 
-/* Desktop carousel controls */
+/* desktop: arrows only */
 @media (min-width: 1025px){
   .carouselArrow{
     display: inline-flex !important;
