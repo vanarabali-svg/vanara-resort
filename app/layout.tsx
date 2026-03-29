@@ -118,6 +118,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, [menuOpen, langOpen, bookingOpen])
 
   useEffect(() => {
+    const onOpenBooking = () => {
+      setBookingOpen(true)
+      setCalendarOpen(true)
+      setActiveField(checkIn && !checkOut ? 'checkout' : 'checkin')
+    }
+
+    window.addEventListener('open-booking-modal', onOpenBooking as EventListener)
+    return () => window.removeEventListener('open-booking-modal', onOpenBooking as EventListener)
+  }, [checkIn, checkOut])
+
+  useEffect(() => {
     if (!bookingOpen) return
     const anchor = checkIn ? parseDateInput(checkIn) : today
     setVisibleMonth(startOfMonth(anchor))
