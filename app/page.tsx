@@ -148,6 +148,9 @@ function DiningUlamanCarousel4() {
     window.setTimeout(() => setPrev(null), 650)
   }
 
+  const prevSlide = () => go(active - 1)
+  const nextSlide = () => go(active + 1)
+
   useEffect(() => {
     const id = window.setInterval(() => {
       if (pausedRef.current) return
@@ -198,6 +201,28 @@ function DiningUlamanCarousel4() {
 
         <div className="uDiningShade" aria-hidden="true" />
 
+        <button
+          type="button"
+          className="carouselArrow carouselArrow--prev"
+          aria-label="Previous dining photo"
+          onClick={prevSlide}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          className="carouselArrow carouselArrow--next"
+          aria-label="Next dining photo"
+          onClick={nextSlide}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+
         <div className="uDiningDots" aria-label="Dining carousel navigation">
           {photos.map((_, i) => (
             <button
@@ -239,6 +264,9 @@ function VillasUlamanCarousel() {
     setActive(idx)
     window.setTimeout(() => setPrev(null), 650)
   }
+
+  const prevSlide = () => go(active - 1)
+  const nextSlide = () => go(active + 1)
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -288,6 +316,28 @@ function VillasUlamanCarousel() {
       </div>
 
       <div className="uVillasShade" aria-hidden="true" />
+
+      <button
+        type="button"
+        className="carouselArrow carouselArrow--prev"
+        aria-label="Previous villa photo"
+        onClick={prevSlide}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        className="carouselArrow carouselArrow--next"
+        aria-label="Next villa photo"
+        onClick={nextSlide}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" />
+        </svg>
+      </button>
 
       <div className="uVillasDots" aria-label="Villas carousel navigation">
         {photos.map((_, i) => (

@@ -369,10 +369,9 @@ body.is-scrolled .reserve-pill:hover{ background: rgba(255,255,255,.55); border-
 
 .h2{
   font-family: var(--serif);
-  font-size: clamp(40px, 5vw, 72px);
+  font-size: 32px;
   font-weight: 500;
-  line-height: 1.1;
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   color: var(--ink);
   letter-spacing: -0.01em;
 }
@@ -2470,4 +2469,61 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
     font-size: 14px;
     line-height: 1.62;
   }
+}
+
+
+
+/* =========================
+   CAROUSEL ARROWS
+========================= */
+.carouselArrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.34);
+  background: rgba(15,15,14,.24);
+  color: rgba(255,255,255,.96);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background .18s ease, transform .18s ease, border-color .18s ease, opacity .18s ease;
+}
+
+.carouselArrow:hover{
+  background: rgba(15,15,14,.38);
+  border-color: rgba(255,255,255,.46);
+}
+
+.carouselArrow:active{
+  transform: translateY(-50%) scale(.98);
+}
+
+.carouselArrow--prev{ left: 18px; }
+.carouselArrow--next{ right: 18px; }
+
+.carouselArrow svg{
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 768px){
+  .carouselArrow{
+    width: 40px;
+    height: 40px;
+  }
+
+  .carouselArrow--prev{ left: 12px; }
+  .carouselArrow--next{ right: 12px; }
 }
