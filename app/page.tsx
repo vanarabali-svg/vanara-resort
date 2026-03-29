@@ -613,25 +613,20 @@ export default function HomePage() {
 
             <div>
               <div className="eyebrow">WEDDINGS</div>
-              <h3 className="h3">Celebrations, quietly elevated</h3>
+              <h3 className="h3">Celebrate above the ocean</h3>
 
               <div className="copy">
                 <p>
-                  Vanara is an intimate setting for weddings and private celebrations — a ceremony above the ocean,
-                  followed by candlelit dining in a calm, private atmosphere.
+                  Set along the cliffs above the Indian Ocean, Vanara offers a distinctive setting for weddings and private celebrations.
                 </p>
-                <p>Details are curated with discretion — refined, minimal, never excessive.</p>
+                <p>Ceremonies unfold in open-air spaces with uninterrupted views, where the light transitions naturally 
+                   into sunset and evening.</p>
+                <p>
+                  Each celebration is shaped by the setting, with a focus on atmosphere, space, and seamless flow.
+                </p>
               </div>
-
-              <ul className="bullets">
-                <li>Cliffside ceremony at golden hour</li>
-                <li>Chef-led private dinner</li>
-                <li>Minimal floral + table styling</li>
-                <li>Villa buyout options (upon request)</li>
-              </ul>
-
               <a className="textCta" href="/connect">
-                Enquire about weddings
+                Discover weddings
               </a>
             </div>
           </div>
