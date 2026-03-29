@@ -333,18 +333,7 @@ function VillasUlamanCarousel() {
         </svg>
       </button>
 
-      <div className="uVillasDots" aria-label="Villas carousel navigation">
-        {photos.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            className={`uVillasDot ${i === active ? 'is-active' : ''}`}
-            aria-label={`Show villa photo ${i + 1}`}
-            onClick={() => go(i)}
-          />
-        ))}
-      </div>
-    </div>
+          </div>
   )
 }
 

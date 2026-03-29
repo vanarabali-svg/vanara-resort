@@ -2531,7 +2531,8 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 }
 
 
-/* Updated carousel controls: arrows only */
+
+/* Arrows-only carousels */
 .uDiningDots,
 .uVillasDots,
 .uDiningHint{
@@ -2555,7 +2556,7 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   cursor: pointer;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: background .18s ease, transform .18s ease, border-color .18s ease, opacity .18s ease;
+  transition: background .18s ease, transform .18s ease, border-color .18s ease;
 }
 
 .carouselArrow:hover{
