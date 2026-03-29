@@ -158,23 +158,6 @@ function DiningUlamanCarousel4() {
     return () => window.clearInterval(id)
   }, [active, photos.length])
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    const t = e.touches[0]
-    touchRef.current = { x: t.clientX, y: t.clientY }
-  }
-
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const start = touchRef.current
-    touchRef.current = null
-    if (!start) return
-    const t = e.changedTouches[0]
-    const dx = t.clientX - start.x
-    const dy = t.clientY - start.y
-    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
-    if (dx < 0) go(active + 1)
-    else go(active - 1)
-  }
-
   return (
     <section className="uDining" aria-label="Dining">
       <div
@@ -220,19 +203,7 @@ function DiningUlamanCarousel4() {
           </svg>
         </button>
 
-        <div className="uDiningDots" aria-label="Dining carousel navigation">
-          {photos.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              className={`uDiningDot ${i === active ? 'is-active' : ''}`}
-              aria-label={`Show dining photo ${i + 1}`}
-              onClick={() => go(i)}
-            />
-          ))}
-        </div>
-
-        <div className="uDiningHint" aria-hidden="true">Swipe • Tap dots</div>
+        
       </div>
     </section>
   )
@@ -271,23 +242,6 @@ function VillasUlamanCarousel() {
     }, 5600)
     return () => window.clearInterval(id)
   }, [active, photos.length])
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    const t = e.touches[0]
-    touchRef.current = { x: t.clientX, y: t.clientY }
-  }
-
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const start = touchRef.current
-    touchRef.current = null
-    if (!start) return
-    const t = e.changedTouches[0]
-    const dx = t.clientX - start.x
-    const dy = t.clientY - start.y
-    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
-    if (dx < 0) go(active + 1)
-    else go(active - 1)
-  }
 
   return (
     <div
@@ -333,7 +287,8 @@ function VillasUlamanCarousel() {
         </svg>
       </button>
 
-          </div>
+      
+    </div>
   )
 }
 
