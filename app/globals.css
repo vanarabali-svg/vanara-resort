@@ -2590,3 +2590,33 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   .carouselArrow--prev{ left: 12px; }
   .carouselArrow--next{ right: 12px; }
 }
+
+
+/* Mobile + tablet carousel controls */
+@media (max-width: 1024px){
+  .uDiningDots,
+  .uVillasDots{
+    display: flex !important;
+  }
+
+  .uDiningHint{
+    display: block !important;
+  }
+
+  .carouselArrow{
+    display: none !important;
+  }
+}
+
+/* Desktop carousel controls */
+@media (min-width: 1025px){
+  .carouselArrow{
+    display: inline-flex !important;
+  }
+
+  .uDiningDots,
+  .uVillasDots,
+  .uDiningHint{
+    display: none !important;
+  }
+}
