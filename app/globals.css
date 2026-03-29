@@ -2531,82 +2531,44 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 }
 
 
-/* Responsive carousel controls */
-.uDiningDots,
-.uVillasDots{
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 14px;
-  display: none;
-  justify-content: center;
-  gap: 10px;
-  z-index: 8;
-}
 
-.uDiningDot,
-.uVillasDot{
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.72);
-  background: rgba(0,0,0,.28);
-  cursor: pointer;
-  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
-}
 
-.uDiningDot.is-active,
-.uVillasDot.is-active{
-  background: rgba(255,255,255,.92);
-  border-color: rgba(255,255,255,.92);
-  transform: scale(1.08);
-}
 
-.uDiningHint{
-  position: absolute;
-  right: 16px;
-  bottom: 14px;
-  z-index: 8;
-  font-size: 11px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.78);
-  display: none;
-}
-
-.carouselArrow{
+/* =========================
+   CAROUSEL CONTROLS
+========================= */
+.uDiningCarousel .carouselArrow,
+.uVillasCarousel .carouselArrow{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 9;
-  width: 48px;
-  height: 48px;
+  z-index: 20;
+  width: 50px;
+  height: 50px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.34);
-  background: rgba(15,15,14,.24);
-  color: rgba(255,255,255,.96);
+  border: 1px solid rgba(255,255,255,.42);
+  background: rgba(15,15,14,.30);
+  color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: background .18s ease, transform .18s ease, border-color .18s ease, opacity .18s ease;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
 }
 
-.carouselArrow:hover{
-  background: rgba(15,15,14,.38);
-  border-color: rgba(255,255,255,.46);
-}
+.uDiningCarousel .carouselArrow--prev,
+.uVillasCarousel .carouselArrow--prev{ left: 18px; }
 
-.carouselArrow:active{
-  transform: translateY(-50%) scale(.98);
-}
+.uDiningCarousel .carouselArrow--next,
+.uVillasCarousel .carouselArrow--next{ right: 18px; }
 
-.carouselArrow--prev{ left: 18px; }
-.carouselArrow--next{ right: 18px; }
-
-.carouselArrow svg{
+.uDiningCarousel .carouselArrow svg,
+.uVillasCarousel .carouselArrow svg{
   width: 18px;
   height: 18px;
   stroke: currentColor;
@@ -2616,8 +2578,53 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   stroke-linejoin: round;
 }
 
-/* mobile + tablet: swipe + dots, no arrows */
+.uDiningDots,
+.uVillasDots{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  z-index: 20;
+  display: none;
+  justify-content: center;
+  gap: 10px;
+}
+
+.uDiningDot,
+.uVillasDot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.75);
+  background: rgba(0,0,0,.24);
+  cursor: pointer;
+}
+
+.uDiningDot.is-active,
+.uVillasDot.is-active{
+  background: rgba(255,255,255,.95);
+  border-color: rgba(255,255,255,.95);
+  transform: scale(1.08);
+}
+
+.uDiningHint{
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  z-index: 20;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.80);
+  display: none;
+}
+
 @media (max-width: 1024px){
+  .uDiningCarousel .carouselArrow,
+  .uVillasCarousel .carouselArrow{
+    display: none !important;
+  }
+
   .uDiningDots,
   .uVillasDots{
     display: flex !important;
@@ -2626,15 +2633,11 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   .uDiningHint{
     display: block !important;
   }
-
-  .carouselArrow{
-    display: none !important;
-  }
 }
 
-/* desktop: arrows only */
 @media (min-width: 1025px){
-  .carouselArrow{
+  .uDiningCarousel .carouselArrow,
+  .uVillasCarousel .carouselArrow{
     display: inline-flex !important;
   }
 
