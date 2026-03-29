@@ -139,7 +139,7 @@ function DiningUlamanCarousel4() {
   const pausedRef = useRef(false)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
-  useScrollZoom(zoomRef as any, { min: 1.0, max: 1.04, start: 0.15, end: 0.85 })
+  useScrollZoom(zoomRef as any, { min: 1.0, max: 1.03, start: 0.15, end: 0.85 })
 
   const go = (i: number) => {
     const idx = (i + photos.length) % photos.length
@@ -171,7 +171,7 @@ function DiningUlamanCarousel4() {
     const t = e.changedTouches[0]
     const dx = t.clientX - start.x
     const dy = t.clientY - start.y
-    if (Math.abs(dx) < 36 || Math.abs(dx) < Math.abs(dy)) return
+    if (Math.abs(dx) < 34 || Math.abs(dx) < Math.abs(dy)) return
     if (dx < 0) go(active + 1)
     else go(active - 1)
   }
@@ -254,7 +254,7 @@ function VillasUlamanCarousel() {
   const pausedRef = useRef(false)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
-  useScrollZoom(zoomRef as any, { min: 1.0, max: 1.04, start: 0.15, end: 0.85 })
+  useScrollZoom(zoomRef as any, { min: 1.0, max: 1.03, start: 0.15, end: 0.85 })
 
   const go = (i: number) => {
     const idx = (i + photos.length) % photos.length
@@ -286,7 +286,7 @@ function VillasUlamanCarousel() {
     const t = e.changedTouches[0]
     const dx = t.clientX - start.x
     const dy = t.clientY - start.y
-    if (Math.abs(dx) < 36 || Math.abs(dx) < Math.abs(dy)) return
+    if (Math.abs(dx) < 34 || Math.abs(dx) < Math.abs(dy)) return
     if (dx < 0) go(active + 1)
     else go(active - 1)
   }
