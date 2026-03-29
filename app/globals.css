@@ -2594,6 +2594,7 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 
 /* =========================
    Ulaman-style carousel finish
+   Full-photo visibility
 ========================= */
 .uDiningCarousel,
 .uVillasCarousel{
@@ -2624,9 +2625,9 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   display: block;
   object-fit: cover;
   object-position: center;
-  filter: brightness(1.08) contrast(1.03) saturate(1.05);
-  transform: scale(var(--scrollZoom, 1));
-  will-change: transform;
+  filter: brightness(1.04) contrast(1.02) saturate(1.03);
+  transform: none !important;
+  will-change: auto;
 }
 
 .uDiningShade{
@@ -2634,8 +2635,8 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(120% 95% at 50% 18%, rgba(255,255,255,.10), rgba(255,255,255,0) 38%),
-    linear-gradient(to top, rgba(0,0,0,.30), rgba(0,0,0,.10) 46%, rgba(0,0,0,.02) 76%);
+    radial-gradient(120% 95% at 50% 18%, rgba(255,255,255,.08), rgba(255,255,255,0) 38%),
+    linear-gradient(to top, rgba(0,0,0,.22), rgba(0,0,0,.08) 46%, rgba(0,0,0,.02) 76%);
 }
 
 .uVillasShade{
@@ -2643,8 +2644,8 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(120% 95% at 50% 18%, rgba(255,255,255,.10), rgba(255,255,255,0) 38%),
-    linear-gradient(to top, rgba(0,0,0,.24), rgba(0,0,0,.08) 46%, rgba(0,0,0,.02) 76%);
+    radial-gradient(120% 95% at 50% 18%, rgba(255,255,255,.08), rgba(255,255,255,0) 38%),
+    linear-gradient(to top, rgba(0,0,0,.18), rgba(0,0,0,.06) 46%, rgba(0,0,0,.02) 76%);
 }
 
 /* dots like Ulaman */
@@ -2729,7 +2730,7 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   stroke-linejoin: round;
 }
 
-/* touch devices: full-width look, no side space */
+/* Touch devices: show full photo details */
 @media (hover: none), (pointer: coarse){
   .sectionVillasFeature .container,
   .sectionDiningFeature .container{
@@ -2763,7 +2764,7 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
     width: 100%;
     height: auto;
     min-height: 0;
-    aspect-ratio: 5 / 4;
+    aspect-ratio: 4 / 3;
     border-radius: 0 !important;
     box-shadow: none;
     border-left: 0;
@@ -2772,10 +2773,16 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 
   .uDiningImg,
   .uVillasImg{
-    object-fit: cover !important;
-    object-position: center 38% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
     transform: none !important;
-    filter: brightness(1.08) contrast(1.03) saturate(1.04);
+    background: #ddd3c6;
+    filter: brightness(1.03) contrast(1.01) saturate(1.02);
+  }
+
+  .uDiningShade,
+  .uVillasShade{
+    background: linear-gradient(to top, rgba(0,0,0,.08), rgba(0,0,0,.02) 50%, rgba(0,0,0,0) 76%);
   }
 }
 
@@ -2783,11 +2790,6 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   .uDiningCarousel,
   .uVillasCarousel{
     aspect-ratio: 4 / 5;
-  }
-
-  .uDiningImg,
-  .uVillasImg{
-    object-position: center 34% !important;
   }
 
   .uDiningDots,
@@ -2814,11 +2816,6 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
     aspect-ratio: 1 / 1.02;
   }
 
-  .uDiningImg,
-  .uVillasImg{
-    object-position: center 31% !important;
-  }
-
   .uDiningDots,
   .uVillasDots{
     bottom: 12px;
@@ -2837,7 +2834,7 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   }
 }
 
-/* desktop/laptop */
+/* Desktop/laptop */
 @media (hover: hover) and (pointer: fine){
   .uDiningCarousel .carouselArrow,
   .uVillasCarousel .carouselArrow{
