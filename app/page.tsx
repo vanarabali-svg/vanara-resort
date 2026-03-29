@@ -139,7 +139,7 @@ function DiningUlamanCarousel4() {
   const pausedRef = useRef(false)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
-  useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
+  useScrollZoom(zoomRef as any, { min: 1.0, max: 1.04, start: 0.15, end: 0.85 })
 
   const go = (i: number) => {
     const idx = (i + photos.length) % photos.length
@@ -234,8 +234,6 @@ function DiningUlamanCarousel4() {
             />
           ))}
         </div>
-
-        <div className="uDiningHint" aria-hidden="true">Swipe • Tap dots</div>
       </div>
     </section>
   )
@@ -256,7 +254,7 @@ function VillasUlamanCarousel() {
   const pausedRef = useRef(false)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
-  useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
+  useScrollZoom(zoomRef as any, { min: 1.0, max: 1.04, start: 0.15, end: 0.85 })
 
   const go = (i: number) => {
     const idx = (i + photos.length) % photos.length

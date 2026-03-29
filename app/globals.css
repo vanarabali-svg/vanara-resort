@@ -2533,27 +2533,119 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 
 
 /* =========================
-   CAROUSEL CONTROLS
-   Desktop/laptop: arrows
-   Touch devices: dots + swipe
+   Ulaman-style carousel finish
 ========================= */
+.uDiningCarousel,
+.uVillasCarousel{
+  position: relative;
+  overflow: hidden;
+  background: #ddd3c6;
+}
+
+.uDiningSlide,
+.uVillasSlide{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+.uDiningSlide.is-active,
+.uVillasSlide.is-active,
+.uDiningSlide.is-prev,
+.uVillasSlide.is-prev{
+  opacity: 1;
+}
+
+.uDiningImg,
+.uVillasImg{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(1.08) contrast(1.03) saturate(1.05);
+  transform: scale(var(--scrollZoom, 1));
+  will-change: transform;
+}
+
+.uDiningShade{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 95% at 50% 18%, rgba(255,255,255,.10), rgba(255,255,255,0) 38%),
+    linear-gradient(to top, rgba(0,0,0,.30), rgba(0,0,0,.10) 46%, rgba(0,0,0,.02) 76%);
+}
+
+.uVillasShade{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 95% at 50% 18%, rgba(255,255,255,.10), rgba(255,255,255,0) 38%),
+    linear-gradient(to top, rgba(0,0,0,.24), rgba(0,0,0,.08) 46%, rgba(0,0,0,.02) 76%);
+}
+
+/* Luxury dots like Ulaman */
+.uDiningDots,
+.uVillasDots{
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(15,15,14,.16);
+  border: 1px solid rgba(255,255,255,.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.14);
+}
+
+.uDiningDot,
+.uVillasDot{
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,.38);
+  cursor: pointer;
+  opacity: .9;
+  transition: width .22s ease, background .22s ease, opacity .22s ease, transform .22s ease;
+}
+
+.uDiningDot.is-active,
+.uVillasDot.is-active{
+  width: 24px;
+  background: rgba(255,255,255,.96);
+  opacity: 1;
+}
+
+/* Arrows desktop */
 .uDiningCarousel .carouselArrow,
 .uVillasCarousel .carouselArrow{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 25;
+  z-index: 30;
   width: 54px;
   height: 54px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.42);
-  background: rgba(15,15,14,.30);
-  color: #fff;
   display: none;
   align-items: center;
   justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.40);
+  background: rgba(15,15,14,.28);
+  color: #fff;
   cursor: pointer;
-  box-shadow: 0 10px 28px rgba(0,0,0,.20);
+  box-shadow: 0 12px 30px rgba(0,0,0,.18);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -2575,67 +2667,11 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   stroke-linejoin: round;
 }
 
-.uDiningDots,
-.uVillasDots{
-  position: absolute;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
-  z-index: 25;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(15,15,14,.18);
-  border: 1px solid rgba(255,255,255,.18);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 10px 24px rgba(0,0,0,.14);
-}
-
-.uDiningDot,
-.uVillasDot{
-  width: 9px;
-  height: 9px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: rgba(255,255,255,.38);
-  cursor: pointer;
-  transition: width .22s ease, transform .22s ease, background .22s ease, opacity .22s ease;
-  opacity: .88;
-}
-
-.uDiningDot.is-active,
-.uVillasDot.is-active{
-  width: 26px;
-  background: rgba(255,255,255,.96);
-  opacity: 1;
-}
-
-.uDiningHint{
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  z-index: 25;
-  font-size: 10px;
-  letter-spacing: .24em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.82);
-  display: none;
-}
-
-/* Touch devices */
+/* Touch devices: swipe + dots + balanced crop, no empty space */
 @media (hover: none), (pointer: coarse){
   .uDiningDots,
   .uVillasDots{
     display: inline-flex !important;
-  }
-
-  .uDiningHint{
-    display: block !important;
   }
 
   .uDiningCarousel .carouselArrow,
@@ -2649,19 +2685,13 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
     min-height: 0;
     aspect-ratio: 5 / 4;
     border-radius: 24px;
-    overflow: hidden;
   }
 
   .uDiningImg,
   .uVillasImg{
     object-fit: cover !important;
-    object-position: center 35% !important;
+    object-position: center 36% !important;
     transform: none !important;
-  }
-
-  .uDiningShade,
-  .uVillasShade{
-    background: linear-gradient(to bottom, rgba(0,0,0,.03), rgba(0,0,0,.08) 55%, rgba(0,0,0,.16));
   }
 }
 
@@ -2674,7 +2704,7 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 
   .uDiningImg,
   .uVillasImg{
-    object-position: center 32% !important;
+    object-position: center 33% !important;
   }
 
   .uDiningDots,
@@ -2686,17 +2716,13 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 
   .uDiningDot,
   .uVillasDot{
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
   }
 
   .uDiningDot.is-active,
   .uVillasDot.is-active{
-    width: 22px;
-  }
-
-  .uDiningHint{
-    display: none !important;
+    width: 20px;
   }
 }
 
@@ -2721,8 +2747,7 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   }
 
   .uDiningDots,
-  .uVillasDots,
-  .uDiningHint{
+  .uVillasDots{
     display: none !important;
   }
 }
