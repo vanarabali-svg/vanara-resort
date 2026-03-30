@@ -3262,3 +3262,25 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   }
 }
 
+
+
+
+/* ===== Titles + spacing improvement ===== */
+
+/* space after Kokoon carousel */
+.uDining{
+  margin-top: 28px;
+}
+
+/* general section titles bigger */
+.sectionTitle,
+h2{
+  font-size: clamp(28px, 3.2vw, 40px) !important;
+  letter-spacing: 0.02em;
+}
+
+/* optional refinement for villas/dining headers */
+.sectionKicker{
+  font-size: 13px;
+  letter-spacing: 0.18em;
+}
