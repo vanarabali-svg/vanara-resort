@@ -3256,3 +3256,122 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   }
 }
 
+
+
+
+/* =========================
+   Dining + Villas mobile final: edge-to-edge, bigger, no zoom, dots visible
+========================= */
+@media (hover: none), (pointer: coarse){
+  .sectionVillasFeature .container,
+  .sectionDiningFeature .container{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .sectionVillasFeature .split,
+  .sectionDiningFeature .split{
+    gap: 18px !important;
+  }
+
+  .sectionVillasFeature .split > :first-child,
+  .sectionDiningFeature .split > :first-child{
+    width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+  }
+
+  .uVillasCarousel,
+  .uDiningCarousel{
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 0.80 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .uVillasSlide,
+  .uVillasImg,
+  .uDiningSlide,
+  .uDiningImg{
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .uVillasSlide.is-active,
+  .uDiningSlide.is-active{
+    animation: none !important;
+  }
+
+  .uVillasImg,
+  .uDiningImg{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    filter: brightness(1.04) contrast(1.03) saturate(1.04) !important;
+  }
+
+  .uVillasImg{ object-position: center 30% !important; }
+  .uDiningImg{ object-position: center 34% !important; }
+
+  .uVillasShade,
+  .uDiningShade{
+    background:
+      radial-gradient(120% 95% at 50% 18%, rgba(255,255,255,.05), rgba(255,255,255,0) 38%),
+      linear-gradient(to top, rgba(0,0,0,.12), rgba(0,0,0,.03) 46%, rgba(0,0,0,.01) 76%) !important;
+  }
+
+  .uVillasDots,
+  .uDiningDots{
+    position: absolute !important;
+    left: 50% !important;
+    bottom: 12px !important;
+    transform: translateX(-50%) !important;
+    z-index: 40 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+  }
+
+  .uVillasDot,
+  .uDiningDot{
+    width: 18px !important;
+    height: 18px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: transparent !important;
+    position: relative !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .uVillasDot::after,
+  .uDiningDot::after{
+    content: "" !important;
+    position: absolute !important;
+    inset: 6px !important;
+    border-radius: 999px !important;
+    background: rgba(255,255,255,.46) !important;
+    transition: background .22s ease, transform .22s ease !important;
+  }
+
+  .uVillasDot.is-active::after,
+  .uDiningDot.is-active::after{
+    background: rgba(255,255,255,.95) !important;
+    transform: scale(1.08) !important;
+  }
+
+  .uVillasCarousel .carouselArrow,
+  .uDiningCarousel .carouselArrow{
+    display: none !important;
+  }
+}
+
