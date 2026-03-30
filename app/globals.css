@@ -3153,3 +3153,28 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   .reserveWidgetActions{ flex-direction: column; align-items: stretch; }
   .reserveSubmit{ width: 100%; }
 }
+
+
+/* FINAL phone villas fix - no zoom, full width, clean */
+@media (hover: none) and (pointer: coarse){
+  .uVillasCarousel{
+    width:100vw !important;
+    margin-left:calc(50% - 50vw) !important;
+    margin-right:calc(50% - 50vw) !important;
+    aspect-ratio:1/0.8 !important;
+  }
+
+  .uVillasSlide,
+  .uVillasImg{
+    transform:none !important;
+  }
+
+  .uVillasImg{
+    object-fit:cover !important;
+    object-position:center center !important;
+  }
+
+  .uVillasSlide.is-active{
+    animation:none !important;
+  }
+}
