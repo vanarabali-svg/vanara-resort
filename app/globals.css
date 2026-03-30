@@ -2533,8 +2533,14 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 
 
 /* Arrows-only carousels */
-.uDiningDots,
-.uVillasDots,
+.uDiningDots{
+  display: flex !important;
+}
+
+.uVillasDots{
+  display: none !important;
+}
+
 .uDiningHint{
   display: none !important;
 }
