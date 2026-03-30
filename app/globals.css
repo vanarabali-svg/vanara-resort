@@ -3332,3 +3332,60 @@ h2{
   margin-right: calc(50% - 50vw) !important;
 }
 
+
+
+/* ===== Kokoon desktop alignment fix ===== */
+
+/* center content vertically */
+.sectionDiningFeature .split{
+  align-items: center !important;
+}
+
+/* better text block width + centering */
+.sectionDiningFeature .split > :last-child{
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ensure proper spacing from image */
+.sectionDiningFeature .split > :last-child{
+  padding-left: 40px;
+}
+
+
+/* ===== Kokoon align like Villas ===== */
+
+/* align to top like villas */
+.sectionDiningFeature .split{
+  align-items: flex-start !important;
+}
+
+/* remove centered text behavior */
+.sectionDiningFeature .split > :last-child{
+  max-width: 520px;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 32px; /* same spacing as villas */
+}
+
+/* ensure same vertical rhythm */
+.sectionDiningFeature .sectionTitle{
+  margin-top: 0;
+}
+
+
+/* ===== EXACT match Villas layout ===== */
+
+/* make both sections identical grid behavior */
+.sectionDiningFeature .split > :last-child,
+.sectionVillasFeature .split > :last-child{
+  max-width: none !important;
+  margin: 0 !important;
+  padding-left: 48px !important;
+}
+
+/* ensure same alignment baseline */
+.sectionDiningFeature .split{
+  align-items: flex-start !important;
+}
