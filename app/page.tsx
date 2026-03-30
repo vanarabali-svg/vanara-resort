@@ -12,7 +12,6 @@ function useScrollZoom(
 
     const min = opts?.min ?? 1.0
     const max = opts?.max ?? 1.06
-    // start/end are viewport progress positions (0..1). 0.15 means start zoom when element enters a bit.
     const start = opts?.start ?? 0.15
     const end = opts?.end ?? 0.85
 
@@ -24,13 +23,8 @@ function useScrollZoom(
       raf = null
       const rect = el.getBoundingClientRect()
       const vh = window.innerHeight || 1
-
-      // progress: 0 when top is below viewport, 1 when bottom is above viewport
       const raw = 1 - rect.top / vh
-      // normalize within [start,end]
       const t = clamp((raw - start) / (end - start), 0, 1)
-
-      // Six Senses-like: very subtle ease-out
       const eased = 1 - Math.pow(1 - t, 3)
       const scale = max - (max - min) * eased
       el.style.setProperty('--scrollZoom', String(scale))
@@ -53,11 +47,82 @@ function useScrollZoom(
   }, [ref, opts?.min, opts?.max, opts?.start, opts?.end])
 }
 
-/**
- * Dining gallery — Jumeirah-inspired: large immersive frames,
- * horizontal scroll with snap, and optional mouse drag (desktop).
- * Mobile uses native swipe.
- */
+function startOfDay(date: Date) {
+  const d = new Date(date)
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+function startOfMonth(date: Date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1)
+}
+
+function addMonths(date: Date, amount: number) {
+  return new Date(date.getFullYear(), date.getMonth() + amount, 1)
+}
+
+function addDays(date: Date, amount: number) {
+  const d = new Date(date)
+  d.setDate(d.getDate() + amount)
+  return d
+}
+
+function formatDateInput(date: Date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+function parseDateInput(value: string) {
+  const [y, m, d] = value.split('-').map(Number)
+  return new Date(y, (m || 1) - 1, d || 1)
+}
+
+function isSameDay(a: Date, b: Date) {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  )
+}
+
+function nightsBetween(start: string, end: string) {
+  if (!start || !end) return 0
+  const a = startOfDay(parseDateInput(start)).getTime()
+  const b = startOfDay(parseDateInput(end)).getTime()
+  return Math.max(0, Math.round((b - a) / 86400000))
+}
+
+function buildMonthGrid(month: Date) {
+  const first = startOfMonth(month)
+  const monthIndex = first.getMonth()
+  const mondayOffset = (first.getDay() + 6) % 7
+  const gridStart = addDays(first, -mondayOffset)
+
+  return Array.from({ length: 42 }, (_, i) => {
+    const date = addDays(gridStart, i)
+    return {
+      date,
+      inMonth: date.getMonth() === monthIndex,
+    }
+  })
+}
+
+function clampCount(value: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, value))
+}
+
+function formatDisplayDate(value: string) {
+  if (!value) return 'Add date'
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+  }).format(parseDateInput(value))
+}
+
+
+
 function DiningUlamanCarousel4() {
   const photos = useMemo(
     () => [
@@ -72,15 +137,18 @@ function DiningUlamanCarousel4() {
   const [active, setActive] = useState(0)
   const [prev, setPrev] = useState<number | null>(null)
   const pausedRef = useRef(false)
-  const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
-const go = (i: number) => {
+
+  const go = (i: number) => {
     const idx = (i + photos.length) % photos.length
     setPrev(active)
     setActive(idx)
     window.setTimeout(() => setPrev(null), 650)
   }
+
+  const prevSlide = () => go(active - 1)
+  const nextSlide = () => go(active + 1)
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -88,42 +156,15 @@ const go = (i: number) => {
       go(active + 1)
     }, 5200)
     return () => window.clearInterval(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, photos.length])
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    const t = e.touches[0]
-    touchRef.current = { x: t.clientX, y: t.clientY }
-  }
-
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const start = touchRef.current
-    touchRef.current = null
-    if (!start) return
-    const t = e.changedTouches[0]
-    const dx = t.clientX - start.x
-    const dy = t.clientY - start.y
-    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
-    if (dx < 0) go(active + 1)
-    else go(active - 1)
-  }
 
   return (
     <section className="uDining" aria-label="Dining">
-      <div className="uDiningIntro">
-        <div className="uDiningEyebrow">DINING</div>
-        <h3 className="uDiningTitle">A refined coastal table</h3>
-        <p className="uDiningText">
-          Seasonal ingredients, open views, and understated service — an experience shaped by light and ocean air.
-        </p>
-      </div>
-
       <div
-        className="uDiningCarousel" ref={zoomRef}
+        className="uDiningCarousel"
+        ref={zoomRef}
         onMouseEnter={() => (pausedRef.current = true)}
         onMouseLeave={() => (pausedRef.current = false)}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
         aria-label="Dining carousel"
       >
         <div className="uDiningStage" aria-hidden="true">
@@ -140,24 +181,33 @@ const go = (i: number) => {
 
         <div className="uDiningShade" aria-hidden="true" />
 
-        <div className="uDiningDots" aria-label="Dining carousel navigation">
-          {photos.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              className={`uDiningDot ${i === active ? 'is-active' : ''}`}
-              aria-label={`Show dining photo ${i + 1}`}
-              onClick={() => go(i)}
-            />
-          ))}
-        </div>
+        <button
+          type="button"
+          className="carouselArrow carouselArrow--prev"
+          aria-label="Previous dining photo"
+          onClick={prevSlide}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
 
-        <div className="uDiningHint" aria-hidden="true">Swipe • Tap dots</div>
+        <button
+          type="button"
+          className="carouselArrow carouselArrow--next"
+          aria-label="Next dining photo"
+          onClick={nextSlide}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+
+        
       </div>
     </section>
   )
 }
-
 
 function VillasUlamanCarousel() {
   const photos = useMemo(
@@ -172,10 +222,9 @@ function VillasUlamanCarousel() {
   const [active, setActive] = useState(0)
   const [prev, setPrev] = useState<number | null>(null)
   const pausedRef = useRef(false)
-  const touchRef = useRef<{ x: number; y: number } | null>(null)
-
   const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
+
   const go = (i: number) => {
     const idx = (i + photos.length) % photos.length
     setPrev(active)
@@ -183,39 +232,23 @@ function VillasUlamanCarousel() {
     window.setTimeout(() => setPrev(null), 650)
   }
 
+  const prevSlide = () => go(active - 1)
+  const nextSlide = () => go(active + 1)
+
   useEffect(() => {
     const id = window.setInterval(() => {
       if (pausedRef.current) return
       go(active + 1)
     }, 5600)
     return () => window.clearInterval(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, photos.length])
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    const t = e.touches[0]
-    touchRef.current = { x: t.clientX, y: t.clientY }
-  }
-
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const start = touchRef.current
-    touchRef.current = null
-    if (!start) return
-    const t = e.changedTouches[0]
-    const dx = t.clientX - start.x
-    const dy = t.clientY - start.y
-    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
-    if (dx < 0) go(active + 1)
-    else go(active - 1)
-  }
 
   return (
     <div
-      className="uVillasCarousel" ref={zoomRef}
+      className="uVillasCarousel"
+      ref={zoomRef}
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
       aria-label="Villas carousel"
     >
       <div className="uVillasStage" aria-hidden="true">
@@ -232,29 +265,38 @@ function VillasUlamanCarousel() {
 
       <div className="uVillasShade" aria-hidden="true" />
 
-      <div className="uVillasDots" aria-label="Villas carousel navigation">
-        {photos.map((_, i) => (
-          <button
-            key={i}
-            type="button"
-            className={`uVillasDot ${i === active ? 'is-active' : ''}`}
-            aria-label={`Show villa photo ${i + 1}`}
-            onClick={() => go(i)}
-          />
-        ))}
-      </div>
+      <button
+        type="button"
+        className="carouselArrow carouselArrow--prev"
+        aria-label="Previous villa photo"
+        onClick={prevSlide}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        className="carouselArrow carouselArrow--next"
+        aria-label="Next villa photo"
+        onClick={nextSlide}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" />
+        </svg>
+      </button>
+
+      
     </div>
   )
 }
-
 
 export default function HomePage() {
   const [heroVideoOk, setHeroVideoOk] = useState(true)
   const [needsTap, setNeedsTap] = useState(false)
   const heroVideoRef = useRef<HTMLVideoElement | null>(null)
 
-  // Try to start playback (some phones pause background videos in low power / data saver).
-  // We also attempt to auto-resume when Safari/Android pauses it.
   useEffect(() => {
     const v = heroVideoRef.current
     if (!v) return
@@ -268,7 +310,6 @@ export default function HomePage() {
     const tryPlay = async () => {
       clearResumeTimer()
       try {
-        // iOS needs muted for autoplay
         v.muted = true
         await v.play()
         setNeedsTap(false)
@@ -289,7 +330,6 @@ export default function HomePage() {
       if (!document.hidden) tryPlay()
     }
 
-    // First attempt after mount
     const id = window.setTimeout(tryPlay, 60)
 
     document.addEventListener('visibilitychange', onVisibility)
@@ -311,7 +351,6 @@ export default function HomePage() {
 
   return (
     <div className="home">
-      
       <section className="hero hero--video" aria-label="Hero">
         <div className="heroVideo" aria-label="Vanara hero media">
           {heroVideoOk ? (
@@ -326,7 +365,7 @@ export default function HomePage() {
               preload="auto"
               controls={false}
               disablePictureInPicture
-              // @ts-ignore - supported by most browsers
+              // @ts-ignore
               controlsList="nodownload noplaybackrate noremoteplayback"
               poster="/hero-poster.jpg"
               onError={() => {
@@ -367,100 +406,79 @@ export default function HomePage() {
           <div className="heroKicker">ULUWATU · BALI</div>
           <h1 className="heroTitle">VANARA RESORT &amp; SPA</h1>
         </div>
+
       </section>
 
-
+      
       <section className="section sectionIntro">
         <div className="container">
           <div className="eyebrow">THE RESORT</div>
-          <h2 className="h2">A sanctuary of quiet strength</h2>
+          <h2 className="h2">A refined escape above the ocean</h2>
 
-          <div className="copy">
+                    <div className="copy" style={{ marginTop: 22 }}>
             <p>
-              Perched above the Indian Ocean, Vanara is shaped by wind, stone, and warm light — a retreat where
-              architecture dissolves into landscape.
+              Vanara Resort & Spa is a cliffside destination in Uluwatu, where modern villas, open space, and uninterrupted views of the Indian Ocean come together in a natural balance.
             </p>
-            <p>Luxury is quiet here: spaciousness, discreet service, and views framed with restraint.</p>
+            <p>
+              Set above Nunggalan Beach, a rare stretch of untouched coastline, the resort is shaped by its surroundings, where land, sky, and ocean meet effortlessly.
+            </p>
+            <p>
+              The atmosphere is private and unhurried, defined by architecture, light, and a strong connection to the landscape.
+            </p>
           </div>
 
           <div className="rule" />
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          <div className="eyebrow">PHILOSOPHY</div>
-          <h3 className="h3">Designed for stillness</h3>
-          <div className="copy">
-            <p>
-              Vanara is built around a simple idea: the ocean is the main event. Interiors remain quiet so nature can
-              speak — warm neutrals, natural textures, and soft edges that invite you to slow down.
-            </p>
-            <p>Days are intentionally unhurried — a swim, a ritual, a calm table, then silence.</p>
-          </div>
-          <div className="rule" />
-        </div>
-      </section>
-      <section className="section sectionVillasFeature">
+   <section className="section sectionVillasFeature">
         <div className="container">
           <div className="split split--rev">
             <VillasUlamanCarousel />
 
             <div>
               <div className="eyebrow">VILLAS</div>
-              <h3 className="h3">Private, ocean-facing living</h3>
+              <h3 className="h3">Private spaces shaped by design and landscape</h3>
 
               <div className="copy">
                 <p>
-                  Spacious villas shaped by warm stone, soft linen, and calm shadows — designed to disappear into the view.
+                  Positioned across the cliffs and within carefully designed gardens, the villas offer privacy and
+              flexibility, where indoor and outdoor living come together effortlessly.
                 </p>
                 <p>
-                  Mornings arrive quietly, afternoons slow down, evenings soften. Everything is discreet, effortless, unhurried.
+                 Some villas open toward the ocean, others are immersed in lush greenery, while select villas feature
+               private pools or elevated rooftop views.
                 </p>
               </div>
-
-              <ul className="bullets">
-                <li>Ocean views &amp; private terraces</li>
-                <li>Minimal interiors, natural textures</li>
-                <li>In‑villa dining and curated rituals (upon request)</li>
-              </ul>
 
               <a className="textCta" href="/accommodation">
                 Explore villas
               </a>
-
-              <div className="smallprint" style={{ marginTop: 12 }}>
-                Replace <code>/villas.jpg</code> with your preferred villa photo.
-              </div>
             </div>
           </div>
         </div>
       </section>
-<section className="section sectionDiningFeature">
+
+      <section className="section sectionDiningFeature">
         <div className="container">
           <div className="split split--rev">
             <DiningUlamanCarousel4 />
 
             <div>
-              <div className="eyebrow">DINING</div>
-              <h3 className="h3">A calm table by the ocean</h3>
+              <div className="eyebrow">KOKOON</div>
+              <h3 className="h3">Cliffside dining shaped by light, flavour, and the ocean</h3>
 
               <div className="copy">
                 <p>
-                  Thoughtful cuisine, served with unhurried attention. From sunrise breakfasts to candlelit dinners,
-                  Vanara’s dining is guided by season, ocean air, and a minimalist sense of place.
+                  Kokoon brings together modern cuisine with a refined atmosphere, where French and Japanese
+                  techniques meet Mediterranean influences, complemented by locally sourced Indonesian ingredients.
                 </p>
-                <p>Clean flavors, warm fire cooking, and a quiet rhythm — never performative.</p>
+                <p>From daytime dining to sunset and evening, the setting evolves naturally, defined by flavour, setting,
+                   and atmosphere.</p>
               </div>
 
-              <ul className="bullets">
-                <li>Cliffside breakfasts &amp; slow morning coffee</li>
-                <li>Fresh seafood, local harvests, and clean grilling</li>
-                <li>Private dining in-villa (upon request)</li>
-              </ul>
-
               <a className="textCta" href="/dine">
-                Explore dining
+                Explore Kokoon
               </a>
             </div>
           </div>
@@ -471,32 +489,106 @@ export default function HomePage() {
         <div className="container">
           <div className="split split--rev">
             <div className="imagePlaceholder" aria-label="Experience image">
-              <img className="experienceImg" src="/yoga.jpg" alt="Yoga at Vanara" />
+              <img className="experienceImg" src="/experiences-main.jpg" alt="Experiences at Vanara" />
             </div>
 
             <div>
-              <div className="eyebrow">YOGA</div>
-              <h3 className="h3">Move slowly. Breathe deeper.</h3>
+              <div className="eyebrow">EXPERIENCES</div>
+              <h3 className="h3">Moments shaped by the island</h3>
               <div className="copy">
                 <p>
-                  Begin with ocean air and soft light. Our yoga and breathwork sessions are designed to quiet the nervous
-                  system — gentle flow, grounded strength, and long exhale.
+                  At Vanara, each day moves between moments of ease and exploration, shaped by the setting and the surrounding landscape.
                 </p>
-                <p>Choose sunrise on the terrace, deep rest after the spa, or a short meditation before dinner.</p>
+                <p>
+                  From the shoreline of Nunggalan Beach to the cultural and coastal experiences of Uluwatu, each activity unfolds naturally, connected to place and atmosphere.
+                </p>
               </div>
 
-              <ul className="bullets">
-                <li>Sunrise &amp; sunset yoga (all levels)</li>
-                <li>Breathwork &amp; guided meditation</li>
-                <li>Sound healing and deep rest</li>
-                <li>Private sessions in-villa (upon request)</li>
-              </ul>
+            </div>
+          </div>
 
+          <div className="experiencesGrid">
+            <article className="experienceCard">
+              <div className="experienceCardMedia">
+                <img src="/experience-yoga.jpg" alt="Yoga at Vanara" />
+              </div>
+              <div className="experienceCardBody">
+                <div className="experienceCardIndex">01</div>
+                <h4 className="experienceCardTitle">Yoga</h4>
+                <p className="experienceCardText">
+                  Morning sessions shaped by light, movement, and open space.
+                </p>
+              </div>
+            </article>
+
+            <article className="experienceCard">
+              <div className="experienceCardMedia">
+                <img src="/experience-honeymoon.jpg" alt="Honeymoon and romantic experiences at Vanara" />
+              </div>
+              <div className="experienceCardBody">
+                <div className="experienceCardIndex">02</div>
+                <h4 className="experienceCardTitle">Honeymoon &amp; Romantic Experiences</h4>
+                <p className="experienceCardText">
+                  Moments crafted for couples, from private sunsets to intimate celebrations above the ocean.
+                </p>
+              </div>
+            </article>
+
+            <article className="experienceCard">
+              <div className="experienceCardMedia">
+                <img src="/experience-nunggalan.jpg" alt="Nunggalan Beach" />
+              </div>
+              <div className="experienceCardBody">
+                <div className="experienceCardIndex">03</div>
+                <h4 className="experienceCardTitle">Nunggalan Beach</h4>
+                <p className="experienceCardText">
+                  A rare stretch of untouched coastline, just moments below the cliffs.
+                </p>
+              </div>
+            </article>
+
+            <article className="experienceCard">
+              <div className="experienceCardMedia">
+                <img src="/experience-surfing.jpg" alt="Surfing in Uluwatu" />
+              </div>
+              <div className="experienceCardBody">
+                <div className="experienceCardIndex">04</div>
+                <h4 className="experienceCardTitle">Surfing</h4>
+                <p className="experienceCardText">
+                  World-class waves across Uluwatu’s most iconic breaks.
+                </p>
+              </div>
+            </article>
+
+            <article className="experienceCard">
+              <div className="experienceCardMedia">
+                <img src="/experience-paragliding.jpg" alt="Paragliding above the cliffs" />
+              </div>
+              <div className="experienceCardBody">
+                <div className="experienceCardIndex">05</div>
+                <h4 className="experienceCardTitle">Paragliding</h4>
+                <p className="experienceCardText">
+                  Aerial views of the coastline, experienced from above the cliffs.
+                </p>
+              </div>
+            </article>
+
+            <article className="experienceCard">
+              <div className="experienceCardMedia">
+                <img src="/experience-kecak.jpg" alt="Kecak Dance in Uluwatu" />
+              </div>
+              <div className="experienceCardBody">
+                <div className="experienceCardIndex">06</div>
+                <h4 className="experienceCardTitle">Kecak Dance</h4>
+                <p className="experienceCardText">
+                  A traditional performance set against the backdrop of sunset and fire.
+                </p>
+              </div>
+            </article>
+          </div>
               <a className="textCta" href="/experience">
                 Explore experiences
               </a>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -509,25 +601,20 @@ export default function HomePage() {
 
             <div>
               <div className="eyebrow">WEDDINGS</div>
-              <h3 className="h3">Celebrations, quietly elevated</h3>
+              <h3 className="h3">Celebrate above the ocean</h3>
 
               <div className="copy">
                 <p>
-                  Vanara is an intimate setting for weddings and private celebrations — a ceremony above the ocean,
-                  followed by candlelit dining in a calm, private atmosphere.
+                  Set along the cliffs above the Indian Ocean, Vanara offers a distinctive setting for weddings and private celebrations.
                 </p>
-                <p>Details are curated with discretion — refined, minimal, never excessive.</p>
+                <p>Ceremonies unfold in open-air spaces with uninterrupted views, where the light transitions naturally 
+                   into sunset and evening.</p>
+                <p>
+                  Each celebration is shaped by the setting, with a focus on atmosphere, space, and seamless flow.
+                </p>
               </div>
-
-              <ul className="bullets">
-                <li>Cliffside ceremony at golden hour</li>
-                <li>Chef-led private dinner</li>
-                <li>Minimal floral + table styling</li>
-                <li>Villa buyout options (upon request)</li>
-              </ul>
-
               <a className="textCta" href="/connect">
-                Enquire about weddings
+                Discover weddings
               </a>
             </div>
           </div>
