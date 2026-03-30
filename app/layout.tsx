@@ -215,12 +215,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [childrenCount, setChildrenCount] = useState(0)
   const [calendarMonth, setCalendarMonth] = useState(startOfMonth(today))
   const [calendarField, setCalendarField] = useState<'checkIn' | 'checkOut'>('checkIn')
-  const [calendarOpen, setCalendarOpen] = useState(true)
+  const [calendarOpen, setCalendarOpen] = useState(false)
 
   const openBooking = () => {
     setBookingOpen(true)
     setCalendarField('checkIn')
-    setCalendarOpen(true)
+    setCalendarOpen(false)
     setCalendarMonth(startOfMonth(checkIn ? parseInputDate(checkIn) : today))
   }
 
