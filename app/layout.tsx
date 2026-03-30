@@ -3,12 +3,86 @@
 import './globals.css'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const formatInputDate = (d: Date) => {
+    const y = d.getFullYear()
+    const m = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    return `${y}-${m}-${day}`
+  }
+
+  const addDays = (d: Date, days: number) => {
+    const next = new Date(d)
+    next.setDate(next.getDate() + days)
+    return next
+  }
+
+  const today = new Date()
+  const defaultCheckIn = formatInputDate(today)
+  const defaultCheckOut = formatInputDate(addDays(today, 1))
+
   const [menuOpen, setMenuOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [bookingOpen, setBookingOpen] = useState(false)
+  const [checkIn, setCheckIn] = useState(defaultCheckIn)
+  const [checkOut, setCheckOut] = useState(defaultCheckOut)
+  const [rooms, setRooms] = useState(1)
+  const [adults, setAdults] = useState(2)
+  const [childGuests, setChildGuests] = useState(0)
   const [lang, setLang] = useState<'EN' | 'ID' | 'RU'>('EN')
+  const checkInInputRef = useRef<HTMLInputElement | null>(null)
+  const checkOutInputRef = useRef<HTMLInputElement | null>(null)
+
+  const openBooking = () => setBookingOpen(true)
+  const closeBooking = () => setBookingOpen(false)
+
+  const adjustCount = (
+    setter: React.Dispatch<React.SetStateAction<number>>,
+    current: number,
+    min: number,
+    max: number,
+    delta: number
+  ) => {
+    setter(Math.max(min, Math.min(max, current + delta)))
+  }
+
+  const buildBookingUrl = () => {
+    const params = new URLSearchParams()
+    params.set('arrival', checkIn)
+    params.set('departure', checkOut)
+    params.set('checkInDate', checkIn)
+    params.set('checkOutDate', checkOut)
+    params.set('rooms', String(rooms))
+    params.set('adults', String(adults))
+    params.set('children', String(childGuests))
+    params.set('items[0][adults]', String(adults))
+    params.set('items[0][children]', String(childGuests))
+    params.set('items[0][infants]', '0')
+    params.set('items[0][rooms]', '1')
+    params.set('currency', 'IDR')
+    params.set('locale', 'en')
+    return `https://book-directonline.com/properties/vanararesortspa?${params.toString()}`
+  }
+
+  const handleBookingSubmit = () => {
+    if (!checkIn || !checkOut) return
+    window.location.href = buildBookingUrl()
+  }
+
+  const openDatePicker = (input: HTMLInputElement | null) => {
+    if (!input) return
+    input.focus({ preventScroll: true })
+    try {
+      if (typeof input.showPicker === 'function') {
+        input.showPicker()
+        return
+      }
+    } catch {}
+    input.click()
+  }
+
     // Transparent header until scroll (adds body.is-scrolled)
   useEffect(() => {
     const onScroll = () => {
@@ -24,6 +98,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       if (e.key === 'Escape') {
         setMenuOpen(false)
         setLangOpen(false)
+        setBookingOpen(false)
       }
     }
     window.addEventListener('keydown', onKeyDown)
@@ -31,11 +106,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen || langOpen ? 'hidden' : ''
+    document.body.style.overflow = menuOpen || langOpen || bookingOpen ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [menuOpen, langOpen])
+  }, [menuOpen, langOpen, bookingOpen])
+
+  useEffect(() => {
+    if (!bookingOpen) return
+    const id = window.setTimeout(() => openDatePicker(checkInInputRef.current), 120)
+    return () => window.clearTimeout(id)
+  }, [bookingOpen])
 
   return (
     <html lang="en">
@@ -97,12 +178,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             <div className="nav-right">
-              <Link href="/book" className="reserve-pill"><span className="reserveText"><span className="reserveLong">Reserve</span><span className="reserveShort">Reserve</span></span> <span className="pillIcon pillIcon--after" aria-hidden="true">
+              <button
+                type="button"
+                className="reserve-pill"
+                onClick={openBooking}
+                aria-haspopup="dialog"
+                aria-expanded={bookingOpen}
+                aria-controls="reserve-widget"
+              ><span className="reserveText"><span className="reserveLong">Reserve</span><span className="reserveShort">Reserve</span></span> <span className="pillIcon pillIcon--after" aria-hidden="true">
   <svg viewBox="0 0 24 24">
     <path d="M9 15l6-6" />
     <path d="M10 9h5v5" />
   </svg>
-</span></Link>
+</span></button>
             </div>
           </div>
         </header>
@@ -178,6 +266,114 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
 
               <div className="lang-hint">This changes the interface label only (text translation can be added next).</div>
+            </div>
+          </div>
+        )}
+
+        {bookingOpen && (
+          <div
+            className="reserveWidgetOverlay"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="reserve-widget-title"
+            id="reserve-widget"
+            onClick={closeBooking}
+          >
+            <div className="reserveWidgetPanel" onClick={(e) => e.stopPropagation()}>
+              <button className="reserveWidgetClose" type="button" onClick={closeBooking} aria-label="Close booking widget">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                </svg>
+              </button>
+
+              <div className="reserveWidgetHead">
+                <div className="reserveWidgetKicker">Direct booking</div>
+                <div className="reserveWidgetTitle" id="reserve-widget-title">Reserve your stay</div>
+                <div className="reserveWidgetSub">
+                  Select your dates and guests, then continue to our direct booking page.
+                </div>
+              </div>
+
+              <div className="reserveWidgetGrid">
+                <label
+                  className="reserveField reserveField--interactive"
+                  onClick={() => openDatePicker(checkInInputRef.current)}
+                >
+                  <span className="reserveFieldLabel">Check in</span>
+                  <input
+                    ref={checkInInputRef}
+                    className="reserveInput reserveInput--date"
+                    type="date"
+                    value={checkIn}
+                    onChange={(e) => {
+                      const next = e.target.value
+                      setCheckIn(next)
+                      if (checkOut <= next) {
+                        setCheckOut(formatInputDate(addDays(new Date(next), 1)))
+                      }
+                      window.setTimeout(() => openDatePicker(checkOutInputRef.current), 120)
+                    }}
+                  />
+                </label>
+
+                <label
+                  className="reserveField reserveField--interactive"
+                  onClick={() => openDatePicker(checkOutInputRef.current)}
+                >
+                  <span className="reserveFieldLabel">Check out</span>
+                  <input
+                    ref={checkOutInputRef}
+                    className="reserveInput reserveInput--date"
+                    type="date"
+                    value={checkOut}
+                    min={checkIn}
+                    onChange={(e) => setCheckOut(e.target.value)}
+                  />
+                </label>
+
+                <div className="reserveField reserveCounterField">
+                  <span className="reserveFieldLabel">Rooms</span>
+                  <div className="reserveCounter">
+                    <button type="button" className="reserveCounterBtn" onClick={() => adjustCount(setRooms, rooms, 1, 8, -1)}>−</button>
+                    <span className="reserveCounterValue">{rooms}</span>
+                    <button type="button" className="reserveCounterBtn" onClick={() => adjustCount(setRooms, rooms, 1, 8, 1)}>+</button>
+                  </div>
+                </div>
+
+                <div className="reserveField reserveCounterField">
+                  <span className="reserveFieldLabel">Adults</span>
+                  <div className="reserveCounter">
+                    <button type="button" className="reserveCounterBtn" onClick={() => adjustCount(setAdults, adults, 1, 12, -1)}>−</button>
+                    <span className="reserveCounterValue">{adults}</span>
+                    <button type="button" className="reserveCounterBtn" onClick={() => adjustCount(setAdults, adults, 1, 12, 1)}>+</button>
+                  </div>
+                </div>
+
+                <div className="reserveField reserveCounterField">
+                  <span className="reserveFieldLabel">Children</span>
+                  <div className="reserveCounter">
+                    <button type="button" className="reserveCounterBtn" onClick={() => adjustCount(setChildGuests, childGuests, 0, 8, -1)}>−</button>
+                    <span className="reserveCounterValue">{childGuests}</span>
+                    <button type="button" className="reserveCounterBtn" onClick={() => adjustCount(setChildGuests, childGuests, 0, 8, 1)}>+</button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="reserveWidgetActions">
+                <button type="button" className="reserveSubmit" onClick={handleBookingSubmit}>
+                  Check availability
+                </button>
+
+                <a
+                  className="reserveDirectLink"
+                  href="https://book-directonline.com/properties/vanararesortspa"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open direct booking
+                </a>
+              </div>
             </div>
           </div>
         )}
