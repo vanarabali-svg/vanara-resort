@@ -3262,3 +3262,47 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   }
 }
 
+
+
+
+/* ===== Titles + spacing improvement ===== */
+
+/* space after Kokoon carousel */
+.uDining{
+  margin-top: 28px;
+}
+
+/* general section titles bigger */
+.sectionTitle,
+h2{
+  font-size: clamp(28px, 3.2vw, 40px) !important;
+  letter-spacing: 0.02em;
+}
+
+/* optional refinement for villas/dining headers */
+.sectionKicker{
+  font-size: 13px;
+  letter-spacing: 0.18em;
+}
+
+
+/* ===== FINAL spacing + alignment fix ===== */
+
+/* add REAL space between carousel and Kokoon title */
+.sectionDiningFeature .split{
+  margin-bottom: 40px !important;
+}
+
+/* align titles like resort section (not edge) */
+.sectionDiningFeature .container,
+.sectionVillasFeature .container{
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* titles bigger but clean */
+.sectionTitle{
+  font-size: clamp(30px, 3.4vw, 44px) !important;
+}
