@@ -3306,3 +3306,14 @@ h2{
 .sectionTitle{
   font-size: clamp(30px, 3.4vw, 44px) !important;
 }
+
+
+/* === FIX: space ABOVE Kokoon title === */
+.sectionDiningFeature .sectionTitle{
+  margin-top: 28px !important;
+}
+
+/* also ensure carousel doesn't collapse spacing */
+.uDiningCarousel{
+  margin-bottom: 12px;
+}
