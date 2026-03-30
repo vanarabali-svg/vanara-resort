@@ -137,9 +137,7 @@ function DiningUlamanCarousel4() {
   const [active, setActive] = useState(0)
   const [prev, setPrev] = useState<number | null>(null)
   const pausedRef = useRef(false)
-  const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
-
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
 
   const go = (i: number) => {
@@ -160,23 +158,6 @@ function DiningUlamanCarousel4() {
     return () => window.clearInterval(id)
   }, [active, photos.length])
 
-  const onTouchStart = (e) => {
-    const t = e.touches[0]
-    touchRef.current = { x: t.clientX, y: t.clientY }
-  }
-
-  const onTouchEnd = (e) => {
-    const start = touchRef.current
-    touchRef.current = null
-    if (!start) return
-    const t = e.changedTouches[0]
-    const dx = t.clientX - start.x
-    const dy = t.clientY - start.y
-    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
-    if (dx < 0) nextSlide()
-    else prevSlide()
-  }
-
   return (
     <section className="uDining" aria-label="Dining">
       <div
@@ -184,10 +165,9 @@ function DiningUlamanCarousel4() {
         ref={zoomRef}
         onMouseEnter={() => (pausedRef.current = true)}
         onMouseLeave={() => (pausedRef.current = false)}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
+        aria-label="Dining carousel"
       >
-        <div className="uDiningStage">
+        <div className="uDiningStage" aria-hidden="true">
           {photos.map((p, i) => {
             const isActive = i === active
             const isPrev = prev !== null && i === prev
@@ -199,20 +179,31 @@ function DiningUlamanCarousel4() {
           })}
         </div>
 
-        <div className="uDiningShade" />
+        <div className="uDiningShade" aria-hidden="true" />
 
-        <button className="carouselArrow carouselArrow--prev" onClick={prevSlide}>‹</button>
-        <button className="carouselArrow carouselArrow--next" onClick={nextSlide}>›</button>
+        <button
+          type="button"
+          className="carouselArrow carouselArrow--prev"
+          aria-label="Previous dining photo"
+          onClick={prevSlide}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
 
-        <div className="uDiningDots">
-          {photos.map((_, i) => (
-            <button
-              key={i}
-              className={`uDiningDot ${i === active ? 'is-active' : ''}`}
-              onClick={() => go(i)}
-            />
-          ))}
-        </div>
+        <button
+          type="button"
+          className="carouselArrow carouselArrow--next"
+          aria-label="Next dining photo"
+          onClick={nextSlide}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+
+        
       </div>
     </section>
   )

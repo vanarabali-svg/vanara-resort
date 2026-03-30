@@ -2533,7 +2533,11 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 
 
 /* Arrows-only carousels */
-
+.uDiningDots,
+.uVillasDots,
+.uDiningHint{
+  display: none !important;
+}
 
 .carouselArrow{
   position: absolute;
@@ -2645,7 +2649,115 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 }
 
 /* dots like Ulaman */
+.uDiningDots,
+.uVillasDots{
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
 
+.uDiningDot,
+.uVillasDot{
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.uDiningDot::after,
+.uVillasDot::after{
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.42);
+  transition: background .22s ease, transform .22s ease;
+}
+
+.uDiningDot.is-active::after,
+.uVillasDot.is-active::after{
+  background: rgba(255,255,255,.95);
+  transform: scale(1.08);
+}
+
+/* arrows desktop */
+.uDiningCarousel .carouselArrow,
+.uVillasCarousel .carouselArrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+  width: 54px;
+  height: 54px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.40);
+  background: rgba(15,15,14,.28);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(0,0,0,.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.uDiningCarousel .carouselArrow--prev,
+.uVillasCarousel .carouselArrow--prev{ left: 18px; }
+
+.uDiningCarousel .carouselArrow--next,
+.uVillasCarousel .carouselArrow--next{ right: 18px; }
+
+.uDiningCarousel .carouselArrow svg,
+.uVillasCarousel .carouselArrow svg{
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Touch devices: full-bleed, no empty container space */
+@media (hover: none), (pointer: coarse){
+  .sectionVillasFeature .container,
+  .sectionDiningFeature .container{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .sectionVillasFeature .split,
+  .sectionDiningFeature .split{
+    gap: 0 !important;
+  }
+
+  .sectionVillasFeature .split > :first-child,
+  .sectionDiningFeature .split > :first-child{
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+  }
+
+  .uDiningDots,
+  .uVillasDots{
+    display: inline-flex !important;
+  }
+
+  .uDiningCarousel .carouselArrow,
+  .uVillasCarousel .carouselArrow{
+    display: none !important;
+  }
 
   .uDiningCarousel,
   .uVillasCarousel{
@@ -2683,7 +2795,59 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
     aspect-ratio: 3 / 4;
   }
 
-  
+  .uDiningDots,
+  .uVillasDots{
+    bottom: 14px;
+    gap: 10px;
+  }
+
+  .uDiningDot,
+  .uVillasDot{
+    width: 20px;
+    height: 20px;
+  }
+
+  .uDiningDot::after,
+  .uVillasDot::after{
+    inset: 7px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (max-width: 480px){
+  .uDiningCarousel,
+  .uVillasCarousel{
+    aspect-ratio: 3 / 4;
+  }
+
+  .uDiningDots,
+  .uVillasDots{
+    bottom: 12px;
+    gap: 8px;
+  }
+
+  .uDiningDot,
+  .uVillasDot{
+    width: 18px;
+    height: 18px;
+  }
+
+  .uDiningDot::after,
+  .uVillasDot::after{
+    inset: 6px;
+  }
+}
+
+/* Desktop/laptop */
+@media (hover: hover) and (pointer: fine){
+  .uDiningCarousel .carouselArrow,
+  .uVillasCarousel .carouselArrow{
+    display: inline-flex !important;
+  }
+
+  .uDiningDots,
+  .uVillasDots{
+    display: none !important;
+  }
 }
 
 /* =========================
