@@ -3156,61 +3156,42 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 
 
 /* =========================
-   Phone villas polish v2
+   Phone villas edge-to-edge premium
 ========================= */
 @supports (-webkit-touch-callout: none) {
   @media (hover: none) and (pointer: coarse) {
+
     .sectionVillasFeature .container{
-      padding-left: 16px !important;
-      padding-right: 16px !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
 
     .sectionVillasFeature .split{
-      gap: 18px !important;
-    }
-
-    .sectionVillasFeature .split > :first-child{
-      width: auto !important;
-      margin-left: 0 !important;
+      gap: 20px !important;
     }
 
     .uVillasCarousel{
-      width: 100% !important;
-      max-width: 100% !important;
-      aspect-ratio: 1 / 0.92 !important;
-      min-height: 0 !important;
-      border-radius: 22px !important;
-      box-shadow: 0 24px 72px rgba(0,0,0,.14) !important;
-      border: 1px solid rgba(0,0,0,.08) !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      margin-left: calc(50% - 50vw) !important;
+      margin-right: calc(50% - 50vw) !important;
+      aspect-ratio: 1 / 0.78 !important; /* bigger visual */
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
     }
 
     .uVillasImg{
       object-fit: cover !important;
-      object-position: center 26% !important;
+      object-position: center 28% !important;
       transform: none !important;
-      filter: brightness(1.03) contrast(1.02) saturate(1.03) !important;
+      filter: brightness(1.04) contrast(1.03) saturate(1.04) !important;
     }
 
     .uVillasShade{
       background:
-        radial-gradient(120% 95% at 50% 18%, rgba(255,255,255,.06), rgba(255,255,255,0) 38%),
-        linear-gradient(to top, rgba(0,0,0,.14), rgba(0,0,0,.04) 46%, rgba(0,0,0,.01) 76%) !important;
+        radial-gradient(120% 95% at 50% 18%, rgba(255,255,255,.05), rgba(255,255,255,0) 38%),
+        linear-gradient(to top, rgba(0,0,0,.12), rgba(0,0,0,.03) 46%, rgba(0,0,0,.01) 76%) !important;
     }
-  }
-}
-
-@media (max-width: 520px){
-  .sectionVillasFeature .container{
-    padding-left: 14px !important;
-    padding-right: 14px !important;
-  }
-
-  .uVillasCarousel{
-    aspect-ratio: 1 / 0.96 !important;
-    border-radius: 20px !important;
-  }
-
-  .uVillasImg{
-    object-position: center 24% !important;
   }
 }
