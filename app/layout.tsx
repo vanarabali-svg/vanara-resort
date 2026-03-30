@@ -358,7 +358,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </button>
 
               <div className="reserveWidgetHead">
-                <div className="reserveWidgetKicker"></div>
+                <div className="reserveWidgetKicker">Direct booking</div>
                 <div className="reserveWidgetTitle">Reserve your stay</div>
                 <div className="reserveWidgetSub">Choose your dates and guests, then continue to our direct booking page.</div>
               </div>

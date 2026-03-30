@@ -3153,3 +3153,22 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
   .reserveWidgetActions{ flex-direction: column; align-items: stretch; }
   .reserveSubmit{ width: 100%; }
 }
+
+
+
+/* =========================
+   iPhone villas framing fix
+========================= */
+@supports (-webkit-touch-callout: none) {
+  @media (hover: none) and (pointer: coarse) {
+    .uVillasCarousel{
+      aspect-ratio: 1 / 1.18 !important;
+    }
+
+    .uVillasImg{
+      object-fit: cover !important;
+      object-position: center 30% !important;
+      transform: scale(0.94) !important;
+    }
+  }
+}
