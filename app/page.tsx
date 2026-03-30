@@ -222,6 +222,7 @@ function VillasUlamanCarousel() {
   const [active, setActive] = useState(0)
   const [prev, setPrev] = useState<number | null>(null)
   const pausedRef = useRef(false)
+  const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
 
@@ -243,12 +244,31 @@ function VillasUlamanCarousel() {
     return () => window.clearInterval(id)
   }, [active, photos.length])
 
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0]
+    touchRef.current = { x: t.clientX, y: t.clientY }
+  }
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchRef.current
+    touchRef.current = null
+    if (!start) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - start.x
+    const dy = t.clientY - start.y
+    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
+    if (dx < 0) nextSlide()
+    else prevSlide()
+  }
+
   return (
     <div
       className="uVillasCarousel"
       ref={zoomRef}
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
       aria-label="Villas carousel"
     >
       <div className="uVillasStage" aria-hidden="true">
@@ -287,7 +307,17 @@ function VillasUlamanCarousel() {
         </svg>
       </button>
 
-      
+      <div className="uVillasDots" aria-label="Villas carousel navigation">
+        {photos.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            className={`uVillasDot ${i === active ? 'is-active' : ''}`}
+            aria-label={`Show villa photo ${i + 1}`}
+            onClick={() => go(i)}
+          />
+        ))}
+      </div>
     </div>
   )
 }
