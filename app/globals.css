@@ -3155,20 +3155,21 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 }
 
 
-
 /* =========================
-   iPhone villas framing fix
+   Phone villas polish
 ========================= */
 @supports (-webkit-touch-callout: none) {
   @media (hover: none) and (pointer: coarse) {
     .uVillasCarousel{
-      aspect-ratio: 1 / 1.18 !important;
+      width: 100% !important;
+      aspect-ratio: 4 / 5 !important;
+      min-height: 0 !important;
     }
 
     .uVillasImg{
       object-fit: cover !important;
-      object-position: center 30% !important;
-      transform: scale(0.94) !important;
+      object-position: center 32% !important;
+      transform: none !important;
     }
   }
 }
