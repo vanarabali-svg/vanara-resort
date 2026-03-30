@@ -3156,20 +3156,61 @@ body.is-dragging-x{ user-select: none; cursor: grabbing; }
 
 
 /* =========================
-   Phone villas polish
+   Phone villas polish v2
 ========================= */
 @supports (-webkit-touch-callout: none) {
   @media (hover: none) and (pointer: coarse) {
+    .sectionVillasFeature .container{
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+
+    .sectionVillasFeature .split{
+      gap: 18px !important;
+    }
+
+    .sectionVillasFeature .split > :first-child{
+      width: auto !important;
+      margin-left: 0 !important;
+    }
+
     .uVillasCarousel{
       width: 100% !important;
-      aspect-ratio: 4 / 5 !important;
+      max-width: 100% !important;
+      aspect-ratio: 1 / 0.92 !important;
       min-height: 0 !important;
+      border-radius: 22px !important;
+      box-shadow: 0 24px 72px rgba(0,0,0,.14) !important;
+      border: 1px solid rgba(0,0,0,.08) !important;
     }
 
     .uVillasImg{
       object-fit: cover !important;
-      object-position: center 32% !important;
+      object-position: center 26% !important;
       transform: none !important;
+      filter: brightness(1.03) contrast(1.02) saturate(1.03) !important;
     }
+
+    .uVillasShade{
+      background:
+        radial-gradient(120% 95% at 50% 18%, rgba(255,255,255,.06), rgba(255,255,255,0) 38%),
+        linear-gradient(to top, rgba(0,0,0,.14), rgba(0,0,0,.04) 46%, rgba(0,0,0,.01) 76%) !important;
+    }
+  }
+}
+
+@media (max-width: 520px){
+  .sectionVillasFeature .container{
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .uVillasCarousel{
+    aspect-ratio: 1 / 0.96 !important;
+    border-radius: 20px !important;
+  }
+
+  .uVillasImg{
+    object-position: center 24% !important;
   }
 }
