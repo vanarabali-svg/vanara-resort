@@ -3826,3 +3826,473 @@ h2{
     display: none !important;
   }
 }
+
+
+/* =========================
+   LOCATION MAP
+========================= */
+.panel--location{
+  gap: 0;
+}
+
+/* ===== Luxury Location Map — Ulaman-inspired ===== */
+.panel--location{
+  overflow: visible;
+}
+
+.locationMapShell{
+  position: relative;
+  margin: 24px 0 8px;
+}
+
+.locationMapHeader{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.locationMapTag{
+  font-size: 11px;
+  letter-spacing: .30em;
+  text-transform: uppercase;
+  color: rgba(31,31,29,.54);
+  margin-bottom: 10px;
+}
+
+.locationMapTitle{
+  font-family: var(--serif);
+  font-size: clamp(28px, 3vw, 38px);
+  line-height: 1.02;
+  letter-spacing: -.01em;
+}
+
+.locationMapHint{
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: rgba(31,31,29,.52);
+  white-space: nowrap;
+  padding-bottom: 6px;
+}
+
+.locationMapStage{
+  position: relative;
+}
+
+.locationMapWrap{
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px;
+  border: 1px solid rgba(92,72,49,.10);
+  background: linear-gradient(180deg, #dfd5c6 0%, #d8cbb8 100%);
+  min-height: 430px;
+  box-shadow: 0 28px 90px rgba(58,41,24,.14);
+}
+
+.locationMap{
+  display: block;
+  width: 100%;
+  min-height: 430px;
+  border: 0;
+  transform: scale(1.02);
+  filter: grayscale(1) sepia(.40) saturate(.62) contrast(.90) brightness(.96) hue-rotate(-10deg);
+}
+
+.locationMapTone{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(246,241,232,.16), rgba(201,183,157,.36)),
+    radial-gradient(90% 70% at 20% 18%, rgba(255,255,255,.34), rgba(255,255,255,0) 60%),
+    linear-gradient(to top, rgba(77,57,37,.20), rgba(77,57,37,.02) 45%, rgba(77,57,37,.06));
+  mix-blend-mode: multiply;
+}
+
+.locationMapGlow{
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  filter: blur(30px);
+  opacity: .45;
+}
+
+.locationMapGlow--one{
+  width: 180px;
+  height: 180px;
+  left: -30px;
+  top: -24px;
+  background: rgba(255,255,255,.36);
+}
+
+.locationMapGlow--two{
+  width: 220px;
+  height: 220px;
+  right: -60px;
+  bottom: -50px;
+  background: rgba(170,139,104,.24);
+}
+
+.locationMapFrame{
+  position: absolute;
+  inset: 14px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.28);
+  pointer-events: none;
+}
+
+.locationMapPin{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 42px;
+  height: 42px;
+  transform: translate(-50%, -100%) rotate(-45deg);
+  border-radius: 999px 999px 999px 0;
+  background: linear-gradient(180deg, rgba(52,40,27,.98), rgba(24,20,17,.98));
+  box-shadow: 0 18px 34px rgba(0,0,0,.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.locationMapPin::after{
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 14px);
+  width: 56px;
+  height: 18px;
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 999px;
+  background: rgba(50,36,22,.18);
+  filter: blur(8px);
+}
+
+.locationMapPinDot{
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(246,241,232,.98);
+  transform: rotate(45deg);
+}
+
+.locationMapCard{
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: 24px;
+  max-width: 420px;
+  padding: 20px 20px 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.34);
+  background: rgba(246,241,232,.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 16px 42px rgba(53,39,25,.12);
+}
+
+.locationMapCardEyebrow{
+  font-size: 10px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: rgba(31,31,29,.54);
+  margin-bottom: 8px;
+}
+
+.locationMapCardTitle{
+  font-family: var(--serif);
+  font-size: 28px;
+  line-height: 1.04;
+  margin-bottom: 10px;
+}
+
+.locationMapCardText{
+  margin: 0 0 16px;
+  color: rgba(31,31,29,.70);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.locationActions{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.locationLink{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(31,31,29,.12);
+  background: rgba(255,255,255,.54);
+  color: rgba(31,31,29,.90);
+  font-size: 11px;
+  letter-spacing: .20em;
+  text-transform: uppercase;
+  transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.locationLink:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,.72);
+  border-color: rgba(31,31,29,.18);
+  box-shadow: 0 10px 22px rgba(0,0,0,.06);
+}
+
+.locationLink--primary{
+  background: rgba(31,31,29,.92);
+  color: rgba(255,255,255,.96);
+  border-color: rgba(31,31,29,.92);
+}
+
+.locationLink--primary:hover{
+  background: rgba(31,31,29,.84);
+  border-color: rgba(31,31,29,.84);
+}
+
+@media (max-width: 980px){
+  .locationMapWrap,
+  .locationMap{
+    min-height: 380px;
+  }
+}
+
+@media (max-width: 640px){
+  .locationMapHeader{
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .locationMapWrap,
+  .locationMap{
+    min-height: 340px;
+    border-radius: 24px;
+  }
+
+  .locationMapFrame{
+    inset: 10px;
+    border-radius: 18px;
+  }
+
+  .locationMapCard{
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    max-width: none;
+    padding: 16px 16px 14px;
+    border-radius: 18px;
+  }
+
+  .locationMapCardTitle{
+    font-size: 24px;
+  }
+
+  .locationMapPin{
+    width: 36px;
+    height: 36px;
+  }
+
+  .locationMapPinDot{
+    width: 10px;
+    height: 10px;
+  }
+
+  .locationLink{
+    min-height: 40px;
+    padding: 0 14px;
+    letter-spacing: .16em;
+  }
+}
+
+
+/* =========================
+   LOCATION MAP — LUXURY EDITORIAL
+========================= */
+.panel--mapLuxury{
+  overflow: hidden;
+}
+
+.luxMapWrap{
+  margin: 18px 0 0;
+}
+
+.luxMapFrame{
+  position: relative;
+  height: 360px;
+  border-radius: 26px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.10);
+  background: #ddd3c5;
+  box-shadow: 0 28px 80px rgba(0,0,0,.10);
+}
+
+.luxMapFrame iframe{
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  filter: grayscale(1) sepia(.34) saturate(.72) brightness(.98) contrast(.88);
+  transform: scale(1.02);
+}
+
+.luxMapTone,
+.luxMapGrain,
+.luxMapPin,
+.luxMapCard{
+  position: absolute;
+}
+
+.luxMapTone{
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(246,241,232,.74), rgba(246,241,232,.10) 40%, rgba(246,241,232,.02) 68%),
+    radial-gradient(120% 100% at 50% 14%, rgba(230,220,205,.34), rgba(0,0,0,0) 54%),
+    linear-gradient(135deg, rgba(120,96,72,.14), rgba(0,0,0,0) 42%);
+  mix-blend-mode: multiply;
+}
+
+.luxMapGrain{
+  inset: 0;
+  pointer-events: none;
+  opacity: .14;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
+.luxMapPin{
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -74%);
+  width: 34px;
+  height: 34px;
+  border-radius: 999px 999px 999px 0;
+  rotate: -45deg;
+  background: rgba(31,31,29,.90);
+  box-shadow: 0 14px 24px rgba(0,0,0,.20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.luxMapPinDot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(246,241,232,.96);
+  display: block;
+}
+
+.luxMapCard{
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2;
+  max-width: 280px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.34);
+  background: rgba(246,241,232,.76);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 18px 36px rgba(0,0,0,.10);
+}
+
+.luxMapCardKicker{
+  font-size: 10px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: rgba(31,31,29,.56);
+  margin-bottom: 8px;
+}
+
+.luxMapCardTitle{
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.luxMapCardText{
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(31,31,29,.68);
+}
+
+.luxMapActions{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.luxMapLink,
+.luxMapButton{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  transition: transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease;
+}
+
+.luxMapLink{
+  border: 1px solid rgba(0,0,0,.14);
+  background: rgba(255,255,255,.52);
+  color: rgba(31,31,29,.84);
+}
+
+.luxMapButton{
+  border: 1px solid rgba(31,31,29,.18);
+  background: rgba(31,31,29,.92);
+  color: #fff;
+}
+
+.luxMapLink:hover,
+.luxMapButton:hover{
+  transform: translateY(-1px);
+}
+
+.luxMapLink:hover{
+  background: rgba(255,255,255,.74);
+  border-color: rgba(0,0,0,.20);
+}
+
+.luxMapButton:hover{
+  background: rgba(31,31,29,.82);
+}
+
+@media (max-width: 768px){
+  .luxMapFrame{
+    height: 300px;
+    border-radius: 22px;
+  }
+
+  .luxMapCard{
+    max-width: none;
+  }
+
+  .luxMapActions{
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .luxMapLink,
+  .luxMapButton{
+    width: 100%;
+  }
+}

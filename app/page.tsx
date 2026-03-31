@@ -358,13 +358,13 @@ function ExperienceMosaicGrid() {
       {
         src: '/experience-honeymoon.jpg',
         alt: 'Honeymoon and romantic experiences at Vanara',
-        title: 'Honeymoon Experiences',
+        title: 'Honeymoon & Romantic Experiences',
         size: 'landscape',
       },
       {
-        src: '/experience-nunggalan.jpg',
-        alt: 'Nunggalan Beach',
-        title: 'Nunggalan Beach',
+        src: '/experience-dining.jpg',
+        alt: 'In-Villa Dining',
+        title: 'In-Villa Dining',
         size: 'square',
       },
       {
@@ -389,6 +389,12 @@ function ExperienceMosaicGrid() {
         src: '/experience-yoga.jpg',
         alt: 'Yoga at Vanara',
         title: 'Yoga',
+        size: 'portrait',
+      },
+      {
+        src: '/experience-nunggalan.jpg',
+        alt: 'Nunggalan Beach',
+        title: 'Nunggalan Beach',
         size: 'portrait',
       },
     ],
@@ -589,6 +595,7 @@ useEffect(() => {
               <h3 className="h3">Private spaces shaped by design and landscape</h3>
 
               <div className="copy">
+                <p>Modern architecture, open space, and a strong connection to the surroundings define each villa at Vanara.</p>
                 <p>
                   Positioned across the cliffs and within carefully designed gardens, the villas offer privacy and
               flexibility, where indoor and outdoor living come together effortlessly.
@@ -691,20 +698,52 @@ useEffect(() => {
       <section className="section sectionBottom">
         <div className="container">
           <div className="grid2">
-            <div className="panel">
+            <div className="panel panel--mapLuxury">
               <div className="eyebrow">LOCATION</div>
               <h3 className="h3">Uluwatu, Bali</h3>
               <p className="panelText">
-                A quiet edge of the island — limestone cliffs, turquoise water, and warm evenings. Transfers and curated
-                arrivals available upon request.
+                Set in Uluwatu, above the Indian Ocean and just moments from Nunggalan Beach, Vanara is positioned within one of Bali’s most sought-after coastal landscapes.
               </p>
-              <p className="panelText">
-                Close enough for exploration, far enough to feel private. We can arrange drivers, surf breaks, temple
-                visits, and hidden coastal paths.
-              </p>
-              <a className="textCta" href="/connect">
-                Plan your arrival
-              </a>
+
+              <div className="luxMapWrap" aria-label="Vanara location map">
+                <div className="luxMapFrame">
+                  <iframe
+                    src="https://www.google.com/maps?q=-8.8421164,115.1117122&z=16&output=embed"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Vanara Resort & Spa map"
+                  />
+                  <div className="luxMapTone" aria-hidden="true" />
+                  <div className="luxMapGrain" aria-hidden="true" />
+                  <div className="luxMapPin" aria-hidden="true">
+                    <span className="luxMapPinDot" />
+                  </div>
+                  <div className="luxMapCard">
+                    <div className="luxMapCardKicker">The Map</div>
+                    <div className="luxMapCardTitle">Vanara Resort &amp; Spa</div>
+                    <div className="luxMapCardText">Clifftop setting in Uluwatu, Bali</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="luxMapActions">
+                <a
+                  className="luxMapLink"
+                  href="https://www.google.com/maps/@-8.8421164,115.1117122,17z?entry=ttu&g_ep=EgoyMDI2MDMyOS4wIKXMDSoASAFQAw%3D%3D"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open map
+                </a>
+                <a
+                  className="luxMapButton"
+                  href="https://www.google.com/maps/dir/?api=1&destination=-8.8421164,115.1117122"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Get directions
+                </a>
+              </div>
             </div>
 
             <div className="panel">
