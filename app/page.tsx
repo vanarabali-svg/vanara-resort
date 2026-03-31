@@ -137,6 +137,7 @@ function DiningUlamanCarousel4() {
   const [active, setActive] = useState(0)
   const [prev, setPrev] = useState<number | null>(null)
   const pausedRef = useRef(false)
+  const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
 
@@ -158,6 +159,23 @@ function DiningUlamanCarousel4() {
     return () => window.clearInterval(id)
   }, [active, photos.length])
 
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0]
+    touchRef.current = { x: t.clientX, y: t.clientY }
+  }
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchRef.current
+    touchRef.current = null
+    if (!start) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - start.x
+    const dy = t.clientY - start.y
+    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
+    if (dx < 0) nextSlide()
+    else prevSlide()
+  }
+
   return (
     <section className="uDining" aria-label="Dining">
       <div
@@ -165,6 +183,8 @@ function DiningUlamanCarousel4() {
         ref={zoomRef}
         onMouseEnter={() => (pausedRef.current = true)}
         onMouseLeave={() => (pausedRef.current = false)}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
         aria-label="Dining carousel"
       >
         <div className="uDiningStage" aria-hidden="true">
@@ -203,7 +223,17 @@ function DiningUlamanCarousel4() {
           </svg>
         </button>
 
-        
+        <div className="uDiningDots" aria-label="Dining carousel navigation">
+          {photos.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              className={`uDiningDot ${i === active ? 'is-active' : ''}`}
+              aria-label={`Show dining photo ${i + 1}`}
+              onClick={() => go(i)}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -222,6 +252,7 @@ function VillasUlamanCarousel() {
   const [active, setActive] = useState(0)
   const [prev, setPrev] = useState<number | null>(null)
   const pausedRef = useRef(false)
+  const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
 
@@ -243,12 +274,31 @@ function VillasUlamanCarousel() {
     return () => window.clearInterval(id)
   }, [active, photos.length])
 
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0]
+    touchRef.current = { x: t.clientX, y: t.clientY }
+  }
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchRef.current
+    touchRef.current = null
+    if (!start) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - start.x
+    const dy = t.clientY - start.y
+    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
+    if (dx < 0) nextSlide()
+    else prevSlide()
+  }
+
   return (
     <div
       className="uVillasCarousel"
       ref={zoomRef}
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
       aria-label="Villas carousel"
     >
       <div className="uVillasStage" aria-hidden="true">
@@ -287,7 +337,17 @@ function VillasUlamanCarousel() {
         </svg>
       </button>
 
-      
+      <div className="uVillasDots" aria-label="Villas carousel navigation">
+        {photos.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            className={`uVillasDot ${i === active ? 'is-active' : ''}`}
+            aria-label={`Show villa photo ${i + 1}`}
+            onClick={() => go(i)}
+          />
+        ))}
+      </div>
     </div>
   )
 }
@@ -507,81 +567,81 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="experiencesEditorial">
-            <article className="expPanel expPanel--large">
-              <div className="expPanelMedia">
+          <div className="experiencesLuxeGrid">
+            <article className="experienceLuxeCard experienceLuxeCard--featured">
+              <div className="experienceLuxeMedia">
                 <img src="/experience-honeymoon.jpg" alt="Honeymoon and romantic experiences at Vanara" />
               </div>
-              <div className="expPanelBody">
-                <div className="expPanelIndex">01</div>
-                <h4 className="expPanelTitle">Honeymoon &amp; Romantic Experiences</h4>
-                <p className="expPanelText">
-                  Private sunsets, intimate dinners, and quiet moments shaped above the ocean.
+              <div className="experienceLuxeBody">
+                <div className="experienceLuxeIndex">01</div>
+                <h4 className="experienceLuxeTitle">Honeymoon &amp; Romantic Experiences</h4>
+                <p className="experienceLuxeText">
+                  Private sunsets, intimate dinners, and quiet celebrations shaped above the ocean.
                 </p>
               </div>
             </article>
 
-            <article className="expPanel expPanel--offset">
-              <div className="expPanelMedia">
+            <article className="experienceLuxeCard experienceLuxeCard--tall">
+              <div className="experienceLuxeMedia">
                 <img src="/experience-nunggalan.jpg" alt="Nunggalan Beach" />
               </div>
-              <div className="expPanelBody">
-                <div className="expPanelIndex">02</div>
-                <h4 className="expPanelTitle">Nunggalan Beach</h4>
-                <p className="expPanelText">
+              <div className="experienceLuxeBody">
+                <div className="experienceLuxeIndex">02</div>
+                <h4 className="experienceLuxeTitle">Nunggalan Beach</h4>
+                <p className="experienceLuxeText">
                   A rare stretch of untouched coastline, reached below the cliffs in complete calm.
                 </p>
               </div>
             </article>
 
-            <article className="expPanel expPanel--small">
-              <div className="expPanelMedia">
+            <article className="experienceLuxeCard">
+              <div className="experienceLuxeMedia">
                 <img src="/experience-yoga.jpg" alt="Yoga at Vanara" />
               </div>
-              <div className="expPanelBody">
-                <div className="expPanelIndex">03</div>
-                <h4 className="expPanelTitle">Yoga</h4>
-                <p className="expPanelText">
+              <div className="experienceLuxeBody">
+                <div className="experienceLuxeIndex">03</div>
+                <h4 className="experienceLuxeTitle">Yoga</h4>
+                <p className="experienceLuxeText">
                   Morning practice shaped by light, movement, and open air.
                 </p>
               </div>
             </article>
 
-            <article className="expPanel expPanel--small">
-              <div className="expPanelMedia">
+            <article className="experienceLuxeCard">
+              <div className="experienceLuxeMedia">
                 <img src="/experience-surfing.jpg" alt="Surfing in Uluwatu" />
               </div>
-              <div className="expPanelBody">
-                <div className="expPanelIndex">04</div>
-                <h4 className="expPanelTitle">Surfing</h4>
-                <p className="expPanelText">
-                  Iconic Uluwatu breaks and ocean days shaped by the island’s rhythm.
+              <div className="experienceLuxeBody">
+                <div className="experienceLuxeIndex">04</div>
+                <h4 className="experienceLuxeTitle">Surfing</h4>
+                <p className="experienceLuxeText">
+                  Iconic Uluwatu waves and ocean days shaped by the island’s rhythm.
                 </p>
               </div>
             </article>
 
-            <article className="expPanel expPanel--small">
-              <div className="expPanelMedia">
+            <article className="experienceLuxeCard">
+              <div className="experienceLuxeMedia">
                 <img src="/experience-paragliding.jpg" alt="Paragliding above the cliffs" />
               </div>
-              <div className="expPanelBody">
-                <div className="expPanelIndex">05</div>
-                <h4 className="expPanelTitle">Paragliding</h4>
-                <p className="expPanelText">
+              <div className="experienceLuxeBody">
+                <div className="experienceLuxeIndex">05</div>
+                <h4 className="experienceLuxeTitle">Paragliding</h4>
+                <p className="experienceLuxeText">
                   Aerial views where cliffs, wind, and sea meet in one horizon.
                 </p>
               </div>
             </article>
 
-            <article className="expPanel expPanel--small">
-              <div className="expPanelMedia">
+            <article className="experienceLuxeCard">
+              <div className="experienceLuxeMedia">
                 <img src="/experience-kecak.jpg" alt="Kecak Dance in Uluwatu" />
               </div>
-              <div className="expPanelBody">
-                <div className="expPanelIndex">06</div>
-                <h4 className="expPanelTitle">Kecak Dance</h4>
-                <p className="expPanelText">
-                  A cultural performance experienced at sunset through fire, sound, and ritual.
+              <div className="experienceLuxeBody">
+                <div className="experienceLuxeIndex">06</div>
+                <h4 className="experienceLuxeTitle">Kecak Dance</h4>
+                <p className="experienceLuxeText">
+                  A sunset performance experienced through fire, ritual, and atmosphere.
                 </p>
               </div>
             </article>
