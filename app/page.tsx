@@ -352,6 +352,143 @@ function VillasUlamanCarousel() {
   )
 }
 
+function ExperiencesSwipeColumn() {
+  const items = useMemo(
+    () => [
+      {
+        src: '/experience-yoga.jpg',
+        alt: 'Yoga at Vanara',
+        index: '01',
+        title: 'Yoga',
+        text: 'Morning sessions shaped by light, movement, and open space.',
+      },
+      {
+        src: '/experience-honeymoon.jpg',
+        alt: 'Honeymoon and romantic experiences at Vanara',
+        index: '02',
+        title: 'Honeymoon & Romantic Experiences',
+        text: 'Moments crafted for couples, from private sunsets to intimate celebrations above the ocean.',
+      },
+      {
+        src: '/experience-nunggalan.jpg',
+        alt: 'Nunggalan Beach',
+        index: '03',
+        title: 'Nunggalan Beach',
+        text: 'A rare stretch of untouched coastline, just moments below the cliffs.',
+      },
+      {
+        src: '/experience-surfing.jpg',
+        alt: 'Surfing in Uluwatu',
+        index: '04',
+        title: 'Surfing',
+        text: 'World-class waves across Uluwatu’s most iconic breaks.',
+      },
+      {
+        src: '/experience-paragliding.jpg',
+        alt: 'Paragliding above the cliffs',
+        index: '05',
+        title: 'Paragliding',
+        text: 'Aerial views of the coastline, experienced from above the cliffs.',
+      },
+      {
+        src: '/experience-kecak.jpg',
+        alt: 'Kecak Dance in Uluwatu',
+        index: '06',
+        title: 'Kecak Dance',
+        text: 'A traditional performance set against the backdrop of sunset and fire.',
+      },
+    ],
+    []
+  )
+
+  const [active, setActive] = useState(0)
+  const touchRef = useRef<{ x: number; y: number } | null>(null)
+
+  const go = (i: number) => {
+    const idx = (i + items.length) % items.length
+    setActive(idx)
+  }
+
+  const prevSlide = () => go(active - 1)
+  const nextSlide = () => go(active + 1)
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0]
+    touchRef.current = { x: t.clientX, y: t.clientY }
+  }
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const start = touchRef.current
+    touchRef.current = null
+    if (!start) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - start.x
+    const dy = t.clientY - start.y
+    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
+    if (dx < 0) nextSlide()
+    else prevSlide()
+  }
+
+  return (
+    <div className="experienceSwipe" aria-label="Experiences carousel">
+      <div
+        className="experienceSwipeViewport"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
+        <div className="experienceSwipeTrack" style={{ transform: `translateX(-${active * 100}%)` }}>
+          {items.map((item) => (
+            <article className="experienceSlide" key={item.index}>
+              <div className="experienceSlideMedia">
+                <img src={item.src} alt={item.alt} draggable={false} />
+              </div>
+              <div className="experienceSlideBody">
+                <div className="experienceSlideIndex">{item.index}</div>
+                <h4 className="experienceSlideTitle">{item.title}</h4>
+                <p className="experienceSlideText">{item.text}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          className="experienceSwipeArrow experienceSwipeArrow--prev"
+          aria-label="Previous experience"
+          onClick={prevSlide}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          className="experienceSwipeArrow experienceSwipeArrow--next"
+          aria-label="Next experience"
+          onClick={nextSlide}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+
+      <div className="experienceSwipeDots" aria-label="Experiences navigation">
+        {items.map((item, i) => (
+          <button
+            key={item.index}
+            type="button"
+            className={`experienceSwipeDot ${i === active ? 'is-active' : ''}`}
+            aria-label={`Show experience ${item.index}`}
+            onClick={() => go(i)}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function HomePage() {
   const [heroVideoOk, setHeroVideoOk] = useState(true)
   const [needsTap, setNeedsTap] = useState(false)
@@ -567,85 +704,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="experiencesLuxeGrid">
-            <article className="experienceLuxeCard experienceLuxeCard--featured">
-              <div className="experienceLuxeMedia">
-                <img src="/experience-honeymoon.jpg" alt="Honeymoon and romantic experiences at Vanara" />
-              </div>
-              <div className="experienceLuxeBody">
-                <div className="experienceLuxeIndex">01</div>
-                <h4 className="experienceLuxeTitle">Honeymoon &amp; Romantic Experiences</h4>
-                <p className="experienceLuxeText">
-                  Private sunsets, intimate dinners, and quiet celebrations shaped above the ocean.
-                </p>
-              </div>
-            </article>
-
-            <article className="experienceLuxeCard experienceLuxeCard--tall">
-              <div className="experienceLuxeMedia">
-                <img src="/experience-nunggalan.jpg" alt="Nunggalan Beach" />
-              </div>
-              <div className="experienceLuxeBody">
-                <div className="experienceLuxeIndex">02</div>
-                <h4 className="experienceLuxeTitle">Nunggalan Beach</h4>
-                <p className="experienceLuxeText">
-                  A rare stretch of untouched coastline, reached below the cliffs in complete calm.
-                </p>
-              </div>
-            </article>
-
-            <article className="experienceLuxeCard">
-              <div className="experienceLuxeMedia">
-                <img src="/experience-yoga.jpg" alt="Yoga at Vanara" />
-              </div>
-              <div className="experienceLuxeBody">
-                <div className="experienceLuxeIndex">03</div>
-                <h4 className="experienceLuxeTitle">Yoga</h4>
-                <p className="experienceLuxeText">
-                  Morning practice shaped by light, movement, and open air.
-                </p>
-              </div>
-            </article>
-
-            <article className="experienceLuxeCard">
-              <div className="experienceLuxeMedia">
-                <img src="/experience-surfing.jpg" alt="Surfing in Uluwatu" />
-              </div>
-              <div className="experienceLuxeBody">
-                <div className="experienceLuxeIndex">04</div>
-                <h4 className="experienceLuxeTitle">Surfing</h4>
-                <p className="experienceLuxeText">
-                  Iconic Uluwatu waves and ocean days shaped by the island’s rhythm.
-                </p>
-              </div>
-            </article>
-
-            <article className="experienceLuxeCard">
-              <div className="experienceLuxeMedia">
-                <img src="/experience-paragliding.jpg" alt="Paragliding above the cliffs" />
-              </div>
-              <div className="experienceLuxeBody">
-                <div className="experienceLuxeIndex">05</div>
-                <h4 className="experienceLuxeTitle">Paragliding</h4>
-                <p className="experienceLuxeText">
-                  Aerial views where cliffs, wind, and sea meet in one horizon.
-                </p>
-              </div>
-            </article>
-
-            <article className="experienceLuxeCard">
-              <div className="experienceLuxeMedia">
-                <img src="/experience-kecak.jpg" alt="Kecak Dance in Uluwatu" />
-              </div>
-              <div className="experienceLuxeBody">
-                <div className="experienceLuxeIndex">06</div>
-                <h4 className="experienceLuxeTitle">Kecak Dance</h4>
-                <p className="experienceLuxeText">
-                  A sunset performance experienced through fire, ritual, and atmosphere.
-                </p>
-              </div>
-            </article>
-          </div>
+          <ExperiencesSwipeColumn />
               <a className="textCta" href="/experience">
                 Explore experiences
               </a>
