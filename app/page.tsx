@@ -365,7 +365,7 @@ function ExperienceMosaicGrid() {
         src: '/experience-honeymoon.jpg',
         alt: 'Honeymoon and romantic experiences at Vanara',
         title: 'Honeymoon Experiences',
-        size: 'hero',
+        size: 'landscape',
       },
       {
         src: '/experience-nunggalan.jpg',
