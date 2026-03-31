@@ -3437,3 +3437,51 @@ h2{
     padding-right: 24px !important;
   }
 }
+
+
+/* ===== Mobile text alignment fix v2 ===== */
+@media (max-width: 980px){
+  .sectionVillasFeature .split > :last-child,
+  .sectionDiningFeature .split > :last-child{
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-left: 26px !important;
+    padding-right: 26px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 520px){
+  .sectionVillasFeature .split > :last-child,
+  .sectionDiningFeature .split > :last-child{
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+}
+
+
+/* ===== FINAL mobile alignment FIX (match Resort/Experience) ===== */
+@media (max-width: 980px){
+  .sectionVillasFeature .split > :last-child,
+  .sectionDiningFeature .split > :last-child{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* use same container padding as other sections */
+  .sectionVillasFeature .container,
+  .sectionDiningFeature .container{
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+@media (max-width: 520px){
+  .sectionVillasFeature .container,
+  .sectionDiningFeature .container{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
