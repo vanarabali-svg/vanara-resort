@@ -3389,3 +3389,29 @@ h2{
 .sectionDiningFeature .split{
   align-items: flex-start !important;
 }
+
+
+/* ===== FINAL Kokoon level match with Villas ===== */
+
+/* remove old offset that pushed Kokoon carousel lower */
+.uDining{
+  margin-top: 0 !important;
+}
+
+/* make dining row align exactly like Villas */
+.sectionDiningFeature .split{
+  align-items: flex-start !important;
+}
+
+/* keep same text column behavior as Villas */
+.sectionDiningFeature .split > :last-child{
+  margin: 0 !important;
+  max-width: none !important;
+  padding-left: 48px !important;
+}
+
+/* ensure carousel starts at same top line */
+.sectionDiningFeature .split > :first-child{
+  margin-top: 0 !important;
+  align-self: flex-start !important;
+}
