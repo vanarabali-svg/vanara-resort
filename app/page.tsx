@@ -356,12 +356,6 @@ function ExperienceMosaicGrid() {
   const items = useMemo(
     () => [
       {
-        src: '/experience-yoga.jpg',
-        alt: 'Yoga at Vanara',
-        title: 'Yoga',
-        size: 'portrait',
-      },
-      {
         src: '/experience-honeymoon.jpg',
         alt: 'Honeymoon and romantic experiences at Vanara',
         title: 'Honeymoon Experiences',
@@ -390,6 +384,12 @@ function ExperienceMosaicGrid() {
         alt: 'Kecak Dance in Uluwatu',
         title: 'Kecak Dance',
         size: 'landscape',
+      },
+      {
+        src: '/experience-yoga.jpg',
+        alt: 'Yoga at Vanara',
+        title: 'Yoga',
+        size: 'portrait',
       },
     ],
     []
