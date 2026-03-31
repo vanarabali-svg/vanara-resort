@@ -473,29 +473,30 @@ export default function HomePage() {
     }
   }, [])
 
-  useEffect(() => {
-    const elements = Array.from(document.querySelectorAll('.revealBlock'))
-    if (!elements.length) return
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const el = entry.target as HTMLElement
-          if (entry.isIntersecting) {
-            el.classList.add('is-revealed')
-          }
-        })
-      },
-      {
-        threshold: 0.14,
-        rootMargin: '0px 0px -8% 0px',
-      }
-    )
+useEffect(() => {
+  const elements = Array.from(document.querySelectorAll('.revealBlock')) as HTMLElement[]
+  if (!elements.length) return
 
-    elements.forEach((el) => observer.observe(el))
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const el = entry.target as HTMLElement
+        if (entry.isIntersecting) {
+          el.classList.add('is-revealed')
+          observer.unobserve(el)
+        }
+      })
+    },
+    {
+      threshold: 0.12,
+      rootMargin: '0px 0px -8% 0px',
+    }
+  )
 
-    return () => observer.disconnect()
-  }, [])
+  elements.forEach((el) => observer.observe(el))
+  return () => observer.disconnect()
+}, [])
 
   return (
     <div className="home">
