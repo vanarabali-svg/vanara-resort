@@ -401,9 +401,61 @@ function ExperienceEditorialList() {
     []
   )
 
+  const railRef = useRef<HTMLDivElement | null>(null)
+  const dragRef = useRef({ isDown: false, startX: 0, startScrollLeft: 0, moved: false })
+
+  const endDrag = () => {
+    dragRef.current.isDown = false
+    window.removeEventListener('mousemove', onMouseMove)
+    window.removeEventListener('mouseup', endDrag)
+  }
+
+  const onMouseMove = (e: MouseEvent) => {
+    const rail = railRef.current
+    const drag = dragRef.current
+    if (!rail || !drag.isDown) return
+    const dx = e.clientX - drag.startX
+    if (Math.abs(dx) > 4) drag.moved = true
+    rail.scrollLeft = drag.startScrollLeft - dx
+  }
+
+  useEffect(() => {
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', endDrag)
+    }
+  }, [])
+
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rail = railRef.current
+    if (!rail) return
+    dragRef.current = {
+      isDown: true,
+      startX: e.clientX,
+      startScrollLeft: rail.scrollLeft,
+      moved: false,
+    }
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', endDrag)
+  }
+
+  const onClickCapture = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (dragRef.current.moved) {
+      e.preventDefault()
+      e.stopPropagation()
+      dragRef.current.moved = false
+    }
+  }
+
   return (
     <div className="experienceRailWrap">
-      <div className="experienceRail" aria-label="Experiences list">
+      <div
+        ref={railRef}
+        className="experienceRail"
+        aria-label="Experiences list"
+        onMouseDown={onMouseDown}
+        onClickCapture={onClickCapture}
+      >
         {items.map((item) => (
           <article className="experienceRailItem" key={item.index}>
             <div className="experienceRailMedia">
@@ -417,7 +469,7 @@ function ExperienceEditorialList() {
           </article>
         ))}
       </div>
-      <div className="experienceRailHint">Swipe to see next experience</div>
+      <div className="experienceRailHint">Swipe or drag to see next experience</div>
     </div>
   )
 }
