@@ -352,124 +352,66 @@ function VillasUlamanCarousel() {
   )
 }
 
-function ExperienceEditorialList() {
+function ExperienceMosaicGrid() {
   const items = useMemo(
     () => [
       {
         src: '/experience-yoga.jpg',
         alt: 'Yoga at Vanara',
-        index: '01',
         title: 'Yoga',
-        text: 'Morning sessions shaped by light, movement, and open space, guided by the calm rhythm of the cliffs.',
+        size: 'portrait',
       },
       {
         src: '/experience-honeymoon.jpg',
         alt: 'Honeymoon and romantic experiences at Vanara',
-        index: '02',
-        title: 'Honeymoon & Romantic Experiences',
-        text: 'Private moments crafted for couples, from sunset settings to intimate celebrations above the ocean.',
+        title: 'Honeymoon Experiences',
+        size: 'landscape',
       },
       {
         src: '/experience-nunggalan.jpg',
         alt: 'Nunggalan Beach',
-        index: '03',
         title: 'Nunggalan Beach',
-        text: 'A rare stretch of untouched coastline below the cliffs, where the atmosphere feels quiet, natural, and removed.',
+        size: 'square',
       },
       {
         src: '/experience-surfing.jpg',
         alt: 'Surfing in Uluwatu',
-        index: '04',
         title: 'Surfing',
-        text: 'Access to some of Uluwatu’s most iconic breaks, shaped by the energy of the ocean and the coastline.',
+        size: 'tall',
       },
       {
         src: '/experience-paragliding.jpg',
         alt: 'Paragliding above the cliffs',
-        index: '05',
         title: 'Paragliding',
-        text: 'Aerial views across the cliffs and sea, offering a different perspective of the landscape surrounding Vanara.',
+        size: 'square',
       },
       {
         src: '/experience-kecak.jpg',
         alt: 'Kecak Dance in Uluwatu',
-        index: '06',
         title: 'Kecak Dance',
-        text: 'A cultural performance set against sunset and fire, connected to the spirit and traditions of the island.',
+        size: 'landscape',
       },
     ],
     []
   )
 
-  const railRef = useRef<HTMLDivElement | null>(null)
-  const dragRef = useRef({ isDown: false, startX: 0, startScrollLeft: 0, moved: false })
-
-  const endDrag = () => {
-    dragRef.current.isDown = false
-    window.removeEventListener('mousemove', onMouseMove)
-    window.removeEventListener('mouseup', endDrag)
-  }
-
-  const onMouseMove = (e: MouseEvent) => {
-    const rail = railRef.current
-    const drag = dragRef.current
-    if (!rail || !drag.isDown) return
-    const dx = e.clientX - drag.startX
-    if (Math.abs(dx) > 4) drag.moved = true
-    rail.scrollLeft = drag.startScrollLeft - dx
-  }
-
-  useEffect(() => {
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove)
-      window.removeEventListener('mouseup', endDrag)
-    }
-  }, [])
-
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rail = railRef.current
-    if (!rail) return
-    dragRef.current = {
-      isDown: true,
-      startX: e.clientX,
-      startScrollLeft: rail.scrollLeft,
-      moved: false,
-    }
-    window.addEventListener('mousemove', onMouseMove)
-    window.addEventListener('mouseup', endDrag)
-  }
-
-  const onClickCapture = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (dragRef.current.moved) {
-      e.preventDefault()
-      e.stopPropagation()
-      dragRef.current.moved = false
-    }
-  }
-
   return (
-    <div className="experienceRailWrap">
-      <div
-        ref={railRef}
-        className="experienceRail"
-        aria-label="Experiences list"
-        onMouseDown={onMouseDown}
-        onClickCapture={onClickCapture}
-      >
-        {items.map((item) => (
-          <article className="experienceRailItem" key={item.index}>
-            <div className="experienceRailMedia">
-              <img src={item.src} alt={item.alt} draggable={false} />
-            </div>
-            <div className="experienceRailBody">
-              <div className="experienceRailIndex">{item.index}</div>
-              <h4 className="experienceRailTitle">{item.title}</h4>
-              <p className="experienceRailText">{item.text}</p>
-            </div>
+    <div className="experienceMosaicWrap">
+      <div className="experienceMosaic" aria-label="Experiences gallery">
+        {items.map((item, index) => (
+          <article className={`experienceMosaicItem experienceMosaicItem--${item.size}`} key={`${item.title}-${index}`}>
+            <img src={item.src} alt={item.alt} draggable={false} />
+            <div className="experienceMosaicOverlay" aria-hidden="true" />
+            <div className="experienceMosaicLabel">{item.title}</div>
           </article>
         ))}
       </div>
-      <div className="experienceRailHint">Swipe or drag to see next experience</div>
+
+      <div className="experienceMosaicCtaWrap">
+        <a className="experienceMosaicCta" href="/experience">
+          Discover all experiences
+        </a>
+      </div>
     </div>
   )
 }
@@ -689,10 +631,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <ExperienceEditorialList />
-              <a className="textCta" href="/experience">
-                Explore experiences
-              </a>
+          <ExperienceMosaicGrid />
         </div>
       </section>
 
