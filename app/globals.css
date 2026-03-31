@@ -3471,63 +3471,70 @@ h2{
 }
 
 /* =========================
-   EXPERIENCES — SINGLE COLUMN SWIPE
+   EXPERIENCES — HORIZONTAL SWIPE ROW
 ========================= */
-.experienceSwipe{
-  width: 100%;
+.experienceRailWrap{
   margin-top: 42px;
 }
 
-.experienceSwipeViewport{
-  position: relative;
-  overflow: hidden;
-}
-
-.experienceSwipeTrack{
+.experienceRail{
   display: flex;
-  width: 100%;
-  transition: transform 520ms cubic-bezier(.22, .61, .36, 1);
-  will-change: transform;
+  gap: 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 2px 14px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  touch-action: pan-x;
 }
 
-.experienceSlide{
-  flex: 0 0 100%;
-  width: 100%;
+.experienceRail::-webkit-scrollbar{
+  display: none;
 }
 
-.experienceSlideMedia{
+.experienceRailItem{
+  flex: 0 0 min(720px, 82vw);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.experienceRailMedia{
   position: relative;
+  width: 100%;
   overflow: hidden;
   border-radius: 30px;
   border: 1px solid rgba(0,0,0,.08);
   background: #d8d0c4;
-  box-shadow: 0 34px 110px rgba(0,0,0,.14);
+  box-shadow: 0 30px 100px rgba(0,0,0,.12);
 }
 
-.experienceSlideMedia::after{
+.experienceRailMedia::after{
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(120% 95% at 50% 12%, rgba(255,255,255,.12), rgba(255,255,255,0) 42%),
-    linear-gradient(to top, rgba(0,0,0,.16), rgba(0,0,0,.03) 52%, rgba(0,0,0,0) 82%);
+    radial-gradient(120% 95% at 50% 10%, rgba(255,255,255,.12), rgba(255,255,255,0) 40%),
+    linear-gradient(to top, rgba(0,0,0,.14), rgba(0,0,0,.03) 50%, rgba(0,0,0,0) 82%);
 }
 
-.experienceSlideMedia img{
+.experienceRailMedia img{
   width: 100%;
   display: block;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   object-position: center;
 }
 
-.experienceSlideBody{
-  max-width: 760px;
-  padding: 26px 0 0;
+.experienceRailBody{
+  max-width: 640px;
+  padding-left: 2px;
 }
 
-.experienceSlideIndex{
+.experienceRailIndex{
   margin-bottom: 12px;
   font-size: 10px;
   letter-spacing: .34em;
@@ -3535,136 +3542,77 @@ h2{
   color: rgba(31,31,29,.52);
 }
 
-.experienceSlideTitle{
+.experienceRailTitle{
   margin: 0 0 12px;
   font-family: var(--serif);
-  font-size: clamp(34px, 4.8vw, 52px);
+  font-size: clamp(34px, 4.6vw, 52px);
   line-height: 1.02;
   font-weight: 500;
   letter-spacing: -.01em;
   color: var(--ink);
 }
 
-.experienceSlideText{
+.experienceRailText{
   margin: 0;
-  max-width: 34ch;
+  max-width: 38ch;
   font-size: 15px;
-  line-height: 1.8;
+  line-height: 1.82;
   color: rgba(31,31,29,.70);
 }
 
-.experienceSwipeDots{
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.experienceSwipeDot{
-  width: 22px;
-  height: 22px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  cursor: pointer;
-  position: relative;
-}
-
-.experienceSwipeDot::after{
-  content: "";
-  position: absolute;
-  inset: 8px;
-  border-radius: 999px;
-  background: rgba(31,31,29,.24);
-  transition: background .22s ease, transform .22s ease;
-}
-
-.experienceSwipeDot.is-active::after{
-  background: rgba(31,31,29,.88);
-  transform: scale(1.08);
-}
-
-.experienceSwipeArrow{
-  position: absolute;
-  top: 40%;
-  transform: translateY(-50%);
-  z-index: 6;
-  width: 50px;
-  height: 50px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.36);
-  background: rgba(15,15,14,.24);
-  color: rgba(255,255,255,.96);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 12px 32px rgba(0,0,0,.16);
-}
-
-.experienceSwipeArrow--prev{ left: 18px; }
-.experienceSwipeArrow--next{ right: 18px; }
-
-.experienceSwipeArrow svg{
-  width: 18px;
-  height: 18px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.experienceRailHint{
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(31,31,29,.48);
 }
 
 @media (max-width: 980px){
-  .experienceSwipe{ margin-top: 32px; }
+  .experienceRailWrap{
+    margin-top: 32px;
+  }
 
-  .experienceSlideMedia{
+  .experienceRail{
+    gap: 18px;
+  }
+
+  .experienceRailItem{
+    flex-basis: 88vw;
+  }
+
+  .experienceRailMedia{
     border-radius: 24px;
-    box-shadow: 0 24px 80px rgba(0,0,0,.12);
+    box-shadow: 0 22px 70px rgba(0,0,0,.10);
   }
-
-  .experienceSlideMedia img{
-    aspect-ratio: 4 / 5;
-  }
-
-  .experienceSlideBody{
-    padding-top: 20px;
-  }
-
-  .experienceSwipeArrow{
-    width: 42px;
-    height: 42px;
-    top: 42%;
-  }
-
-  .experienceSwipeArrow--prev{ left: 12px; }
-  .experienceSwipeArrow--next{ right: 12px; }
 }
 
 @media (max-width: 640px){
-  .experienceSlideMedia{
+  .experienceRail{
+    gap: 14px;
+  }
+
+  .experienceRailItem{
+    flex-basis: 86vw;
+    gap: 16px;
+  }
+
+  .experienceRailMedia{
     border-radius: 22px;
   }
 
-  .experienceSlideTitle{
+  .experienceRailTitle{
     font-size: 32px;
   }
 
-  .experienceSlideText{
+  .experienceRailText{
     max-width: none;
     font-size: 14px;
     line-height: 1.72;
   }
 
-  .experienceSwipeArrow{
-    display: none;
-  }
-
-  .experienceSwipeDots{
-    margin-top: 16px;
-    gap: 8px;
+  .experienceRailHint{
+    margin-top: 10px;
+    font-size: 10px;
   }
 }

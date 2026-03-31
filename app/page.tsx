@@ -352,7 +352,7 @@ function VillasUlamanCarousel() {
   )
 }
 
-function ExperiencesSwipeColumn() {
+function ExperienceEditorialList() {
   const items = useMemo(
     () => [
       {
@@ -360,131 +360,64 @@ function ExperiencesSwipeColumn() {
         alt: 'Yoga at Vanara',
         index: '01',
         title: 'Yoga',
-        text: 'Morning sessions shaped by light, movement, and open space.',
+        text: 'Morning sessions shaped by light, movement, and open space, guided by the calm rhythm of the cliffs.',
       },
       {
         src: '/experience-honeymoon.jpg',
         alt: 'Honeymoon and romantic experiences at Vanara',
         index: '02',
         title: 'Honeymoon & Romantic Experiences',
-        text: 'Moments crafted for couples, from private sunsets to intimate celebrations above the ocean.',
+        text: 'Private moments crafted for couples, from sunset settings to intimate celebrations above the ocean.',
       },
       {
         src: '/experience-nunggalan.jpg',
         alt: 'Nunggalan Beach',
         index: '03',
         title: 'Nunggalan Beach',
-        text: 'A rare stretch of untouched coastline, just moments below the cliffs.',
+        text: 'A rare stretch of untouched coastline below the cliffs, where the atmosphere feels quiet, natural, and removed.',
       },
       {
         src: '/experience-surfing.jpg',
         alt: 'Surfing in Uluwatu',
         index: '04',
         title: 'Surfing',
-        text: 'World-class waves across Uluwatu’s most iconic breaks.',
+        text: 'Access to some of Uluwatu’s most iconic breaks, shaped by the energy of the ocean and the coastline.',
       },
       {
         src: '/experience-paragliding.jpg',
         alt: 'Paragliding above the cliffs',
         index: '05',
         title: 'Paragliding',
-        text: 'Aerial views of the coastline, experienced from above the cliffs.',
+        text: 'Aerial views across the cliffs and sea, offering a different perspective of the landscape surrounding Vanara.',
       },
       {
         src: '/experience-kecak.jpg',
         alt: 'Kecak Dance in Uluwatu',
         index: '06',
         title: 'Kecak Dance',
-        text: 'A traditional performance set against the backdrop of sunset and fire.',
+        text: 'A cultural performance set against sunset and fire, connected to the spirit and traditions of the island.',
       },
     ],
     []
   )
 
-  const [active, setActive] = useState(0)
-  const touchRef = useRef<{ x: number; y: number } | null>(null)
-
-  const go = (i: number) => {
-    const idx = (i + items.length) % items.length
-    setActive(idx)
-  }
-
-  const prevSlide = () => go(active - 1)
-  const nextSlide = () => go(active + 1)
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    const t = e.touches[0]
-    touchRef.current = { x: t.clientX, y: t.clientY }
-  }
-
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const start = touchRef.current
-    touchRef.current = null
-    if (!start) return
-    const t = e.changedTouches[0]
-    const dx = t.clientX - start.x
-    const dy = t.clientY - start.y
-    if (Math.abs(dx) < 44 || Math.abs(dx) < Math.abs(dy)) return
-    if (dx < 0) nextSlide()
-    else prevSlide()
-  }
-
   return (
-    <div className="experienceSwipe" aria-label="Experiences carousel">
-      <div
-        className="experienceSwipeViewport"
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-      >
-        <div className="experienceSwipeTrack" style={{ transform: `translateX(-${active * 100}%)` }}>
-          {items.map((item) => (
-            <article className="experienceSlide" key={item.index}>
-              <div className="experienceSlideMedia">
-                <img src={item.src} alt={item.alt} draggable={false} />
-              </div>
-              <div className="experienceSlideBody">
-                <div className="experienceSlideIndex">{item.index}</div>
-                <h4 className="experienceSlideTitle">{item.title}</h4>
-                <p className="experienceSlideText">{item.text}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <button
-          type="button"
-          className="experienceSwipeArrow experienceSwipeArrow--prev"
-          aria-label="Previous experience"
-          onClick={prevSlide}
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
-
-        <button
-          type="button"
-          className="experienceSwipeArrow experienceSwipeArrow--next"
-          aria-label="Next experience"
-          onClick={nextSlide}
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M9 6l6 6-6 6" />
-          </svg>
-        </button>
-      </div>
-
-      <div className="experienceSwipeDots" aria-label="Experiences navigation">
-        {items.map((item, i) => (
-          <button
-            key={item.index}
-            type="button"
-            className={`experienceSwipeDot ${i === active ? 'is-active' : ''}`}
-            aria-label={`Show experience ${item.index}`}
-            onClick={() => go(i)}
-          />
+    <div className="experienceRailWrap">
+      <div className="experienceRail" aria-label="Experiences list">
+        {items.map((item) => (
+          <article className="experienceRailItem" key={item.index}>
+            <div className="experienceRailMedia">
+              <img src={item.src} alt={item.alt} draggable={false} />
+            </div>
+            <div className="experienceRailBody">
+              <div className="experienceRailIndex">{item.index}</div>
+              <h4 className="experienceRailTitle">{item.title}</h4>
+              <p className="experienceRailText">{item.text}</p>
+            </div>
+          </article>
         ))}
       </div>
+      <div className="experienceRailHint">Swipe to see next experience</div>
     </div>
   )
 }
@@ -704,7 +637,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <ExperiencesSwipeColumn />
+          <ExperienceEditorialList />
               <a className="textCta" href="/experience">
                 Explore experiences
               </a>
