@@ -179,7 +179,7 @@ function DiningUlamanCarousel4() {
   return (
     <section className="uDining" aria-label="Dining">
       <div
-        className="uDiningCarousel revealOnScroll"
+        className="uDiningCarousel revealBlock"
         ref={zoomRef}
         onMouseEnter={() => (pausedRef.current = true)}
         onMouseLeave={() => (pausedRef.current = false)}
@@ -293,7 +293,7 @@ function VillasUlamanCarousel() {
 
   return (
     <div
-      className="uVillasCarousel revealOnScroll"
+      className="uVillasCarousel revealBlock"
       ref={zoomRef}
       onMouseEnter={() => (pausedRef.current = true)}
       onMouseLeave={() => (pausedRef.current = false)}
@@ -399,7 +399,7 @@ function ExperienceMosaicGrid() {
     <div className="experienceMosaicWrap">
       <div className="experienceMosaic" aria-label="Experiences gallery">
         {items.map((item, index) => (
-          <article className={`experienceMosaicItem experienceMosaicItem--${item.size} revealOnScroll`} key={`${item.title}-${index}`}>
+          <article className={`experienceMosaicItem experienceMosaicItem--${item.size} revealBlock`} key={`${item.title}-${index}`}>
             <img src={item.src} alt={item.alt} draggable={false} />
             <div className="experienceMosaicOverlay" aria-hidden="true" />
             <div className="experienceMosaicLabel">{item.title}</div>
@@ -471,34 +471,33 @@ export default function HomePage() {
       v.removeEventListener('stalled', scheduleResume)
       v.removeEventListener('canplay', tryPlay)
     }
-}, [])
+  }, [])
 
-useEffect(() => {
-  const elements = Array.from(document.querySelectorAll('.revealOnScroll'))
-  if (!elements.length) return
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll('.revealBlock'))
+    if (!elements.length) return
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible')
-        } else {
-          entry.target.classList.remove('is-visible')
-        }
-      })
-    },
-    {
-      threshold: 0.18,
-      rootMargin: '0px 0px -10% 0px',
-    }
-  )
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target as HTMLElement
+          if (entry.isIntersecting) {
+            el.classList.add('is-revealed')
+          }
+        })
+      },
+      {
+        threshold: 0.14,
+        rootMargin: '0px 0px -8% 0px',
+      }
+    )
 
-  elements.forEach((el) => observer.observe(el))
+    elements.forEach((el) => observer.observe(el))
 
-  return () => observer.disconnect()
-}, [])
+    return () => observer.disconnect()
+  }, [])
 
-return (
+  return (
     <div className="home">
       <section className="hero hero--video" aria-label="Hero">
         <div className="heroVideo" aria-label="Vanara hero media">
@@ -637,7 +636,7 @@ return (
       <section className="section sectionYoga">
         <div className="container">
           <div className="split split--rev">
-            <div className="imagePlaceholder revealOnScroll" aria-label="Experience image">
+            <div className="imagePlaceholder revealBlock" aria-label="Experience image">
               <img className="experienceImg" src="/experiences-main.jpg" alt="Experiences at Vanara" />
             </div>
 
@@ -663,7 +662,7 @@ return (
       <section className="section sectionWeddings" id="weddings">
         <div className="container">
           <div className="split split--rev">
-            <div className="imagePlaceholder revealOnScroll" aria-label="Wedding image">
+            <div className="imagePlaceholder revealBlock" aria-label="Wedding image">
               <img className="experienceImg" src="/wedding.jpg" alt="Wedding at Vanara" />
             </div>
 

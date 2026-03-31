@@ -3711,98 +3711,88 @@ h2{
   }
 }
 
+
 /* =========================
-   LUXURY SCROLL REVEAL FOR PHOTOS
+   LUXURY SCROLL REVEAL
 ========================= */
-.revealOnScroll{
+.revealBlock{
   opacity: 0;
-  transform: translateY(34px) scale(.985);
-  filter: saturate(.94);
+  transform: translate3d(0, 42px, 0);
+  filter: blur(10px);
   transition:
-    opacity 1.05s cubic-bezier(.22,1,.36,1),
-    transform 1.25s cubic-bezier(.22,1,.36,1),
-    filter 1.25s cubic-bezier(.22,1,.36,1);
+    opacity 1s cubic-bezier(.22,1,.36,1),
+    transform 1.15s cubic-bezier(.22,1,.36,1),
+    filter 1.15s cubic-bezier(.22,1,.36,1);
   will-change: opacity, transform, filter;
 }
 
-.revealOnScroll.is-visible{
+.revealBlock.is-revealed{
   opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: saturate(1);
+  transform: translate3d(0, 0, 0);
+  filter: blur(0);
 }
 
-.uVillasCarousel.revealOnScroll,
-.uDiningCarousel.revealOnScroll,
-.imagePlaceholder.revealOnScroll,
-.experienceMosaicItem.revealOnScroll{
-  overflow: hidden;
+.uVillasCarousel.revealBlock,
+.uDiningCarousel.revealBlock,
+.imagePlaceholder.revealBlock,
+.experienceMosaicItem.revealBlock{
+  position: relative;
 }
 
-.uVillasCarousel.revealOnScroll .uVillasImg,
-.uDiningCarousel.revealOnScroll .uDiningImg,
-.imagePlaceholder.revealOnScroll img,
-.experienceMosaicItem.revealOnScroll img{
-  transform: scale(1.10);
-  transition: transform 1.6s cubic-bezier(.22,1,.36,1);
-  will-change: transform;
+.uVillasCarousel.revealBlock::after,
+.uDiningCarousel.revealBlock::after,
+.imagePlaceholder.revealBlock::after,
+.experienceMosaicItem.revealBlock::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255,255,255,0) 20%, rgba(255,255,255,.16) 48%, rgba(255,255,255,0) 76%);
+  transform: translateX(-120%);
+  opacity: 0;
 }
 
-.uVillasCarousel.revealOnScroll.is-visible .uVillasImg,
-.uDiningCarousel.revealOnScroll.is-visible .uDiningImg,
-.imagePlaceholder.revealOnScroll.is-visible img,
-.experienceMosaicItem.revealOnScroll.is-visible img{
-  transform: scale(1.02);
+.uVillasCarousel.revealBlock.is-revealed::after,
+.uDiningCarousel.revealBlock.is-revealed::after,
+.imagePlaceholder.revealBlock.is-revealed::after,
+.experienceMosaicItem.revealBlock.is-revealed::after{
+  opacity: .9;
+  animation: luxurySweep 1.35s cubic-bezier(.22,1,.36,1) .08s both;
 }
 
-.experienceMosaicItem.revealOnScroll{
-  transition-delay: 0s;
+@keyframes luxurySweep{
+  0%{ transform: translateX(-120%); opacity: 0; }
+  15%{ opacity: .9; }
+  100%{ transform: translateX(120%); opacity: 0; }
 }
 
-.experienceMosaicItem.revealOnScroll:nth-child(2){ transition-delay: .06s; }
-.experienceMosaicItem.revealOnScroll:nth-child(3){ transition-delay: .12s; }
-.experienceMosaicItem.revealOnScroll:nth-child(4){ transition-delay: .18s; }
-.experienceMosaicItem.revealOnScroll:nth-child(5){ transition-delay: .24s; }
-.experienceMosaicItem.revealOnScroll:nth-child(6){ transition-delay: .30s; }
+/* subtle stagger for experiences */
+.experienceMosaicItem.revealBlock:nth-child(2){ transition-delay: .06s; }
+.experienceMosaicItem.revealBlock:nth-child(3){ transition-delay: .12s; }
+.experienceMosaicItem.revealBlock:nth-child(4){ transition-delay: .18s; }
+.experienceMosaicItem.revealBlock:nth-child(5){ transition-delay: .24s; }
+.experienceMosaicItem.revealBlock:nth-child(6){ transition-delay: .30s; }
 
 @media (max-width: 768px){
-  .revealOnScroll{
-    transform: translateY(24px) scale(.99);
-    transition-duration: .9s, 1s, 1s;
-  }
-
-  .uVillasCarousel.revealOnScroll .uVillasImg,
-  .uDiningCarousel.revealOnScroll .uDiningImg,
-  .imagePlaceholder.revealOnScroll img,
-  .experienceMosaicItem.revealOnScroll img{
-    transform: scale(1.06);
-  }
-
-  .uVillasCarousel.revealOnScroll.is-visible .uVillasImg,
-  .uDiningCarousel.revealOnScroll.is-visible .uDiningImg,
-  .imagePlaceholder.revealOnScroll.is-visible img,
-  .experienceMosaicItem.revealOnScroll.is-visible img{
-    transform: scale(1.01);
+  .revealBlock{
+    transform: translate3d(0, 28px, 0);
+    filter: blur(6px);
   }
 }
 
 @media (prefers-reduced-motion: reduce){
-  .revealOnScroll,
-  .revealOnScroll.is-visible{
+  .revealBlock,
+  .revealBlock.is-revealed{
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
     transition: none !important;
   }
 
-  .uVillasCarousel.revealOnScroll .uVillasImg,
-  .uDiningCarousel.revealOnScroll .uDiningImg,
-  .imagePlaceholder.revealOnScroll img,
-  .experienceMosaicItem.revealOnScroll img,
-  .uVillasCarousel.revealOnScroll.is-visible .uVillasImg,
-  .uDiningCarousel.revealOnScroll.is-visible .uDiningImg,
-  .imagePlaceholder.revealOnScroll.is-visible img,
-  .experienceMosaicItem.revealOnScroll.is-visible img{
-    transform: none !important;
-    transition: none !important;
+  .uVillasCarousel.revealBlock::after,
+  .uDiningCarousel.revealBlock::after,
+  .imagePlaceholder.revealBlock::after,
+  .experienceMosaicItem.revealBlock::after{
+    display: none !important;
   }
 }
