@@ -427,6 +427,30 @@ export default function HomePage() {
   const [needsTap, setNeedsTap] = useState(false)
   const heroVideoRef = useRef<HTMLVideoElement | null>(null)
 
+  const today = startOfDay(new Date())
+  const [bookCheckIn, setBookCheckIn] = useState(formatDateInput(today))
+  const [bookCheckOut, setBookCheckOut] = useState(formatDateInput(addDays(today, 1)))
+  const [bookAdults, setBookAdults] = useState(2)
+  const [bookRooms, setBookRooms] = useState(1)
+
+  const bookingUrl = useMemo(() => {
+    const params = new URLSearchParams()
+    params.set('arrival', bookCheckIn)
+    params.set('departure', bookCheckOut)
+    params.set('checkInDate', bookCheckIn)
+    params.set('checkOutDate', bookCheckOut)
+    params.set('rooms', String(bookRooms))
+    params.set('adults', String(bookAdults))
+    params.set('children', '0')
+    params.set('items[0][adults]', String(bookAdults))
+    params.set('items[0][children]', '0')
+    params.set('items[0][infants]', '0')
+    params.set('items[0][rooms]', String(bookRooms))
+    params.set('currency', 'IDR')
+    params.set('locale', 'en')
+    return `https://book-directonline.com/properties/vanararesortspa?${params.toString()}`
+  }, [bookAdults, bookCheckIn, bookCheckOut, bookRooms])
+
   useEffect(() => {
     const v = heroVideoRef.current
     if (!v) return
@@ -695,6 +719,84 @@ useEffect(() => {
         </div>
       </section>
 
+      <section className="section sectionBookingFeature" id="booking">
+        <div className="container">
+          <div className="bookingFeature revealBlock">
+            <div className="bookingFeatureIntro">
+              <h3 className="h3">Experience space, comfort, and the rhyhm of the ocean</h3>
+              <a className="bookingFeatureButton bookingFeatureButtonIntro" href={bookingUrl} target="_blank" rel="noreferrer">
+                Book your stay
+              </a>
+            </div>
+
+            <div className="bookingFeatureCard">
+              <div className="bookingFeatureGrid">
+                <label className="bookingField">
+                  <span>Check in</span>
+                  <input
+                    type="date"
+                    min={formatDateInput(today)}
+                    value={bookCheckIn}
+                    onChange={(e) => {
+                      const next = e.target.value
+                      setBookCheckIn(next)
+                      if (next && bookCheckOut && parseDateInput(bookCheckOut) <= parseDateInput(next)) {
+                        setBookCheckOut(formatDateInput(addDays(parseDateInput(next), 1)))
+                      }
+                    }}
+                  />
+                </label>
+
+                <label className="bookingField">
+                  <span>Check out</span>
+                  <input
+                    type="date"
+                    min={formatDateInput(addDays(parseDateInput(bookCheckIn), 1))}
+                    value={bookCheckOut}
+                    onChange={(e) => setBookCheckOut(e.target.value)}
+                  />
+                </label>
+
+                <label className="bookingField">
+                  <span>Adults</span>
+                  <select value={bookAdults} onChange={(e) => setBookAdults(Number(e.target.value))}>
+                    {[1, 2, 3, 4, 5, 6].map((n) => (
+                      <option key={n} value={n}>
+                        {n}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="bookingField">
+                  <span>Rooms</span>
+                  <select value={bookRooms} onChange={(e) => setBookRooms(Number(e.target.value))}>
+                    {[1, 2, 3, 4].map((n) => (
+                      <option key={n} value={n}>
+                        {n}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+
+              <div className="bookingFeatureMeta">
+                <div>
+                  <div className="bookingFeatureSmall">Stay summary</div>
+                  <div className="bookingFeatureSummary">
+                    {formatDisplayDate(bookCheckIn)} — {formatDisplayDate(bookCheckOut)} · {nightsBetween(bookCheckIn, bookCheckOut)} night{nightsBetween(bookCheckIn, bookCheckOut) === 1 ? '' : 's'}
+                  </div>
+                </div>
+
+                <a className="bookingFeatureButton" href={bookingUrl} target="_blank" rel="noreferrer">
+                  Check availability
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="section sectionBottom">
         <div className="container">
           <div className="grid2">
@@ -724,24 +826,25 @@ useEffect(() => {
                     <div className="luxMapCardTitle">Vanara Resort &amp; Spa</div>
                     <div className="luxMapCardText">Clifftop setting in Uluwatu, Bali</div>
                   </div>
-                  <div className="luxMapActions luxMapActions--overlay">
-                    <a
-                      className="luxMapLink"
-                      href="https://www.google.com/maps/@-8.8421164,115.1117122,17z?entry=ttu&g_ep=EgoyMDI2MDMyOS4wIKXMDSoASAFQAw%3D%3D"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Open map
-                    </a>
-                    <a
-                      className="luxMapButton"
-                      href="https://www.google.com/maps/dir/?api=1&destination=-8.8421164,115.1117122"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Get directions
-                    </a>
-                  </div>
+                </div>
+
+                <div className="luxMapActions">
+                  <a
+                    className="luxMapLink"
+                    href="https://www.google.com/maps/@-8.8421164,115.1117122,17z?entry=ttu&g_ep=EgoyMDI2MDMyOS4wIKXMDSoASAFQAw%3D%3D"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Open map
+                  </a>
+                  <a
+                    className="luxMapButton"
+                    href="https://www.google.com/maps/dir/?api=1&destination=-8.8421164,115.1117122"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Get directions
+                  </a>
                 </div>
               </div>
             </div>
