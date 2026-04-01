@@ -3500,7 +3500,7 @@ h2{
   overflow: hidden;
   border-radius: 26px;
   border: 0;
-  background: #f4eee4;
+  background: #ddd4c7;
   box-shadow: 0 24px 74px rgba(0,0,0,.10);
 }
 
@@ -3515,10 +3515,6 @@ h2{
 
 .experienceMosaicItem:hover img{
   transform: scale(1.04);
-}
-
-.experienceMosaicItem--sunset img{
-  object-position: center 42%;
 }
 
 .experienceMosaicOverlay{
@@ -3768,15 +3764,15 @@ h2{
 .uVillasCarousel.revealBlock img,
 .imagePlaceholder.revealBlock img,
 .experienceMosaicItem.revealBlock img{
-  transform: none;
-  transition: transform .45s ease;
+  transform: scale(1.14);
+  transition: transform 1.4s cubic-bezier(.22,1,.36,1);
 }
 
 .uDiningCarousel.revealBlock.is-revealed img,
 .uVillasCarousel.revealBlock.is-revealed img,
 .imagePlaceholder.revealBlock.is-revealed img,
 .experienceMosaicItem.revealBlock.is-revealed img{
-  transform: none;
+  transform: scale(1.02);
 }
 
 .revealBlock::after{
@@ -3813,22 +3809,16 @@ h2{
 
   .uDiningCarousel.revealBlock img,
   .uVillasCarousel.revealBlock img,
-  .imagePlaceholder.revealBlock img{
-    transform: scale(1.08);
-  }
-
+  .imagePlaceholder.revealBlock img,
   .experienceMosaicItem.revealBlock img{
-    transform: none;
+    transform: scale(1.08);
   }
 
   .uDiningCarousel.revealBlock.is-revealed img,
   .uVillasCarousel.revealBlock.is-revealed img,
-  .imagePlaceholder.revealBlock.is-revealed img{
-    transform: scale(1.01);
-  }
-
+  .imagePlaceholder.revealBlock.is-revealed img,
   .experienceMosaicItem.revealBlock.is-revealed img{
-    transform: none;
+    transform: scale(1.01);
   }
 }
 
@@ -4856,142 +4846,160 @@ h2{
 
 
 /* =========================
-   LUXURY SITE LOADER
+   COOKIE POPUP
 ========================= */
-.siteLoader{
+.cookiePopup{
   position: fixed;
-  inset: 0;
-  z-index: 5000;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  z-index: 3400;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background:
-    radial-gradient(120% 120% at 50% 18%, rgba(255,255,255,.34), rgba(255,255,255,0) 38%),
-    linear-gradient(180deg, #f6f1e8 0%, #eee4d6 54%, #e4d7c7 100%);
-  transition: opacity .9s ease, visibility .9s ease;
-}
-
-.siteLoader.is-visible{
-  opacity: 1;
-  visibility: visible;
-}
-
-.siteLoader.is-leaving{
-  opacity: 0;
-  visibility: hidden;
   pointer-events: none;
 }
 
-.siteLoaderBackdrop{
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(135deg, rgba(120,96,72,.08), rgba(255,255,255,0) 42%),
-    radial-gradient(70% 60% at 50% 82%, rgba(83,61,38,.10), rgba(83,61,38,0) 70%);
+.cookiePopupInner{
+  width: min(720px, 100%);
+  pointer-events: auto;
+  border-radius: 24px;
+  border: 1px solid rgba(90,73,53,.12);
+  background: rgba(246,241,232,.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 28px 80px rgba(0,0,0,.14);
+  padding: 22px 24px;
 }
 
-.siteLoaderBackdrop::after{
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: .14;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.52'/%3E%3C/svg%3E");
-  mix-blend-mode: soft-light;
-}
-
-.siteLoaderInner{
-  position: relative;
-  z-index: 1;
-  width: min(560px, calc(100vw - 48px));
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  color: #2a2118;
-}
-
-.siteLoaderKicker{
-  font-size: 11px;
-  letter-spacing: .34em;
+.cookiePopupEyebrow{
+  font-size: 10px;
+  letter-spacing: .28em;
   text-transform: uppercase;
-  color: rgba(42,33,24,.56);
-  margin-bottom: 18px;
-  animation: loaderFadeUp 1s ease both;
+  color: rgba(31,31,29,.52);
+  margin-bottom: 10px;
 }
 
-.siteLoaderTitle{
+.cookiePopupTitle{
   font-family: var(--serif);
-  font-size: clamp(44px, 6vw, 76px);
-  line-height: .96;
-  letter-spacing: -.02em;
-  margin-bottom: 26px;
-  animation: loaderFadeUp 1s ease .12s both;
+  font-size: 30px;
+  line-height: 1.02;
+  color: var(--ink);
+  margin-bottom: 10px;
 }
 
-.siteLoaderPercent{
-  margin-bottom: 14px;
-  font-size: 12px;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: rgba(42,33,24,.62);
-  animation: loaderFadeUp 1s ease .2s both;
+.cookiePopupText{
+  margin: 0;
+  max-width: 58ch;
+  color: rgba(31,31,29,.72);
+  font-size: 14px;
+  line-height: 1.75;
 }
 
-.siteLoaderLine{
-  width: min(320px, 72vw);
-  height: 2px;
-  background: rgba(42,33,24,.12);
-  overflow: hidden;
-  transform-origin: center;
-  animation: loaderFadeUp 1s ease .26s both;
-}
-
-.siteLoaderLineFill{
-  display: block;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(92,69,45,.78) 0%, rgba(42,33,24,.96) 100%);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform .22s ease-out;
-}
-
-.siteLoaderNote{
+.cookiePopupActions{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
   margin-top: 18px;
-  font-size: 11px;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  color: rgba(42,33,24,.48);
-  animation: loaderFadeUp 1s ease .38s both;
 }
 
-@keyframes loaderFadeUp{
-  from{ opacity: 0; transform: translateY(18px); }
-  to{ opacity: 1; transform: translateY(0); }
+.cookiePopupLink,
+.cookiePopupButton{
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.cookiePopupLink{
+  color: rgba(31,31,29,.74);
+  border-bottom: 1px solid rgba(31,31,29,.24);
+  border-radius: 0;
+  min-height: auto;
+  padding: 0 0 6px;
+}
+
+.cookiePopupButton{
+  border: 1px solid rgba(31,31,29,.12);
+  background: rgba(31,31,29,.94);
+  color: #fff;
+  cursor: pointer;
+  transition: transform .18s ease, background .18s ease, border-color .18s ease;
+}
+
+.cookiePopupButton:hover{
+  transform: translateY(-1px);
+  background: rgba(31,31,29,.84);
+}
+
+.cookiePopupButtonGhost{
+  background: rgba(255,255,255,.44);
+  color: rgba(31,31,29,.88);
+}
+
+.cookiePopupButtonGhost:hover{
+  background: rgba(255,255,255,.68);
 }
 
 @media (max-width: 640px){
-  .siteLoaderInner{
-    width: min(420px, calc(100vw - 40px));
+  .cookiePopup{
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
   }
 
-  .siteLoaderTitle{
-    font-size: clamp(38px, 10vw, 54px);
-    margin-bottom: 22px;
+  .cookiePopupInner{
+    padding: 18px 16px;
+    border-radius: 20px;
   }
 
-  .siteLoaderKicker,
-  .siteLoaderNote{
-    letter-spacing: .24em;
+  .cookiePopupTitle{
+    font-size: 24px;
+  }
+
+  .cookiePopupActions{
+    gap: 10px;
+  }
+
+  .cookiePopupButton{
+    flex: 1 1 calc(50% - 5px);
   }
 }
 
-@media (prefers-reduced-motion: reduce){
-  .siteLoader,
-  .siteLoader *,
-  .siteLoader *::before,
-  .siteLoader *::after{
-    animation: none !important;
-    transition: none !important;
+.cookieManageButton{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 3390;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(90,73,53,.12);
+  background: rgba(246,241,232,.88);
+  color: rgba(31,31,29,.86);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 18px 48px rgba(0,0,0,.12);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.cookieManageButton:hover{
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px){
+  .cookieManageButton{
+    right: 12px;
+    bottom: 12px;
+    min-height: 38px;
+    padding: 0 14px;
   }
 }
