@@ -3452,7 +3452,8 @@ h2{
 /* ===== FINAL mobile alignment FIX (match Resort/Experience) ===== */
 @media (max-width: 980px){
   .sectionVillasFeature .split > :last-child,
-  .sectionDiningFeature .split > :last-child{
+  .sectionDiningFeature .split > :last-child,
+  .sectionWeddings .split > :last-child{
     padding-left: 0 !important;
     padding-right: 0 !important;
     margin: 0 !important;
@@ -3460,7 +3461,8 @@ h2{
 
   /* use same container padding as other sections */
   .sectionVillasFeature .container,
-  .sectionDiningFeature .container{
+  .sectionDiningFeature .container,
+  .sectionWeddings .container{
     padding-left: 24px !important;
     padding-right: 24px !important;
   }
@@ -3469,7 +3471,8 @@ h2{
 @media (max-width: 520px){
   .sectionVillasFeature .container,
   .sectionDiningFeature .container,
-  .sectionYoga .container{
+  .sectionYoga .container,
+  .sectionWeddings .container{
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
@@ -3674,7 +3677,8 @@ h2{
 /* ===== FINAL mobile alignment FIX (match Resort/Experience) ===== */
 @media (max-width: 980px){
   .sectionVillasFeature .split > :last-child,
-  .sectionDiningFeature .split > :last-child{
+  .sectionDiningFeature .split > :last-child,
+  .sectionWeddings .split > :last-child{
     padding-left: 0 !important;
     padding-right: 0 !important;
     margin: 0 !important;
@@ -3682,7 +3686,8 @@ h2{
 
   /* use same container padding as other sections */
   .sectionVillasFeature .container,
-  .sectionDiningFeature .container{
+  .sectionDiningFeature .container,
+  .sectionWeddings .container{
     padding-left: 24px !important;
     padding-right: 24px !important;
   }
@@ -3690,7 +3695,8 @@ h2{
 
 @media (max-width: 520px){
   .sectionVillasFeature .container,
-  .sectionDiningFeature .container{
+  .sectionDiningFeature .container,
+  .sectionWeddings .container{
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
