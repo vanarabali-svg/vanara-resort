@@ -1829,33 +1829,6 @@ body.is-scrolled .nav .ss-menuBtn{ color: var(--ink); }
   display: block;
 }
 
-/* If autoplay is blocked on some phones, show a subtle "Tap to play" pill */
-.heroVideoTap{
-  position: absolute;
-  left: 50%;
-  bottom: 22px;
-  transform: translateX(-50%);
-  z-index: 3;
-  height: 42px;
-  padding: 0 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.38);
-  background: rgba(0,0,0,.22);
-  color: rgba(255,255,255,.92);
-  font-size: 12px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  cursor: pointer;
-}
-
-.heroVideoTap:hover{ background: rgba(0,0,0,.30); }
-
-@media (max-width: 520px){
-  .heroVideoTap{ bottom: 16px; height: 40px; padding: 0 14px; font-size: 11px; }
-}
-
 
 /* ==================================================
    DINING PHOTO SLIDER (3 photos, auto)
@@ -5105,4 +5078,28 @@ h2{
 
 @media (prefers-reduced-motion: reduce){
   .siteLoader, .siteLoaderBar span{ transition: none !important; }
+}
+
+
+/* =========================
+   PRELOAD CONTENT HIDE
+========================= */
+body.site-preload{
+  background:
+    radial-gradient(120% 120% at 50% 16%, rgba(255,255,255,.34), rgba(255,255,255,0) 42%),
+    linear-gradient(180deg, #f7f2ea 0%, #f2eadf 48%, #ede2d4 100%);
+}
+
+body.site-preload .siteAppShell{
+  opacity: 0;
+  visibility: hidden;
+}
+
+.siteAppShell{
+  transition: opacity .35s ease, visibility .35s ease;
+}
+
+.siteAppShell.is-hidden{
+  opacity: 0;
+  visibility: hidden;
 }

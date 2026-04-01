@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { type Locale, dateLocales, getDictionary, withLang } from '../lib/i18n'
 
 function useScrollZoom(ref: any, opts?: { min?: number; max?: number; start?: number; end?: number }) {
@@ -25,6 +26,32 @@ function formatDateInput(date: Date) { const y = date.getFullYear(); const m = S
 function parseDateInput(value: string) { const [y, m, d] = value.split('-').map(Number); return new Date(y, (m || 1) - 1, d || 1) }
 function nightsBetween(start: string, end: string) { if (!start || !end) return 0; const a = startOfDay(parseDateInput(start)).getTime(); const b = startOfDay(parseDateInput(end)).getTime(); return Math.max(0, Math.round((b - a) / 86400000)) }
 function formatDisplayDate(value: string, lang: Locale) { if (!value) return '—'; return new Intl.DateTimeFormat(dateLocales[lang], { month: 'short', day: 'numeric' }).format(parseDateInput(value)) }
+
+
+function useAutoplayInView() {
+  const ref = useRef<HTMLDivElement | null>(null)
+  const [isInView, setIsInView] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting && entry.intersectionRatio > 0.35)
+      },
+      {
+        threshold: [0, 0.2, 0.35, 0.5, 0.7],
+        rootMargin: '0px 0px -10% 0px',
+      }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return { ref, isInView }
+}
 
 function useLockedSwipe(onPrev: () => void, onNext: () => void) {
   const touchRef = useRef<{ x: number; y: number; locked: boolean } | null>(null)
@@ -63,24 +90,24 @@ function DiningCarousel() {
   const photos = useMemo(() => [
     { src: '/dining-1.webp', alt: 'Dining at Vanara' }, { src: '/dining-2.webp', alt: 'Dining setting' }, { src: '/dining-3.webp', alt: 'Chef & fresh cuisine' }, { src: '/dining-4.webp', alt: 'Sunset dining' },
   ], [])
-  const [active, setActive] = useState(0); const [prev, setPrev] = useState<number | null>(null); const pausedRef = useRef(false); const zoomRef = useRef<HTMLDivElement | null>(null)
+  const [active, setActive] = useState(0); const [prev, setPrev] = useState<number | null>(null); const pausedRef = useRef(false); const { ref: inViewRef, isInView } = useAutoplayInView(); const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
   const go = (i: number) => { const idx = (i + photos.length) % photos.length; setPrev(active); setActive(idx); window.setTimeout(() => setPrev(null), 650) }
   const prevSlide = () => go(active - 1); const nextSlide = () => go(active + 1)
   const { onTouchStart, onTouchMove, onTouchEnd } = useLockedSwipe(prevSlide, nextSlide)
-  useEffect(() => { const id = window.setInterval(() => { if (pausedRef.current) return; go(active + 1) }, 5200); return () => window.clearInterval(id) }, [active, photos.length])
-  return <section className="uDining" aria-label="Dining"><div className="uDiningCarousel revealBlock" ref={zoomRef} onMouseEnter={() => (pausedRef.current = true)} onMouseLeave={() => (pausedRef.current = false)} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} aria-label="Dining carousel"><div className="uDiningStage" aria-hidden="true">{photos.map((p, i) => { const isActive = i === active; const isPrev = prev !== null && i === prev; return <div key={p.src} className={`uDiningSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}><img className="uDiningImg" src={p.src} alt={p.alt} draggable={false} /></div> })}</div><div className="uDiningShade" aria-hidden="true" /><button type="button" className="carouselArrow carouselArrow--prev" aria-label="Previous dining photo" onClick={prevSlide}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg></button><button type="button" className="carouselArrow carouselArrow--next" aria-label="Next dining photo" onClick={nextSlide}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></button><div className="uDiningDots" aria-label="Dining carousel navigation">{photos.map((_, i) => <button key={i} type="button" className={`uDiningDot ${i === active ? 'is-active' : ''}`} aria-label={`Show dining photo ${i + 1}`} onClick={() => go(i)} />)}</div></div></section>
+  useEffect(() => { if (!isInView) return; const id = window.setInterval(() => { if (pausedRef.current || !isInView) return; go(active + 1) }, 5200); return () => window.clearInterval(id) }, [active, isInView, photos.length])
+  return <section className="uDining" aria-label="Dining"><div className="uDiningCarousel revealBlock" ref={(node) => { zoomRef.current = node; inViewRef.current = node }} onMouseEnter={() => (pausedRef.current = true)} onMouseLeave={() => (pausedRef.current = false)} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} aria-label="Dining carousel"><div className="uDiningStage" aria-hidden="true">{photos.map((p, i) => { const isActive = i === active; const isPrev = prev !== null && i === prev; return <div key={p.src} className={`uDiningSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}><img className="uDiningImg" src={p.src} alt={p.alt} draggable={false} /></div> })}</div><div className="uDiningShade" aria-hidden="true" /><button type="button" className="carouselArrow carouselArrow--prev" aria-label="Previous dining photo" onClick={prevSlide}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg></button><button type="button" className="carouselArrow carouselArrow--next" aria-label="Next dining photo" onClick={nextSlide}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></button><div className="uDiningDots" aria-label="Dining carousel navigation">{photos.map((_, i) => <button key={i} type="button" className={`uDiningDot ${i === active ? 'is-active' : ''}`} aria-label={`Show dining photo ${i + 1}`} onClick={() => go(i)} />)}</div></div></section>
 }
 
 function VillasCarousel() {
   const photos = useMemo(() => [{ src: '/villas-1.webp', alt: 'Villa at Vanara' }, { src: '/villas-2.webp', alt: 'Villa terrace' }, { src: '/villas-3.webp', alt: 'Ocean view villa' }], [])
-  const [active, setActive] = useState(0); const [prev, setPrev] = useState<number | null>(null); const pausedRef = useRef(false); const zoomRef = useRef<HTMLDivElement | null>(null)
+  const [active, setActive] = useState(0); const [prev, setPrev] = useState<number | null>(null); const pausedRef = useRef(false); const { ref: inViewRef, isInView } = useAutoplayInView(); const zoomRef = useRef<HTMLDivElement | null>(null)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
   const go = (i: number) => { const idx = (i + photos.length) % photos.length; setPrev(active); setActive(idx); window.setTimeout(() => setPrev(null), 650) }
   const prevSlide = () => go(active - 1); const nextSlide = () => go(active + 1)
   const { onTouchStart, onTouchMove, onTouchEnd } = useLockedSwipe(prevSlide, nextSlide)
-  useEffect(() => { const id = window.setInterval(() => { if (pausedRef.current) return; go(active + 1) }, 5600); return () => window.clearInterval(id) }, [active, photos.length])
-  return <div className="uVillasCarousel revealBlock" ref={zoomRef} onMouseEnter={() => (pausedRef.current = true)} onMouseLeave={() => (pausedRef.current = false)} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} aria-label="Villas carousel"><div className="uVillasStage" aria-hidden="true">{photos.map((p, i) => { const isActive = i === active; const isPrev = prev !== null && i === prev; return <div key={p.src} className={`uVillasSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}><img className="uVillasImg" src={p.src} alt={p.alt} draggable={false} /></div> })}</div><div className="uVillasShade" aria-hidden="true" /><button type="button" className="carouselArrow carouselArrow--prev" aria-label="Previous villa photo" onClick={prevSlide}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg></button><button type="button" className="carouselArrow carouselArrow--next" aria-label="Next villa photo" onClick={nextSlide}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></button><div className="uVillasDots" aria-label="Villas carousel navigation">{photos.map((_, i) => <button key={i} type="button" className={`uVillasDot ${i === active ? 'is-active' : ''}`} aria-label={`Show villa photo ${i + 1}`} onClick={() => go(i)} />)}</div></div>
+  useEffect(() => { if (!isInView) return; const id = window.setInterval(() => { if (pausedRef.current || !isInView) return; go(active + 1) }, 5600); return () => window.clearInterval(id) }, [active, isInView, photos.length])
+  return <div className="uVillasCarousel revealBlock" ref={(node) => { zoomRef.current = node; inViewRef.current = node }} onMouseEnter={() => (pausedRef.current = true)} onMouseLeave={() => (pausedRef.current = false)} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd} aria-label="Villas carousel"><div className="uVillasStage" aria-hidden="true">{photos.map((p, i) => { const isActive = i === active; const isPrev = prev !== null && i === prev; return <div key={p.src} className={`uVillasSlide ${isActive ? 'is-active' : ''} ${isPrev ? 'is-prev' : ''}`}><img className="uVillasImg" src={p.src} alt={p.alt} draggable={false} /></div> })}</div><div className="uVillasShade" aria-hidden="true" /><button type="button" className="carouselArrow carouselArrow--prev" aria-label="Previous villa photo" onClick={prevSlide}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg></button><button type="button" className="carouselArrow carouselArrow--next" aria-label="Next villa photo" onClick={nextSlide}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></button><div className="uVillasDots" aria-label="Villas carousel navigation">{photos.map((_, i) => <button key={i} type="button" className={`uVillasDot ${i === active ? 'is-active' : ''}`} aria-label={`Show villa photo ${i + 1}`} onClick={() => go(i)} />)}</div></div>
 }
 
 function ExperienceMosaicGrid({ lang }: { lang: Locale }) {
@@ -98,8 +125,8 @@ function ExperienceMosaicGrid({ lang }: { lang: Locale }) {
 
 export default function HomePage({ lang }: { lang: Locale }) {
   const t = getDictionary(lang)
+  const pathname = usePathname()
   const [heroVideoOk, setHeroVideoOk] = useState(true)
-  const [needsTap, setNeedsTap] = useState(false)
   const heroVideoRef = useRef<HTMLVideoElement | null>(null)
   const today = startOfDay(new Date())
   const [bookCheckIn, setBookCheckIn] = useState(formatDateInput(today))
@@ -108,10 +135,10 @@ export default function HomePage({ lang }: { lang: Locale }) {
   const [bookRooms, setBookRooms] = useState(1)
   const bookingUrl = useMemo(() => { const params = new URLSearchParams(); params.set('arrival', bookCheckIn); params.set('departure', bookCheckOut); params.set('checkInDate', bookCheckIn); params.set('checkOutDate', bookCheckOut); params.set('rooms', String(bookRooms)); params.set('adults', String(bookAdults)); params.set('children', '0'); params.set('items[0][adults]', String(bookAdults)); params.set('items[0][children]', '0'); params.set('items[0][infants]', '0'); params.set('items[0][rooms]', String(bookRooms)); params.set('currency', 'IDR'); params.set('locale', lang === 'cn' ? 'zh' : lang); return `https://book-directonline.com/properties/vanararesortspa?${params.toString()}` }, [bookAdults, bookCheckIn, bookCheckOut, bookRooms, lang])
 
-  useEffect(() => { const v = heroVideoRef.current; if (!v) return; let resumeTimer: number | null = null; const clearResumeTimer = () => { if (resumeTimer != null) window.clearTimeout(resumeTimer); resumeTimer = null }; const tryPlay = async () => { clearResumeTimer(); try { v.muted = true; await v.play(); setNeedsTap(false) } catch { setNeedsTap(true) } }; const scheduleResume = () => { clearResumeTimer(); resumeTimer = window.setTimeout(() => { if (document.hidden) return; if (v.paused) tryPlay() }, 350) }; const onVisibility = () => { if (!document.hidden) tryPlay() }; const id = window.setTimeout(tryPlay, 60); document.addEventListener('visibilitychange', onVisibility); v.addEventListener('pause', scheduleResume); v.addEventListener('waiting', scheduleResume); v.addEventListener('stalled', scheduleResume); v.addEventListener('canplay', tryPlay); return () => { window.clearTimeout(id); clearResumeTimer(); document.removeEventListener('visibilitychange', onVisibility); v.removeEventListener('pause', scheduleResume); v.removeEventListener('waiting', scheduleResume); v.removeEventListener('stalled', scheduleResume); v.removeEventListener('canplay', tryPlay) } }, [])
+  useEffect(() => { const v = heroVideoRef.current; if (!v) return; let resumeTimer: number | null = null; const clearResumeTimer = () => { if (resumeTimer != null) window.clearTimeout(resumeTimer); resumeTimer = null }; const tryPlay = async () => { clearResumeTimer(); try { v.muted = true; v.defaultMuted = true; v.playsInline = true; v.load(); await v.play() } catch {} }; const scheduleResume = () => { clearResumeTimer(); resumeTimer = window.setTimeout(() => { if (document.hidden) return; if (v.paused) tryPlay() }, 350) }; const onVisibility = () => { if (!document.hidden) tryPlay() }; const id = window.setTimeout(tryPlay, 60); document.addEventListener('visibilitychange', onVisibility); window.addEventListener('pageshow', onVisibility); v.addEventListener('pause', scheduleResume); v.addEventListener('waiting', scheduleResume); v.addEventListener('stalled', scheduleResume); v.addEventListener('canplay', tryPlay); return () => { window.clearTimeout(id); clearResumeTimer(); document.removeEventListener('visibilitychange', onVisibility); window.removeEventListener('pageshow', onVisibility); v.removeEventListener('pause', scheduleResume); v.removeEventListener('waiting', scheduleResume); v.removeEventListener('stalled', scheduleResume); v.removeEventListener('canplay', tryPlay) } }, [lang, pathname])
   useEffect(() => { const elements = Array.from(document.querySelectorAll('.revealBlock')) as HTMLElement[]; if (!elements.length) return; const observer = new IntersectionObserver((entries) => { entries.forEach((entry) => { if (entry.isIntersecting) { const el = entry.target as HTMLElement; el.classList.add('is-revealed'); observer.unobserve(el) } }) }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }); elements.forEach((el) => observer.observe(el)); return () => observer.disconnect() }, [])
 
-  return <div className="home"><section className="hero hero--video" aria-label="Hero"><div className="heroVideo" aria-label="Vanara hero media">{heroVideoOk ? <video key="hero" ref={heroVideoRef} className="heroVideoEl" autoPlay muted playsInline loop preload="auto" controls={false} disablePictureInPicture poster="/hero-poster.jpg" onError={() => { setHeroVideoOk(false); setNeedsTap(false) }} onCanPlay={() => setHeroVideoOk(true)}><source src="/hero.mp4" type="video/mp4" /></video> : <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />}{needsTap && heroVideoOk && <button type="button" className="heroVideoTap" aria-label={t.home.heroTap} onClick={() => { const v = heroVideoRef.current; if (!v) return; v.play().then(() => setNeedsTap(false)).catch(() => setNeedsTap(true)) }}>{t.home.heroTap}</button>}</div><div className="heroShade" aria-hidden="true" /><div className="heroContent"><div className="heroKicker">{t.home.heroKicker}</div><h1 className="heroTitle">VANARA RESORT &amp; SPA</h1></div></section>
+  return <div className="home"><section className="hero hero--video" aria-label="Hero"><div className="heroVideo" aria-label="Vanara hero media">{heroVideoOk ? <video key={`hero-${lang}-${pathname}`} ref={heroVideoRef} className="heroVideoEl" autoPlay muted playsInline loop preload="auto" controls={false} disablePictureInPicture poster="/hero-poster.jpg" onError={() => { setHeroVideoOk(false) }} onCanPlay={() => setHeroVideoOk(true)}><source src="/hero.mp4" type="video/mp4" /></video> : <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />}</div><div className="heroShade" aria-hidden="true" /><div className="heroContent"><div className="heroKicker">{t.home.heroKicker}</div><h1 className="heroTitle">VANARA RESORT &amp; SPA</h1></div></section>
     <section className="section sectionIntro"><div className="container"><div className="eyebrow">{t.home.introEyebrow}</div><h2 className="h2">{t.home.introTitle}</h2><div className="copy" style={{ marginTop: 22 }}><p>{t.home.introP1}</p><p>{t.home.introP2}</p><p>{t.home.introP3}</p></div><div className="rule" /></div></section>
     <section className="section sectionVillasFeature"><div className="container"><div className="split split--rev"><VillasCarousel /><div><div className="eyebrow">{t.home.villasEyebrow}</div><h3 className="h3">{t.home.villasTitle}</h3><div className="copy"><p>{t.home.villasP1}</p><p>{t.home.villasP2}</p><p>{t.home.villasP3}</p></div><a className="textCta" href={withLang(lang, '/accommodation')}>{t.home.villasCta}</a></div></div></div></section>
     <section className="section sectionDiningFeature"><div className="container"><div className="split split--rev"><DiningCarousel /><div><div className="eyebrow">{t.home.kokoonEyebrow}</div><h3 className="h3">{t.home.kokoonTitle}</h3><div className="copy"><p>{t.home.kokoonP1}</p><p>{t.home.kokoonP2}</p></div><a className="textCta" href={withLang(lang, '/dine')}>{t.home.kokoonCta}</a></div></div></div></section>
