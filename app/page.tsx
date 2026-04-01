@@ -715,6 +715,7 @@ useEffect(() => {
                   />
                   <div className="luxMapTone" aria-hidden="true" />
                   <div className="luxMapGrain" aria-hidden="true" />
+                  <div className="luxMapPulse" aria-hidden="true" />
                   <div className="luxMapPin" aria-hidden="true">
                     <span className="luxMapPinDot" />
                   </div>
@@ -723,26 +724,25 @@ useEffect(() => {
                     <div className="luxMapCardTitle">Vanara Resort &amp; Spa</div>
                     <div className="luxMapCardText">Clifftop setting in Uluwatu, Bali</div>
                   </div>
+                  <div className="luxMapActions luxMapActions--overlay">
+                    <a
+                      className="luxMapLink"
+                      href="https://www.google.com/maps/@-8.8421164,115.1117122,17z?entry=ttu&g_ep=EgoyMDI2MDMyOS4wIKXMDSoASAFQAw%3D%3D"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Open map
+                    </a>
+                    <a
+                      className="luxMapButton"
+                      href="https://www.google.com/maps/dir/?api=1&destination=-8.8421164,115.1117122"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Get directions
+                    </a>
+                  </div>
                 </div>
-              </div>
-
-              <div className="luxMapActions">
-                <a
-                  className="luxMapLink"
-                  href="https://www.google.com/maps/@-8.8421164,115.1117122,17z?entry=ttu&g_ep=EgoyMDI2MDMyOS4wIKXMDSoASAFQAw%3D%3D"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Open map
-                </a>
-                <a
-                  className="luxMapButton"
-                  href="https://www.google.com/maps/dir/?api=1&destination=-8.8421164,115.1117122"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Get directions
-                </a>
               </div>
             </div>
 

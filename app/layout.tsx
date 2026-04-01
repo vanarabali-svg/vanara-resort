@@ -449,16 +449,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             <div className="footer-col">
               <div className="footer-head">Contact</div>
-              <a className="footer-link" href="mailto:info@vanara.life">info@vanara.life</a>
-              <div className="footer-text">Uluwatu, Bali</div>
-              <div className="footer-text">+62 (xxx) xxx xxxx</div>
+              <div className="footer-text">VANARA Resort &amp; Spa</div>
+              <div className="footer-text">PT. UWSUN ECO RESORT</div>
+              <div className="footer-text">Jl. Batu Nunggalan No.9, Pecatu, Uluwatu, Bali 80361</div>
+              <div className="footer-text">Phone / WhatsApp: <a className="footer-link" href="https://wa.me/628135356240">+62 813 5356 240</a></div>
+              <a className="footer-link" href="mailto:info@vanara.life">Email: info@vanara.life</a>
             </div>
 
             <div className="footer-col">
-              <div className="footer-head">Explore</div>
+              <div className="footer-head">Quick Links</div>
+              <Link className="footer-link" href="/about">About</Link>
               <Link className="footer-link" href="/accommodation">Villas</Link>
-              <Link className="footer-link" href="/experience">Experience</Link>
-              <Link className="footer-link" href="/dine">Dine</Link>
+              <Link className="footer-link" href="/#weddings">Weddings</Link>
+              <Link className="footer-link" href="/dine">Dining</Link>
+              <Link className="footer-link" href="/experience">Experiences</Link>
+              <Link className="footer-link" href="/connect">Contact</Link>
+            </div>
+
+            <div className="footer-col">
+              <div className="footer-head">Information</div>
+              <Link className="footer-link" href="/factsheet">Factsheet</Link>
+              <Link className="footer-link" href="/terms">Terms &amp; Conditions</Link>
+              <Link className="footer-link" href="/privacy">Privacy Policy</Link>
+              <Link className="footer-link" href="/legal">Legal Notice</Link>
             </div>
           </div>
 
