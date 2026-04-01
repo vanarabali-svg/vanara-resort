@@ -40,11 +40,12 @@ export default function SiteShell({ lang, children }: { lang: Locale; children: 
   const [adults, setAdults] = useState(2)
   const [childrenGuests, setChildrenGuests] = useState(0)
   const [cookieOpen, setCookieOpen] = useState(false)
+  const [hydrated, setHydrated] = useState(false)
   const [loadingVisible, setLoadingVisible] = useState(true)
   const [loadingDone, setLoadingDone] = useState(false)
-  const [loadingProgress, setLoadingProgress] = useState(0)
+  const [loadingProgress, setLoadingProgress] = useState(8)
   const loaderStartedRef = useRef(false)
-  const cookieConsentKey = 'vanara-cookie-consent-v3'
+  const cookieConsentKey = 'vanara-cookie-consent-v4'
   const monthA = visibleMonth
   const monthB = addMonths(visibleMonth, 1)
   const monthAGrid = useMemo(() => buildMonthGrid(monthA), [monthA])
@@ -125,39 +126,47 @@ export default function SiteShell({ lang, children }: { lang: Locale; children: 
 
   useEffect(() => { document.documentElement.lang = languageHtml[lang] }, [lang])
   useEffect(() => { const shouldForceScrolled = pathname !== `/${lang}`; const onScroll = () => document.body.classList.toggle('is-scrolled', shouldForceScrolled || window.scrollY > 10); onScroll(); window.addEventListener('scroll', onScroll, { passive: true }); return () => window.removeEventListener('scroll', onScroll) }, [pathname, lang])
+  useEffect(() => { setHydrated(true) }, [])
   useEffect(() => { const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') { setMenuOpen(false); setLangOpen(false); closeBooking() } }; window.addEventListener('keydown', onKeyDown); return () => window.removeEventListener('keydown', onKeyDown) }, [])
   useEffect(() => { document.body.style.overflow = menuOpen || langOpen || bookingOpen ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [menuOpen, langOpen, bookingOpen])
   useEffect(() => { try { const saved = window.localStorage.getItem(cookieConsentKey); setCookieOpen(!saved) } catch { setCookieOpen(true) } }, [])
   useEffect(() => {
-    if (loaderStartedRef.current) return
+    if (!hydrated || loaderStartedRef.current) return
     loaderStartedRef.current = true
-    let progress = 0
+    let progress = 8
     let frame = 0
     let finishTimer = 0
+    let watchdogTimer = 0
+    const finishLoader = () => {
+      setLoadingProgress(100)
+      setLoadingDone(true)
+      finishTimer = window.setTimeout(() => setLoadingVisible(false), 640)
+    }
     const tick = () => {
       progress = Math.min(100, progress + (progress < 72 ? 4 : progress < 90 ? 2 : 1))
       setLoadingProgress(progress)
       if (progress < 100) {
         frame = window.setTimeout(tick, progress < 72 ? 36 : progress < 90 ? 52 : 76)
       } else {
-        setLoadingDone(true)
-        finishTimer = window.setTimeout(() => setLoadingVisible(false), 640)
+        finishLoader()
       }
     }
-    const startTimer = window.setTimeout(tick, 140)
+    const startTimer = window.setTimeout(tick, 120)
+    watchdogTimer = window.setTimeout(finishLoader, 4200)
     return () => {
       window.clearTimeout(startTimer)
       window.clearTimeout(frame)
       window.clearTimeout(finishTimer)
+      window.clearTimeout(watchdogTimer)
     }
-  }, [])
+  }, [hydrated])
   const saveCookieConsent = (value: 'accepted' | 'declined') => { try { window.localStorage.setItem(cookieConsentKey, value) } catch {} setCookieOpen(false) }
   const summaryRooms = rooms === 1 ? `${rooms} ${t.layout.room}` : `${rooms} ${t.layout.roomsWord}`
   const summaryAdults = adults === 1 ? `${adults} ${t.layout.adult}` : `${adults} ${t.layout.adultsWord}`
 
   return (
     <>
-      {loadingVisible && (
+      {hydrated && loadingVisible && (
         <div className={`siteLoader ${loadingDone ? 'is-done' : ''}`} aria-hidden="true">
           <div className="siteLoaderInner">
             <div className="siteLoaderKicker">Vanara Resort &amp; Spa</div>
@@ -191,6 +200,7 @@ export default function SiteShell({ lang, children }: { lang: Locale; children: 
       <main>{children}</main>
 
       {cookieOpen && <div className="cookiePopup" role="dialog" aria-live="polite" aria-label={t.layout.cookieEyebrow}><div className="cookiePopupInner"><div className="cookiePopupEyebrow">{t.layout.cookieEyebrow}</div><div className="cookiePopupTitle">{t.layout.cookieTitle}</div><p className="cookiePopupText">{t.layout.cookieText}</p><div className="cookiePopupActions"><Link className="cookiePopupLink" href={withLang(lang, '/privacy')}>{t.layout.readPolicy}</Link><button type="button" className="cookiePopupButton cookiePopupButtonGhost" onClick={() => saveCookieConsent('declined')}>{t.layout.decline}</button><button type="button" className="cookiePopupButton" onClick={() => saveCookieConsent('accepted')}>{t.layout.accept}</button></div></div></div>}
+      {!cookieOpen && hydrated && <button type="button" className="cookieManageButton" onClick={() => setCookieOpen(true)}>{t.layout.cookieEyebrow}</button>}
 
       <footer className="footer"><div className="footer-inner"><div className="footer-brand"><div className="footer-name">Vanara Resort &amp; Spa</div><div className="footer-sub">Uluwatu, Bali</div><div className="footer-social" aria-label={t.layout.social}><a href="#" aria-label="Instagram" className="social-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1" /></svg></a><a href="#" aria-label="Facebook" className="social-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V6h-3c-2 0-4 2-4 4v3H7v3h3v5h3v-5h3l1-3h-4v-3c0-.6.4-1 1-1z" /></svg></a><a href="#" aria-label="X" className="social-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" /></svg></a></div></div><div className="footer-col"><div className="footer-head">{t.layout.footerContact}</div><div className="footer-text">VANARA Resort &amp; Spa</div><div className="footer-text">PT. UWSUN ECO RESORT</div><div className="footer-text">Jl. Batu Nunggalan No.9, Pecatu, Uluwatu, Bali 80361</div><div className="footer-text">Phone / WhatsApp: <a className="footer-link" href="https://wa.me/628135356240">+62 813 5356 240</a></div><a className="footer-link" href="mailto:info@vanara.life">Email: info@vanara.life</a></div><div className="footer-col"><div className="footer-head">{t.layout.footerQuickLinks}</div><Link className="footer-link" href={withLang(lang, '/about')}>{t.menu.about}</Link><Link className="footer-link" href={withLang(lang, '/accommodation')}>{t.menu.villas}</Link><Link className="footer-link" href={`/${lang}/#weddings`}>{t.layout.weddings}</Link><Link className="footer-link" href={withLang(lang, '/dine')}>{t.layout.dining}</Link><Link className="footer-link" href={withLang(lang, '/experience')}>{t.layout.experiences}</Link><Link className="footer-link" href={withLang(lang, '/connect')}>{t.menu.connect}</Link></div><div className="footer-col"><div className="footer-head">{t.layout.footerInformation}</div><Link className="footer-link" href={withLang(lang, '/factsheet')}>{t.layout.factsheet}</Link><Link className="footer-link" href={withLang(lang, '/terms')}>{t.layout.terms}</Link><Link className="footer-link" href={withLang(lang, '/privacy')}>{t.layout.privacy}</Link><Link className="footer-link" href={withLang(lang, '/legal')}>{t.layout.legal}</Link></div></div><div className="footer-copy">© {new Date().getFullYear()} Vanara Resort &amp; Spa</div></footer>
     </>
