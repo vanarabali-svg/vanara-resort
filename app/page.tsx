@@ -731,7 +731,7 @@ useEffect(() => {
 
             <div className="bookingFeatureCard">
               <div className="bookingFeatureGrid">
-                <label className="bookingField">
+                <label className="bookingField bookingFieldCheckIn">
                   <span>Check in</span>
                   <input
                     type="date"
