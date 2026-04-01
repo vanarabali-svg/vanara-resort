@@ -1,4 +1,9 @@
-const sections = [
+type Section = {
+  title: string
+  paragraphs: string[]
+}
+
+const sections: Section[] = [
   {
     title: 'Company Information',
     paragraphs: [
@@ -55,31 +60,37 @@ const sections = [
       'This Legal Notice is governed by and interpreted in accordance with the laws of the Republic of Indonesia.',
     ],
   },
-  {
-    title: 'Contact',
-    paragraphs: [
-      'For any legal or general inquiries, please contact:',
-      'info@vanara.life',
-      '+62 813 5356 240',
-    ],
-  },
-] as const
+]
 
 export default function LegalPage() {
   return (
     <main className="legalPage">
       <div className="container">
-        <div className="legalMeta">Vanara Resort &amp; Spa</div>
-        <h1 className="h2">Legal Notice</h1>
+        <div className="legalHero">
+          <div className="legalMeta">Vanara Resort & Spa</div>
+          <h1 className="h2">Legal Notice</h1>
+          <p className="legalIntro">
+            This page outlines the legal information, ownership details, and general terms governing the use of this website.
+          </p>
+        </div>
 
         {sections.map((section) => (
           <section className="legalSection" key={section.title}>
             <h2 className="legalSectionTitle">{section.title}</h2>
-            {section.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
+            {section.paragraphs.map((paragraph, index) => (
+              <p key={`${section.title}-p-${index}`}>{paragraph}</p>
             ))}
           </section>
         ))}
+
+        <section className="legalSection">
+          <h2 className="legalSectionTitle">Contact</h2>
+          <div className="legalContactCard">
+            <p>For any legal or general inquiries, please contact:</p>
+            <p>info@vanara.life</p>
+            <p>+62 813 5356 240</p>
+          </div>
+        </section>
       </div>
     </main>
   )

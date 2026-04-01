@@ -4349,3 +4349,104 @@ h2{
     bottom: 66px;
   }
 }
+
+
+/* =========================
+   LEGAL PAGES
+========================= */
+.legalPage{
+  padding-top: calc(var(--navH) + 56px);
+  padding-bottom: 96px;
+  background: var(--bg);
+}
+
+.legalPage .container{
+  max-width: 920px;
+}
+
+.legalHero{
+  margin-bottom: 34px;
+}
+
+.legalMeta{
+  display: inline-block;
+  margin-bottom: 16px;
+  font-size: 11px;
+  letter-spacing: .30em;
+  text-transform: uppercase;
+  color: rgba(31,31,29,.56);
+}
+
+.legalIntro{
+  max-width: 760px;
+  margin: 0;
+  color: rgba(31,31,29,.72);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.legalSection{
+  padding-top: 22px;
+  margin-top: 22px;
+  border-top: 1px solid rgba(0,0,0,.08);
+}
+
+.legalSectionTitle{
+  margin: 0 0 14px;
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.legalPage p{
+  margin: 0 0 12px;
+  color: rgba(31,31,29,.72);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.legalPage strong{
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.legalList{
+  margin: 0 0 14px;
+  padding-left: 22px;
+}
+
+.legalList li{
+  margin: 0 0 8px;
+  color: rgba(31,31,29,.72);
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.legalContactCard{
+  margin-top: 12px;
+  padding: 18px 18px 4px;
+  border-radius: 18px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(255,255,255,.42);
+}
+
+@media (max-width: 768px){
+  .legalPage{
+    padding-top: calc(var(--navH) + 34px);
+    padding-bottom: 72px;
+  }
+
+  .legalSectionTitle{
+    font-size: 25px;
+  }
+
+  .legalPage p,
+  .legalList li,
+  .legalIntro{
+    font-size: 14px;
+    line-height: 1.75;
+  }
+}

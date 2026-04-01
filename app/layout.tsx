@@ -4,6 +4,7 @@ import './globals.css'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 function startOfDay(date: Date) {
   const d = new Date(date)
@@ -70,6 +71,7 @@ function clampCount(value: number, min: number, max: number) {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname()
   const today = startOfDay(new Date())
   const defaultCheckIn = formatDateInput(today)
   const defaultCheckOut = formatDateInput(addDays(today, 1))
@@ -200,13 +202,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }
 
   useEffect(() => {
+    const shouldForceScrolled = pathname !== '/'
     const onScroll = () => {
-      document.body.classList.toggle('is-scrolled', window.scrollY > 10)
+      document.body.classList.toggle('is-scrolled', shouldForceScrolled || window.scrollY > 10)
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [pathname])
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {

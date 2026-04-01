@@ -1,4 +1,10 @@
-const sections = [
+type Section = {
+  title: string
+  paragraphs: string[]
+  list?: string[]
+}
+
+const sections: Section[] = [
   {
     title: 'Reservations & Payment',
     paragraphs: [
@@ -19,10 +25,12 @@ const sections = [
     title: 'Booking Channels',
     paragraphs: [
       'Vanara Resort & Spa accepts reservations through:',
-      'Official website (www.vanara.life)',
-      'Verified online travel agencies (including Booking.com, Expedia, Trip.com, and other authorized partners)',
       'Reservations made through unofficial or unverified third-party platforms may not be recognized by the resort.',
       'Guests are encouraged to book through official or trusted channels to ensure a valid reservation.',
+    ],
+    list: [
+      'Official website (www.vanara.life)',
+      'Verified online travel agencies (including Booking.com, Expedia, Trip.com, and other authorized partners)',
     ],
   },
   {
@@ -48,7 +56,8 @@ const sections = [
   },
   {
     title: 'Late Check-out Policy',
-    paragraphs: [
+    paragraphs: [],
+    list: [
       'Until 16:00: Subject to availability',
       'After 16:00: 50% of nightly rate',
       'After 20:00: Full nightly rate',
@@ -58,21 +67,24 @@ const sections = [
     title: 'Occupancy & Children Policy',
     paragraphs: [
       'Each villa has a maximum occupancy limit.',
+      'No extra beds are provided.',
+    ],
+    list: [
       'Children under 6 years: Complimentary (sharing existing bedding)',
       'Children 6–11 years: IDR 450,000 per night (including breakfast)',
       '12 years and above: Considered adults',
       'Additional adult: IDR 900,000 per night',
-      'No extra beds are provided.',
     ],
   },
   {
     title: 'Cancellation & No-Show',
     paragraphs: [
       'Direct Bookings:',
+    ],
+    list: [
       'Free cancellation up to 72 hours before arrival',
       'Late cancellation or no-show: 1 night charge',
-      'Non-Refundable Bookings:',
-      'Full payment required upon booking',
+      'Non-Refundable Bookings: Full payment required upon booking',
       'No refund for cancellation, modification, or no-show',
       'All times are based on local time (WITA).',
     ],
@@ -83,7 +95,11 @@ const sections = [
       'Guests are expected to respect the privacy and comfort of others.',
       'Vanara reserves the right to refuse service or terminate a stay in cases of:',
     ],
-    list: ['Excessive noise', 'Disruptive behavior', 'Damage to property'],
+    list: [
+      'Excessive noise',
+      'Disruptive behavior',
+      'Damage to property',
+    ],
   },
   {
     title: 'Smoking Policy',
@@ -105,6 +121,8 @@ const sections = [
     paragraphs: [
       'We welcome dogs and cats as part of your stay at Vanara.',
       'To ensure comfort for all guests, the following guidelines apply:',
+      'A cleaning and/or repair fee will apply for any damage caused by pets.',
+      'Vanara reserves the right to request removal of pets that disrupt the safety or comfort of other guests.',
     ],
     list: [
       'Maximum 2 pets per villa',
@@ -115,10 +133,6 @@ const sections = [
       'Pets are not permitted on furniture or dining surfaces',
       'Owners are responsible for cleaning after their pets',
       'Excessive noise or aggressive behavior is not permitted',
-    ],
-    tail: [
-      'A cleaning and/or repair fee will apply for any damage caused by pets.',
-      'Vanara reserves the right to request removal of pets that disrupt the safety or comfort of other guests.',
     ],
   },
   {
@@ -141,34 +155,33 @@ const sections = [
       'Vanara reserves the right to update these terms and conditions at any time without prior notice.',
     ],
   },
-] as const
+]
 
 export default function TermsPage() {
   return (
     <main className="legalPage">
       <div className="container">
-        <div className="legalMeta">Vanara Resort &amp; Spa</div>
-        <h1 className="h2">Terms &amp; Conditions</h1>
-        <p className="legalIntro">
-          All terms and conditions apply to bookings made through www.vanara.life and all official booking channels.
-        </p>
+        <div className="legalHero">
+          <div className="legalMeta">Vanara Resort & Spa</div>
+          <h1 className="h2">Terms & Conditions</h1>
+          <p className="legalIntro">
+            All terms and conditions apply to bookings made through www.vanara.life and all official booking channels.
+          </p>
+        </div>
 
         {sections.map((section) => (
           <section className="legalSection" key={section.title}>
             <h2 className="legalSectionTitle">{section.title}</h2>
-            {section.paragraphs.map((paragraph) => (
-              <p key={paragraph}><span>{paragraph}</span></p>
+            {section.paragraphs.map((paragraph, index) => (
+              <p key={`${section.title}-p-${index}`}>{paragraph}</p>
             ))}
             {section.list ? (
               <ul className="legalList">
-                {section.list.map((item) => (
-                  <li key={item}>{item}</li>
+                {section.list.map((item, index) => (
+                  <li key={`${section.title}-li-${index}`}>{item}</li>
                 ))}
               </ul>
             ) : null}
-            {section.tail?.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
           </section>
         ))}
       </div>

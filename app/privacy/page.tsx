@@ -1,4 +1,10 @@
-const sections = [
+type Section = {
+  title: string
+  paragraphs: string[]
+  list?: string[]
+}
+
+const sections: Section[] = [
   {
     title: 'Information We Collect',
     paragraphs: ['We may collect the following types of information:'],
@@ -53,8 +59,8 @@ const sections = [
       'Improve website functionality',
       'Analyze website traffic and usage',
       'Enhance user experience',
+      'You may disable cookies through your browser settings if preferred.',
     ],
-    tail: ['You may disable cookies through your browser settings if preferred.'],
   },
   {
     title: 'Your Rights',
@@ -63,12 +69,14 @@ const sections = [
       'Access your personal data',
       'Request correction or updates',
       'Request deletion of your data',
+      'To exercise these rights, please contact us using the details below.',
     ],
-    tail: ['To exercise these rights, please contact us using the details below.'],
   },
   {
     title: 'Data Retention',
-    paragraphs: ['We retain personal data only as long as necessary for operational, legal, and service purposes.'],
+    paragraphs: [
+      'We retain personal data only as long as necessary for operational, legal, and service purposes.',
+    ],
   },
   {
     title: 'Third-Party Links',
@@ -77,47 +85,46 @@ const sections = [
       'We are not responsible for the privacy practices or content of these external sites.',
     ],
   },
-  {
-    title: 'Contact',
-    paragraphs: [
-      'For any privacy-related inquiries or requests, please contact:',
-      'Vanara Resort & Spa',
-      'info@vanara.life',
-      '+62 813 5356 240',
-    ],
-  },
-] as const
+]
 
 export default function PrivacyPage() {
   return (
     <main className="legalPage">
       <div className="container">
-        <div className="legalMeta">Vanara Resort &amp; Spa</div>
-        <h1 className="h2">Privacy Policy</h1>
-        <p className="legalIntro">
-          Vanara Resort &amp; Spa respects your privacy and is committed to protecting your personal information.
-          This Privacy Policy explains how we collect, use, and safeguard your data when you interact with us through our website,
-          booking channels, or during your stay.
-        </p>
+        <div className="legalHero">
+          <div className="legalMeta">Vanara Resort & Spa</div>
+          <h1 className="h2">Privacy Policy</h1>
+          <p className="legalIntro">
+            Vanara Resort & Spa respects your privacy and is committed to protecting your personal information.
+            This Privacy Policy explains how we collect, use, and safeguard your data when you interact with us through our website,
+            booking channels, or during your stay.
+          </p>
+        </div>
 
         {sections.map((section) => (
           <section className="legalSection" key={section.title}>
             <h2 className="legalSectionTitle">{section.title}</h2>
-            {section.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
+            {section.paragraphs.map((paragraph, index) => (
+              <p key={`${section.title}-p-${index}`}>{paragraph}</p>
             ))}
             {section.list ? (
               <ul className="legalList">
-                {section.list.map((item) => (
-                  <li key={item}>{item}</li>
+                {section.list.map((item, index) => (
+                  <li key={`${section.title}-li-${index}`}>{item}</li>
                 ))}
               </ul>
             ) : null}
-            {section.tail?.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
           </section>
         ))}
+
+        <section className="legalSection">
+          <h2 className="legalSectionTitle">Contact</h2>
+          <div className="legalContactCard">
+            <p>Vanara Resort & Spa</p>
+            <p>info@vanara.life</p>
+            <p>+62 813 5356 240</p>
+          </div>
+        </section>
       </div>
     </main>
   )
