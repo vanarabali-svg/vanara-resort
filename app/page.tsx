@@ -47,6 +47,30 @@ function useScrollZoom(
   }, [ref, opts?.min, opts?.max, opts?.start, opts?.end])
 }
 
+
+function useCarouselVisibility(ref: React.RefObject<HTMLElement | null>, threshold = 0.45) {
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting)
+      },
+      {
+        threshold,
+      }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [ref, threshold])
+
+  return isVisible
+}
+
 function startOfDay(date: Date) {
   const d = new Date(date)
   d.setHours(0, 0, 0, 0)
@@ -139,6 +163,7 @@ function DiningUlamanCarousel4() {
   const pausedRef = useRef(false)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
+  const isVisible = useCarouselVisibility(zoomRef, 0.45)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
 
   const go = (i: number) => {
@@ -152,12 +177,15 @@ function DiningUlamanCarousel4() {
   const nextSlide = () => go(active + 1)
 
   useEffect(() => {
+    if (!isVisible) return
+
     const id = window.setInterval(() => {
       if (pausedRef.current) return
       go(active + 1)
     }, 5200)
+
     return () => window.clearInterval(id)
-  }, [active, photos.length])
+  }, [active, go, isVisible])
 
   const onTouchStart = (e: React.TouchEvent) => {
     const t = e.touches[0]
@@ -254,6 +282,7 @@ function VillasUlamanCarousel() {
   const pausedRef = useRef(false)
   const touchRef = useRef<{ x: number; y: number } | null>(null)
   const zoomRef = useRef<HTMLDivElement | null>(null)
+  const isVisible = useCarouselVisibility(zoomRef, 0.45)
   useScrollZoom(zoomRef as any, { min: 1.0, max: 1.06, start: 0.15, end: 0.85 })
 
   const go = (i: number) => {
@@ -267,12 +296,15 @@ function VillasUlamanCarousel() {
   const nextSlide = () => go(active + 1)
 
   useEffect(() => {
+    if (!isVisible) return
+
     const id = window.setInterval(() => {
       if (pausedRef.current) return
       go(active + 1)
     }, 5600)
+
     return () => window.clearInterval(id)
-  }, [active, photos.length])
+  }, [active, go, isVisible])
 
   const onTouchStart = (e: React.TouchEvent) => {
     const t = e.touches[0]
