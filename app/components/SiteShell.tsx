@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { type Locale, dateLocales, getDictionary, languageCodes, languageHtml, languageNames, locales, withLang } from '../lib/i18n'
 
@@ -40,6 +40,10 @@ export default function SiteShell({ lang, children }: { lang: Locale; children: 
   const [adults, setAdults] = useState(2)
   const [childrenGuests, setChildrenGuests] = useState(0)
   const [cookieOpen, setCookieOpen] = useState(false)
+  const [loadingVisible, setLoadingVisible] = useState(true)
+  const [loadingDone, setLoadingDone] = useState(false)
+  const [loadingProgress, setLoadingProgress] = useState(0)
+  const loaderStartedRef = useRef(false)
   const cookieConsentKey = 'vanara-cookie-consent-v3'
   const monthA = visibleMonth
   const monthB = addMonths(visibleMonth, 1)
@@ -124,12 +128,47 @@ export default function SiteShell({ lang, children }: { lang: Locale; children: 
   useEffect(() => { const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') { setMenuOpen(false); setLangOpen(false); closeBooking() } }; window.addEventListener('keydown', onKeyDown); return () => window.removeEventListener('keydown', onKeyDown) }, [])
   useEffect(() => { document.body.style.overflow = menuOpen || langOpen || bookingOpen ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [menuOpen, langOpen, bookingOpen])
   useEffect(() => { try { const saved = window.localStorage.getItem(cookieConsentKey); setCookieOpen(!saved) } catch { setCookieOpen(true) } }, [])
+  useEffect(() => {
+    if (loaderStartedRef.current) return
+    loaderStartedRef.current = true
+    let progress = 0
+    let frame = 0
+    let finishTimer = 0
+    const tick = () => {
+      progress = Math.min(100, progress + (progress < 72 ? 4 : progress < 90 ? 2 : 1))
+      setLoadingProgress(progress)
+      if (progress < 100) {
+        frame = window.setTimeout(tick, progress < 72 ? 36 : progress < 90 ? 52 : 76)
+      } else {
+        setLoadingDone(true)
+        finishTimer = window.setTimeout(() => setLoadingVisible(false), 640)
+      }
+    }
+    const startTimer = window.setTimeout(tick, 140)
+    return () => {
+      window.clearTimeout(startTimer)
+      window.clearTimeout(frame)
+      window.clearTimeout(finishTimer)
+    }
+  }, [])
   const saveCookieConsent = (value: 'accepted' | 'declined') => { try { window.localStorage.setItem(cookieConsentKey, value) } catch {} setCookieOpen(false) }
   const summaryRooms = rooms === 1 ? `${rooms} ${t.layout.room}` : `${rooms} ${t.layout.roomsWord}`
   const summaryAdults = adults === 1 ? `${adults} ${t.layout.adult}` : `${adults} ${t.layout.adultsWord}`
 
   return (
     <>
+      {loadingVisible && (
+        <div className={`siteLoader ${loadingDone ? 'is-done' : ''}`} aria-hidden="true">
+          <div className="siteLoaderInner">
+            <div className="siteLoaderKicker">Vanara Resort &amp; Spa</div>
+            <div className="siteLoaderTitle">A slower arrival</div>
+            <div className="siteLoaderMeta">{String(loadingProgress).padStart(2, '0')}%</div>
+            <div className="siteLoaderBar">
+              <span style={{ width: `${loadingProgress}%` }} />
+            </div>
+          </div>
+        </div>
+      )}
       <header className="nav">
         <div className="nav-inner">
           <div className="nav-left">
