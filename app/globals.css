@@ -4532,3 +4532,29 @@ h2{
     text-align: center !important;
   }
 }
+
+
+/* ===== Final mobile alignment match for Experiences ===== */
+@media (max-width: 980px){
+  .sectionYoga .split > :last-child{
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+    align-self: auto !important;
+  }
+
+  .sectionYoga .container{
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+@media (max-width: 520px){
+  .sectionYoga .container{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
