@@ -359,7 +359,7 @@ function ExperienceMosaicGrid() {
         src: '/experience-honeymoon.jpg',
         alt: 'Honeymoon and romantic experiences at Vanara',
         title: 'Honeymoon & Romantic Experiences',
-        size: 'landscape',
+        size: 'hero',
       },
       {
         src: '/experience-dining.jpg',
