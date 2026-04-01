@@ -399,7 +399,7 @@ function ExperienceMosaicGrid() {
     <div className="experienceMosaicWrap">
       <div className="experienceMosaic" aria-label="Experiences gallery">
         {items.map((item, index) => (
-          <article className={`experienceMosaicItem experienceMosaicItem--${item.size} revealBlock`} key={`${item.title}-${index}`}>
+          <article className={`experienceMosaicItem experienceMosaicItem--${item.size} ${item.title === 'Sunset Moments' ? 'experienceMosaicItem--sunset' : ''} revealBlock`} key={`${item.title}-${index}`}>
             <img src={item.src} alt={item.alt} draggable={false} />
             <div className="experienceMosaicOverlay" aria-hidden="true" />
             <div className="experienceMosaicLabel">{item.title}</div>
@@ -615,11 +615,10 @@ useEffect(() => {
               <div className="copy">
                 <p>Modern architecture, open space, and a strong connection to the surroundings define each villa at Vanara.</p>
                 <p>
-                  Positioned across the cliffs and within carefully designed gardens, the villas offer privacy and flexibility, where indoor and outdoor living come together effortlessly.
+                  Positioned across the cliffs and within carefully designed gardens, the villas offer privacy and a seamless flow between indoor and outdoor living.
                 </p>
                 <p>
-                 Some villas open toward the ocean, others are immersed in lush greenery, while select villas feature
-               private pools or elevated rooftop views.
+                 Some villas open toward the ocean, others are immersed in lush greenery, while select villas feature private pools and generous outdoor living areas.
                 </p>
               </div>
 

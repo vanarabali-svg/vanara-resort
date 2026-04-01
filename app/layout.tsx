@@ -88,6 +88,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [adults, setAdults] = useState(2)
   const [childrenGuests, setChildrenGuests] = useState(0)
   const [lang, setLang] = useState<'EN' | 'ID' | 'RU'>('EN')
+  const [siteLoading, setSiteLoading] = useState(true)
+  const [loaderVisible, setLoaderVisible] = useState(true)
 
   const monthA = visibleMonth
   const monthB = addMonths(visibleMonth, 1)
@@ -230,6 +232,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     }
   }, [menuOpen, langOpen, bookingOpen])
 
+  useEffect(() => {
+    const minimumLoader = window.setTimeout(() => {
+      setSiteLoading(false)
+    }, 1800)
+
+    const handleLoaded = () => {
+      window.setTimeout(() => setSiteLoading(false), 300)
+    }
+
+    if (document.readyState === 'complete') {
+      handleLoaded()
+    } else {
+      window.addEventListener('load', handleLoaded, { once: true })
+    }
+
+    return () => {
+      window.clearTimeout(minimumLoader)
+      window.removeEventListener('load', handleLoaded)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (siteLoading) return
+    const fadeTimer = window.setTimeout(() => setLoaderVisible(false), 900)
+    return () => window.clearTimeout(fadeTimer)
+  }, [siteLoading])
+
   return (
     <html lang="en">
       <head>
@@ -245,6 +274,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body>
+        {loaderVisible && (
+          <div className={`siteLoader ${siteLoading ? 'is-visible' : 'is-leaving'}`} aria-hidden="true">
+            <div className="siteLoaderBackdrop" />
+            <div className="siteLoaderInner">
+              <div className="siteLoaderKicker">Vanara Resort &amp; Spa</div>
+              <div className="siteLoaderTitle">A slower arrival</div>
+              <div className="siteLoaderLine">
+                <span className="siteLoaderLineFill" />
+              </div>
+              <div className="siteLoaderNote">Uluwatu · Bali</div>
+            </div>
+          </div>
+        )}
         <header className="nav">
           <div className="nav-inner">
             <div className="nav-left">
