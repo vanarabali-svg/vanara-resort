@@ -4699,27 +4699,29 @@ h2{
   }
 
   .bookingFeature{
-    gap: 34px;
+    gap: 30px;
   }
 
   .bookingFeatureIntro{
-    max-width: 560px;
-    gap: 14px;
+    max-width: 100%;
+    gap: 12px;
   }
 
   .bookingFeatureIntro .h3{
-    white-space: normal;
-    font-size: clamp(28px, 4.2vw, 40px);
-    line-height: 1.12;
+    white-space: nowrap;
+    max-width: none;
+    font-size: clamp(16px, 2.3vw, 22px);
+    line-height: 1.08;
   }
 
   .bookingFeatureCard{
-    max-width: 560px;
+    max-width: 430px;
+    margin: 0 auto;
   }
 
   .bookingFeatureGrid{
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px 26px;
+    gap: 16px 18px;
     align-items: end;
   }
 
@@ -4728,69 +4730,7 @@ h2{
     max-width: none;
     justify-self: stretch;
     width: 100%;
-  }
-
-  .bookingField input,
-  .bookingField select{
-    min-height: 44px;
-    padding-bottom: 8px;
-    font-size: 15px;
-  }
-
-  .bookingFeatureMeta{
-    margin-top: 18px;
-    padding-top: 18px;
-    border-top: 0;
-    justify-content: center;
-  }
-
-  .bookingFeatureSmall,
-  .bookingFeatureSummary{
-    display: none;
-  }
-
-  .bookingFeatureButton{
-    min-height: 50px;
-    padding: 0 26px;
-    min-width: 220px;
-  }
-}
-
-@media (max-width: 640px){
-  .sectionBookingFeature{
-    padding-top: 14px;
-  }
-
-  .bookingFeature{
-    gap: 26px;
-  }
-
-  .bookingFeatureIntro{
-    max-width: 320px;
-    padding: 0;
-    align-items: center;
-    text-align: center;
-    min-height: auto;
-    gap: 12px;
-  }
-
-  .bookingFeatureButtonIntro{
-    align-self: center;
-  }
-
-  .bookingFeatureIntro .h3{
-    max-width: 12ch;
-    font-size: clamp(24px, 8vw, 32px);
-  }
-
-  .bookingFeatureCard{
-    max-width: 330px;
-    margin: 0 auto;
-  }
-
-  .bookingFeatureGrid{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px 18px;
+    gap: 8px;
   }
 
   .bookingField span{
@@ -4803,11 +4743,92 @@ h2{
     min-height: 38px;
     padding-bottom: 6px;
     font-size: 14px;
+    text-align: center;
   }
 
   .bookingFeatureMeta{
-    margin-top: 14px;
-    padding-top: 10px;
+    margin-top: 16px;
+    padding-top: 0;
+    border-top: 0;
+    justify-content: center;
+  }
+
+  .bookingFeatureSmall,
+  .bookingFeatureSummary{
+    display: none;
+  }
+
+  .bookingFeatureButton{
+    min-height: 46px;
+    padding: 0 22px;
+    min-width: 220px;
+    border-color: rgba(110, 92, 68, 0.16);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+  }
+}
+
+@media (max-width: 640px){
+  .sectionBookingFeature{
+    padding-top: 14px;
+  }
+
+  .bookingFeature{
+    gap: 20px;
+  }
+
+  .bookingFeatureIntro{
+    max-width: 100%;
+    padding: 0;
+    align-items: center;
+    text-align: center;
+    min-height: auto;
+    gap: 10px;
+  }
+
+  .bookingFeatureButtonIntro{
+    align-self: center;
+    min-height: 42px;
+    padding: 0 18px;
+  }
+
+  .bookingFeatureIntro .h3{
+    white-space: nowrap;
+    max-width: none;
+    font-size: clamp(14px, 4.5vw, 17px);
+    line-height: 1.05;
+  }
+
+  .bookingFeatureCard{
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .bookingFeatureGrid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+  }
+
+  .bookingField{
+    gap: 6px;
+  }
+
+  .bookingField span{
+    font-size: 9px;
+    letter-spacing: 0.18em;
+  }
+
+  .bookingField input,
+  .bookingField select{
+    min-height: 34px;
+    padding-bottom: 5px;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .bookingFeatureMeta{
+    margin-top: 12px;
+    padding-top: 0;
     flex-direction: column;
     align-items: center;
     gap: 0;
@@ -4816,6 +4837,7 @@ h2{
   .bookingFeatureButton{
     width: 100%;
     min-width: 0;
-    min-height: 48px;
+    min-height: 44px;
+    border-radius: 999px;
   }
 }
