@@ -4795,9 +4795,9 @@ h2{
 
   .bookingFeatureIntro .h3{
     white-space: normal;
-    max-width: 10ch;
-    font-size: clamp(30px, 8.2vw, 44px);
-    line-height: .96;
+    max-width: 13ch;
+    font-size: clamp(28px, 7.2vw, 40px);
+    line-height: 1.02;
     letter-spacing: -0.02em;
     text-wrap: balance;
   }
