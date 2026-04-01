@@ -4464,3 +4464,68 @@ h2{
     line-height: 1.75;
   }
 }
+
+/* ===== Center split-section text beside image blocks on tablet/desktop ===== */
+@media (min-width: 560px){
+  .sectionVillasFeature .split,
+  .sectionDiningFeature .split,
+  .sectionYoga .split,
+  .sectionWeddings .split{
+    align-items: center !important;
+  }
+
+  .sectionVillasFeature .split > :first-child,
+  .sectionDiningFeature .split > :first-child,
+  .sectionYoga .split > :first-child,
+  .sectionWeddings .split > :first-child{
+    align-self: center !important;
+    margin-top: 0 !important;
+  }
+
+  .sectionVillasFeature .split > :last-child,
+  .sectionDiningFeature .split > :last-child,
+  .sectionYoga .split > :last-child,
+  .sectionWeddings .split > :last-child{
+    align-self: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    min-height: 100% !important;
+    margin: 0 !important;
+  }
+
+  .sectionYoga .split > :last-child,
+  .sectionWeddings .split > :last-child{
+    padding-left: 48px;
+  }
+}
+
+/* ===== Final desktop centering fix for Villas + Kokoon + Weddings ===== */
+@media (min-width: 900px){
+  .sectionVillasFeature .split,
+  .sectionDiningFeature .split,
+  .sectionWeddings .split{
+    align-items: center !important;
+  }
+
+  .sectionVillasFeature .split > :last-child,
+  .sectionDiningFeature .split > :last-child,
+  .sectionWeddings .split > :last-child{
+    align-self: center !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+
+  .sectionVillasFeature .textCta,
+  .sectionDiningFeature .textCta,
+  .sectionWeddings .textCta{
+    margin-top: 26px !important;
+    padding-top: 0 !important;
+    align-self: flex-start !important;
+  }
+}
