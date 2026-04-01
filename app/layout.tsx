@@ -90,6 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [lang, setLang] = useState<'EN' | 'ID' | 'RU'>('EN')
   const [siteLoading, setSiteLoading] = useState(true)
   const [loaderVisible, setLoaderVisible] = useState(true)
+  const [loaderPercent, setLoaderPercent] = useState(0)
 
   const monthA = visibleMonth
   const monthB = addMonths(visibleMonth, 1)
@@ -233,12 +234,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, [menuOpen, langOpen, bookingOpen])
 
   useEffect(() => {
+    let current = 0
+    let finished = false
+
+    const tick = window.setInterval(() => {
+      current = Math.min(current + (current < 72 ? 4 : current < 90 ? 2 : 1), finished ? 100 : 96)
+      setLoaderPercent(current)
+
+      if (finished && current >= 100) {
+        window.clearInterval(tick)
+        window.setTimeout(() => setSiteLoading(false), 180)
+      }
+    }, 48)
+
     const minimumLoader = window.setTimeout(() => {
-      setSiteLoading(false)
+      finished = true
     }, 1800)
 
     const handleLoaded = () => {
-      window.setTimeout(() => setSiteLoading(false), 300)
+      window.setTimeout(() => {
+        finished = true
+      }, 220)
     }
 
     if (document.readyState === 'complete') {
@@ -248,6 +264,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     }
 
     return () => {
+      window.clearInterval(tick)
       window.clearTimeout(minimumLoader)
       window.removeEventListener('load', handleLoaded)
     }
@@ -280,8 +297,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="siteLoaderInner">
               <div className="siteLoaderKicker">Vanara Resort &amp; Spa</div>
               <div className="siteLoaderTitle">A slower arrival</div>
+              <div className="siteLoaderPercent">{String(loaderPercent).padStart(2, '0')}%</div>
               <div className="siteLoaderLine">
-                <span className="siteLoaderLineFill" />
+                <span className="siteLoaderLineFill" style={{ transform: `scaleX(${loaderPercent / 100})` }} />
               </div>
               <div className="siteLoaderNote">Uluwatu · Bali</div>
             </div>
