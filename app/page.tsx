@@ -615,8 +615,7 @@ useEffect(() => {
               <div className="copy">
                 <p>Modern architecture, open space, and a strong connection to the surroundings define each villa at Vanara.</p>
                 <p>
-                  Positioned across the cliffs and within carefully designed gardens, the villas offer privacy and
-              flexibility, where indoor and outdoor living come together effortlessly.
+                  Positioned across the cliffs and within carefully designed gardens, the villas offer privacy and flexibility, where indoor and outdoor living come together effortlessly.
                 </p>
                 <p>
                  Some villas open toward the ocean, others are immersed in lush greenery, while select villas feature
