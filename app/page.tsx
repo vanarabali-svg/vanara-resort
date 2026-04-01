@@ -368,9 +368,9 @@ function ExperienceMosaicGrid() {
         size: 'square',
       },
       {
-        src: '/experience-surfing.jpg',
-        alt: 'Surfing in Uluwatu',
-        title: 'Surfing',
+        src: '/experience-sunset.jpg',
+        alt: 'Sunset Moments',
+        title: 'Sunset Moments',
         size: 'tall',
       },
       {
@@ -378,12 +378,6 @@ function ExperienceMosaicGrid() {
         alt: 'Paragliding above the cliffs',
         title: 'Paragliding',
         size: 'square',
-      },
-      {
-        src: '/experience-kecak.jpg',
-        alt: 'Kecak Dance in Uluwatu',
-        title: 'Kecak Dance',
-        size: 'landscape',
       },
       {
         src: '/experience-yoga.jpg',
