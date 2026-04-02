@@ -60,7 +60,7 @@ export function getDictionary(lang: Locale) {
         readPolicy: 'Read policy', decline: 'Decline', accept: 'Accept',
         footerContact: 'Contact', footerQuickLinks: 'Quick Links', footerInformation: 'Information',
         factsheet: 'Factsheet', terms: 'Terms & Conditions', privacy: 'Privacy Policy', legal: 'Legal Notice',
-        weddings: 'Weddings', dining: 'Kokoon', experiences: 'Experiences',
+        weddings: 'Weddings', dining: 'Dine', experiences: 'Experiences',
         openMap: 'Open map', getDirections: 'Get directions', social: 'Social media',
       },
       home: {
