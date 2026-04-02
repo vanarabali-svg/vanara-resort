@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { usePathname } from 'next/navigation'
 import { type Locale, dateLocales, getDictionary, withLang } from '../lib/i18n'
 
 function useScrollZoom(ref: any, opts?: { min?: number; max?: number; start?: number; end?: number }) {
@@ -125,11 +124,9 @@ function ExperienceMosaicGrid({ lang }: { lang: Locale }) {
 
 export default function HomePage({ lang }: { lang: Locale }) {
   const t = getDictionary(lang)
-  const pathname = usePathname()
   const [heroVideoOk, setHeroVideoOk] = useState(true)
+  const [needsTap, setNeedsTap] = useState(false)
   const heroVideoRef = useRef<HTMLVideoElement | null>(null)
-  const heroVideoSrc = '/hero.mp4'
-  const heroPosterSrc = '/hero-poster.jpg'
   const today = startOfDay(new Date())
   const [bookCheckIn, setBookCheckIn] = useState(formatDateInput(today))
   const [bookCheckOut, setBookCheckOut] = useState(formatDateInput(addDays(today, 1)))
@@ -141,96 +138,66 @@ export default function HomePage({ lang }: { lang: Locale }) {
     const v = heroVideoRef.current
     if (!v) return
 
-    let stopped = false
-    let retryInterval: number | null = null
-    const retryTimers: number[] = []
+    let resumeTimer: number | null = null
 
-    const clearRetries = () => {
-      if (retryInterval != null) window.clearInterval(retryInterval)
-      retryInterval = null
-      while (retryTimers.length) {
-        const id = retryTimers.pop()
-        if (id != null) window.clearTimeout(id)
-      }
+    const clearResumeTimer = () => {
+      if (resumeTimer != null) window.clearTimeout(resumeTimer)
+      resumeTimer = null
     }
-
-    const primeVideo = () => {
-      if (!v.isConnected) return
-      v.muted = true
-      v.defaultMuted = true
-      v.autoplay = true
-      v.loop = true
-      v.playsInline = true
-      v.preload = 'auto'
-      v.setAttribute('muted', '')
-      v.setAttribute('autoplay', '')
-      v.setAttribute('playsinline', '')
-      v.setAttribute('webkit-playsinline', 'true')
-    }
-
-    const isActuallyPlaying = () => !v.paused && !v.ended && v.readyState >= 2
 
     const tryPlay = async () => {
-      if (stopped || !v.isConnected || document.hidden || isActuallyPlaying()) return
-      primeVideo()
+      clearResumeTimer()
       try {
-        const playPromise = v.play()
-        if (playPromise && typeof playPromise.then === 'function') await playPromise
+        v.muted = true
+        v.defaultMuted = true
+        v.setAttribute('muted', '')
+        v.setAttribute('playsinline', '')
+        v.setAttribute('webkit-playsinline', 'true')
+        await v.play()
+        setNeedsTap(false)
+        setHeroVideoOk(true)
       } catch {
-        // ignore and retry below
+        setNeedsTap(true)
       }
     }
 
-    const onPlaying = () => {
-      clearRetries()
-      setHeroVideoOk(true)
+    const scheduleResume = () => {
+      clearResumeTimer()
+      resumeTimer = window.setTimeout(() => {
+        if (document.hidden) return
+        if (v.paused) void tryPlay()
+      }, 350)
     }
 
-    const scheduleRetry = (delay: number) => {
-      retryTimers.push(window.setTimeout(() => {
-        void tryPlay()
-      }, delay))
-    }
-
-    const onResume = () => {
+    const onVisibility = () => {
       if (!document.hidden) void tryPlay()
     }
 
-    setHeroVideoOk(true)
-    primeVideo()
-    scheduleRetry(0)
-    scheduleRetry(120)
-    scheduleRetry(420)
-    scheduleRetry(900)
-    scheduleRetry(1600)
-    scheduleRetry(2600)
-    retryInterval = window.setInterval(() => {
+    const id = window.setTimeout(() => {
       void tryPlay()
-    }, 900)
+    }, 60)
 
-    document.addEventListener('visibilitychange', onResume)
-    window.addEventListener('pageshow', onResume)
-    window.addEventListener('focus', onResume)
-    v.addEventListener('loadedmetadata', onResume)
-    v.addEventListener('loadeddata', onResume)
-    v.addEventListener('canplay', onResume)
-    v.addEventListener('playing', onPlaying)
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pageshow', onVisibility)
+    v.addEventListener('pause', scheduleResume)
+    v.addEventListener('waiting', scheduleResume)
+    v.addEventListener('stalled', scheduleResume)
+    v.addEventListener('canplay', tryPlay)
 
     return () => {
-      stopped = true
-      clearRetries()
-      document.removeEventListener('visibilitychange', onResume)
-      window.removeEventListener('pageshow', onResume)
-      window.removeEventListener('focus', onResume)
-      v.removeEventListener('loadedmetadata', onResume)
-      v.removeEventListener('loadeddata', onResume)
-      v.removeEventListener('canplay', onResume)
-      v.removeEventListener('playing', onPlaying)
+      window.clearTimeout(id)
+      clearResumeTimer()
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pageshow', onVisibility)
+      v.removeEventListener('pause', scheduleResume)
+      v.removeEventListener('waiting', scheduleResume)
+      v.removeEventListener('stalled', scheduleResume)
+      v.removeEventListener('canplay', tryPlay)
     }
-  }, [lang, pathname])
+  }, [lang])
   useEffect(() => { const elements = Array.from(document.querySelectorAll('.revealBlock')) as HTMLElement[]; if (!elements.length) return; const observer = new IntersectionObserver((entries) => { entries.forEach((entry) => { if (entry.isIntersecting) { const el = entry.target as HTMLElement; el.classList.add('is-revealed'); observer.unobserve(el) } }) }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }); elements.forEach((el) => observer.observe(el)); return () => observer.disconnect() }, [])
 
-  return <div className="home"><section className="hero hero--video" aria-label="Hero"><div className="heroVideo" aria-label="Vanara hero media">{heroVideoOk ? <video key={`hero-${lang}-${pathname}`} ref={heroVideoRef} className="heroVideoEl" autoPlay muted playsInline loop preload="auto" controls={false} disablePictureInPicture poster={heroPosterSrc} src={heroVideoSrc} onError={() => { setHeroVideoOk(false) }} onCanPlay={() => { setHeroVideoOk(true) }} /> : <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />}</div><div className="heroShade" aria-hidden="true" /><div className="heroContent"><div className="heroKicker">{t.home.heroKicker}</div><h1 className="heroTitle">VANARA RESORT &amp; SPA</h1></div></section>
+  return <div className="home"><section className="hero hero--video" aria-label="Hero"><div className="heroVideo" aria-label="Vanara hero media">{heroVideoOk ? <video key={`hero-${lang}`} ref={heroVideoRef} className="heroVideoEl" autoPlay muted playsInline loop preload="auto" controls={false} disablePictureInPicture poster="/hero-poster.jpg" onError={() => { setHeroVideoOk(false); setNeedsTap(false) }} onCanPlay={() => { setHeroVideoOk(true) }}><source src="/hero.mp4" type="video/mp4" /></video> : <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />}</div><div className="heroShade" aria-hidden="true" /><div className="heroContent"><div className="heroKicker">{t.home.heroKicker}</div><h1 className="heroTitle">VANARA RESORT &amp; SPA</h1></div></section>
     <section className="section sectionIntro"><div className="container"><div className="eyebrow">{t.home.introEyebrow}</div><h2 className="h2">{t.home.introTitle}</h2><div className="copy" style={{ marginTop: 22 }}><p>{t.home.introP1}</p><p>{t.home.introP2}</p><p>{t.home.introP3}</p></div><div className="rule" /></div></section>
     <section className="section sectionVillasFeature"><div className="container"><div className="split split--rev"><VillasCarousel /><div><div className="eyebrow">{t.home.villasEyebrow}</div><h3 className="h3">{t.home.villasTitle}</h3><div className="copy"><p>{t.home.villasP1}</p><p>{t.home.villasP2}</p><p>{t.home.villasP3}</p></div><a className="textCta" href={withLang(lang, '/accommodation')}>{t.home.villasCta}</a></div></div></div></section>
     <section className="section sectionDiningFeature"><div className="container"><div className="split split--rev"><DiningCarousel /><div><div className="eyebrow">{t.home.kokoonEyebrow}</div><h3 className="h3">{t.home.kokoonTitle}</h3><div className="copy"><p>{t.home.kokoonP1}</p><p>{t.home.kokoonP2}</p></div><a className="textCta" href={withLang(lang, '/dine')}>{t.home.kokoonCta}</a></div></div></div></section>
