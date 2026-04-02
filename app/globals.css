@@ -5040,3 +5040,25 @@ h2{
     border-radius: 0 !important;
   }
 }
+
+/* ===== Main Experiences + Weddings: no crop / no zoom ===== */
+@media (hover: none), (pointer: coarse){
+  .sectionYoga .imagePlaceholder,
+  .sectionWeddings .imagePlaceholder{
+    background: #d8d0c4 !important;
+  }
+
+  .sectionYoga .imagePlaceholder img.experienceImg,
+  .sectionWeddings .imagePlaceholder img.experienceImg{
+    object-fit: contain !important;
+    object-position: center center !important;
+    transform: none !important;
+  }
+}
+
+.sectionYoga .imagePlaceholder.revealBlock img.experienceImg,
+.sectionWeddings .imagePlaceholder.revealBlock img.experienceImg,
+.sectionYoga .imagePlaceholder.revealBlock.is-revealed img.experienceImg,
+.sectionWeddings .imagePlaceholder.revealBlock.is-revealed img.experienceImg{
+  transform: none !important;
+}
