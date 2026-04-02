@@ -139,13 +139,10 @@ export default function HomePage({ lang }: { lang: Locale }) {
     const v = heroVideoRef.current
     if (!v) return
 
-    let resumeTimer: number | null = null
-    const retryTimers: number[] = []
     let cancelled = false
+    const retryTimers: number[] = []
 
     const clearTimers = () => {
-      if (resumeTimer != null) window.clearTimeout(resumeTimer)
-      resumeTimer = null
       while (retryTimers.length) {
         const id = retryTimers.pop()
         if (id != null) window.clearTimeout(id)
@@ -163,87 +160,56 @@ export default function HomePage({ lang }: { lang: Locale }) {
       v.setAttribute('autoplay', '')
       v.setAttribute('playsinline', '')
       v.setAttribute('webkit-playsinline', 'true')
-      if (v.readyState === 0 && v.networkState === v.NETWORK_EMPTY) {
-        try { v.load() } catch {}
-      }
     }
 
     const tryPlay = async () => {
-      if (cancelled || !v.isConnected) return
+      if (cancelled || !v.isConnected || document.hidden) return
       primeVideo()
+      if (!v.paused && !v.ended) return
       try {
-        if (v.paused && v.currentTime > 0.05) {
-          v.currentTime = 0
-        }
         const playPromise = v.play()
         if (playPromise && typeof playPromise.then === 'function') {
           await playPromise
         }
       } catch {
-        // Some mobile browsers reject autoplay transiently; repeated retries below help.
+        // Some mobile browsers reject early autoplay attempts; a few spaced retries help.
       }
     }
 
     const queuePlay = (delay = 0) => {
       retryTimers.push(window.setTimeout(() => {
-        if (!document.hidden) {
-          void tryPlay()
-        }
+        void tryPlay()
       }, delay))
     }
 
-    const scheduleResume = () => {
-      if (resumeTimer != null) window.clearTimeout(resumeTimer)
-      resumeTimer = window.setTimeout(() => {
-        if (!document.hidden) {
-          void tryPlay()
-        }
-      }, 220)
-    }
-
-    const onVisibility = () => {
-      if (!document.hidden) {
-        void tryPlay()
-      }
+    const onResume = () => {
+      if (!document.hidden) queuePlay(0)
     }
 
     primeVideo()
-    retryTimers.push(window.requestAnimationFrame(() => { void tryPlay() }) as unknown as number)
-    ;[80, 240, 600, 1200, 2200].forEach((delay) => queuePlay(delay))
+    queuePlay(0)
+    queuePlay(300)
+    queuePlay(900)
 
-    document.addEventListener('visibilitychange', onVisibility)
-    window.addEventListener('pageshow', onVisibility)
-    window.addEventListener('focus', onVisibility)
-    v.addEventListener('pause', scheduleResume)
-    v.addEventListener('waiting', scheduleResume)
-    v.addEventListener('stalled', scheduleResume)
-    v.addEventListener('suspend', scheduleResume)
-    v.addEventListener('emptied', scheduleResume)
-    v.addEventListener('loadedmetadata', tryPlay)
-    v.addEventListener('loadeddata', tryPlay)
-    v.addEventListener('canplay', tryPlay)
-    v.addEventListener('canplaythrough', tryPlay)
+    document.addEventListener('visibilitychange', onResume)
+    window.addEventListener('pageshow', onResume)
+    window.addEventListener('focus', onResume)
+    v.addEventListener('loadedmetadata', onResume)
+    v.addEventListener('canplaythrough', onResume)
 
     return () => {
       cancelled = true
       clearTimers()
-      document.removeEventListener('visibilitychange', onVisibility)
-      window.removeEventListener('pageshow', onVisibility)
-      window.removeEventListener('focus', onVisibility)
-      v.removeEventListener('pause', scheduleResume)
-      v.removeEventListener('waiting', scheduleResume)
-      v.removeEventListener('stalled', scheduleResume)
-      v.removeEventListener('suspend', scheduleResume)
-      v.removeEventListener('emptied', scheduleResume)
-      v.removeEventListener('loadedmetadata', tryPlay)
-      v.removeEventListener('loadeddata', tryPlay)
-      v.removeEventListener('canplay', tryPlay)
-      v.removeEventListener('canplaythrough', tryPlay)
+      document.removeEventListener('visibilitychange', onResume)
+      window.removeEventListener('pageshow', onResume)
+      window.removeEventListener('focus', onResume)
+      v.removeEventListener('loadedmetadata', onResume)
+      v.removeEventListener('canplaythrough', onResume)
     }
   }, [lang, pathname])
   useEffect(() => { const elements = Array.from(document.querySelectorAll('.revealBlock')) as HTMLElement[]; if (!elements.length) return; const observer = new IntersectionObserver((entries) => { entries.forEach((entry) => { if (entry.isIntersecting) { const el = entry.target as HTMLElement; el.classList.add('is-revealed'); observer.unobserve(el) } }) }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }); elements.forEach((el) => observer.observe(el)); return () => observer.disconnect() }, [])
 
-  return <div className="home"><section className="hero hero--video" aria-label="Hero"><div className="heroVideo" aria-label="Vanara hero media">{heroVideoOk ? <video key={`hero-${lang}-${pathname}`} ref={heroVideoRef} className="heroVideoEl" autoPlay muted playsInline loop preload="auto" controls={false} disablePictureInPicture poster="/hero-poster.jpg" onError={() => { setHeroVideoOk(false) }} onLoadedData={() => { const v = heroVideoRef.current; if (v) { v.muted = true; v.playsInline = true; v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); void v.play().catch(() => {}) } }} onCanPlay={() => { setHeroVideoOk(true); const v = heroVideoRef.current; if (v) { v.muted = true; v.playsInline = true; v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); void v.play().catch(() => {}) } }}><source src="/hero.mp4" type="video/mp4" /></video> : <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />}</div><div className="heroShade" aria-hidden="true" /><div className="heroContent"><div className="heroKicker">{t.home.heroKicker}</div><h1 className="heroTitle">VANARA RESORT &amp; SPA</h1></div></section>
+  return <div className="home"><section className="hero hero--video" aria-label="Hero"><div className="heroVideo" aria-label="Vanara hero media">{heroVideoOk ? <video key={`hero-${lang}-${pathname}`} ref={heroVideoRef} className="heroVideoEl" autoPlay muted playsInline loop preload="auto" controls={false} disablePictureInPicture poster="/hero-poster.jpg" onError={() => { setHeroVideoOk(false) }} onCanPlay={() => { setHeroVideoOk(true) }}><source src="/hero.mp4" type="video/mp4" /></video> : <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />}</div><div className="heroShade" aria-hidden="true" /><div className="heroContent"><div className="heroKicker">{t.home.heroKicker}</div><h1 className="heroTitle">VANARA RESORT &amp; SPA</h1></div></section>
     <section className="section sectionIntro"><div className="container"><div className="eyebrow">{t.home.introEyebrow}</div><h2 className="h2">{t.home.introTitle}</h2><div className="copy" style={{ marginTop: 22 }}><p>{t.home.introP1}</p><p>{t.home.introP2}</p><p>{t.home.introP3}</p></div><div className="rule" /></div></section>
     <section className="section sectionVillasFeature"><div className="container"><div className="split split--rev"><VillasCarousel /><div><div className="eyebrow">{t.home.villasEyebrow}</div><h3 className="h3">{t.home.villasTitle}</h3><div className="copy"><p>{t.home.villasP1}</p><p>{t.home.villasP2}</p><p>{t.home.villasP3}</p></div><a className="textCta" href={withLang(lang, '/accommodation')}>{t.home.villasCta}</a></div></div></div></section>
     <section className="section sectionDiningFeature"><div className="container"><div className="split split--rev"><DiningCarousel /><div><div className="eyebrow">{t.home.kokoonEyebrow}</div><h3 className="h3">{t.home.kokoonTitle}</h3><div className="copy"><p>{t.home.kokoonP1}</p><p>{t.home.kokoonP2}</p></div><a className="textCta" href={withLang(lang, '/dine')}>{t.home.kokoonCta}</a></div></div></div></section>
