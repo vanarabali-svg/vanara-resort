@@ -36,7 +36,6 @@
   margin: 0 auto;
   padding: 0 26px 54px;
   color: #fff;
-  text-align: center;
 }
 
 .heroContent :global(.eyebrow) {
@@ -44,39 +43,34 @@
 }
 
 .heroIntroSection {
-  padding-top: 48px;
-  padding-bottom: 30px;
+  padding-top: 40px;
+  padding-bottom: 28px;
 }
 
 .heroIntroGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
-  gap: clamp(28px, 4vw, 84px);
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+  gap: clamp(26px, 4vw, 64px);
   align-items: center;
-  justify-content: center;
 }
 
 .heroIntroStack {
-  max-width: 700px;
+  max-width: 620px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin: 0 auto;
 }
 
 .heroSide {
-  max-width: 32ch;
-  justify-self: center;
+  max-width: 30ch;
+  justify-self: start;
   align-self: center;
-  text-align: center;
-  margin: 0 auto;
+  padding-top: 0;
 }
 
 .heroLead {
   margin: 14px 0 0;
-  max-width: 40ch;
+  max-width: 36ch;
   font-size: 15px;
   line-height: 1.8;
   color: rgba(31,31,29,.78);
@@ -85,17 +79,16 @@
 .heroTitle {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(28px, 3.4vw, 40px);
-  line-height: 1.08;
+  font-size: clamp(30px, 3.8vw, 48px);
+  line-height: 1.06;
   font-weight: 500;
   letter-spacing: -0.015em;
-  max-width: 14ch;
-  text-align: center;
+  max-width: 12ch;
 }
 
 .heroText {
   margin: 0 0 18px;
-  max-width: 32ch;
+  max-width: 42ch;
   font-size: 16px;
   line-height: 1.85;
   color: rgba(31,31,29,.72);
@@ -103,29 +96,16 @@
 
 .storySection,
 .detailsSection {
-  padding-top: 56px;
-  padding-bottom: 56px;
+  padding-top: 52px;
+  padding-bottom: 52px;
 }
 
 .storyGrid,
 .detailsGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 28px;
+  gap: 24px;
   align-items: center;
-}
-
-.storyContent,
-.detailsContent {
-  max-width: 620px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.storyContent :global(.copy),
-.detailsContent :global(.copy) {
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .storyMedia,
@@ -145,27 +125,26 @@
   object-fit: cover;
 }
 
-.sectionTitle,
+.sectionTitle {
+  max-width: 11ch;
+}
+
 .sectionTitleWide {
-  max-width: none;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 12ch;
 }
 
 .collectionSection {
-  padding-top: 72px;
-  padding-bottom: 72px;
+  padding-top: 68px;
+  padding-bottom: 68px;
 }
 
 .collectionHead {
   max-width: 760px;
-  margin: 0 auto 32px;
-  text-align: center;
+  margin-bottom: 28px;
 }
 
 .collectionText {
-  margin: 0 auto;
+  margin: 0;
   font-size: 15px;
   line-height: 1.8;
   color: rgba(31,31,29,.72);
@@ -195,7 +174,6 @@
 
 .cardBody {
   padding: 22px 20px 24px;
-  text-align: center;
 }
 
 .cardLabel {
@@ -216,25 +194,23 @@
 }
 
 .cardText {
-  margin: 0 auto;
+  margin: 0;
   font-size: 14px;
   line-height: 1.75;
   color: rgba(31,31,29,.70);
-  max-width: 28ch;
 }
 
 .ctaSection {
-  padding-top: 64px;
-  padding-bottom: 76px;
+  padding-top: 62px;
+  padding-bottom: 74px;
 }
 
 .ctaBox {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 22px;
-  justify-items: center;
-  text-align: center;
-  padding: 32px 28px;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+  padding: 28px;
   border-radius: 28px;
   border: 1px solid rgba(0,0,0,.10);
   background: rgba(255,255,255,.22);
@@ -242,7 +218,7 @@
 }
 
 .ctaText {
-  margin: 0 auto;
+  margin: 0;
   max-width: 40ch;
   font-size: 15px;
   line-height: 1.8;
@@ -275,14 +251,10 @@
   padding-bottom: 84px;
 }
 
-.backSection :global(.container) {
-  display: flex;
-  justify-content: center;
-}
-
 @media (max-width: 980px) {
   .storyGrid,
   .detailsGrid,
+  .ctaBox,
   .heroIntroGrid {
     grid-template-columns: 1fr;
   }
@@ -299,12 +271,11 @@
     padding-bottom: 58px;
   }
 
-  .heroSide,
-  .heroIntroStack,
-  .storyContent,
-  .detailsContent,
-  .collectionHead {
+  .heroSide {
+    justify-self: start;
+    align-self: start;
     max-width: 100%;
+    padding-top: 0;
   }
 }
 
@@ -328,9 +299,9 @@
   }
 
   .heroTitle {
-    font-size: clamp(26px, 7vw, 34px);
+    font-size: clamp(28px, 7vw, 36px);
     line-height: 1.08;
-    max-width: 12ch;
+    max-width: 11ch;
   }
 
   .heroText {
