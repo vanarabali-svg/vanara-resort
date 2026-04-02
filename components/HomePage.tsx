@@ -128,6 +128,8 @@ export default function HomePage({ lang }: { lang: Locale }) {
   const pathname = usePathname()
   const [heroVideoOk, setHeroVideoOk] = useState(true)
   const heroVideoRef = useRef<HTMLVideoElement | null>(null)
+  const heroVideoSrc = '/hero.mp4'
+  const heroPosterSrc = '/hero-poster.jpg'
   const today = startOfDay(new Date())
   const [bookCheckIn, setBookCheckIn] = useState(formatDateInput(today))
   const [bookCheckOut, setBookCheckOut] = useState(formatDateInput(addDays(today, 1)))
@@ -139,10 +141,13 @@ export default function HomePage({ lang }: { lang: Locale }) {
     const v = heroVideoRef.current
     if (!v) return
 
-    let cancelled = false
+    let stopped = false
+    let retryInterval: number | null = null
     const retryTimers: number[] = []
 
-    const clearTimers = () => {
+    const clearRetries = () => {
+      if (retryInterval != null) window.clearInterval(retryInterval)
+      retryInterval = null
       while (retryTimers.length) {
         const id = retryTimers.pop()
         if (id != null) window.clearTimeout(id)
@@ -156,60 +161,76 @@ export default function HomePage({ lang }: { lang: Locale }) {
       v.autoplay = true
       v.loop = true
       v.playsInline = true
+      v.preload = 'auto'
       v.setAttribute('muted', '')
       v.setAttribute('autoplay', '')
       v.setAttribute('playsinline', '')
       v.setAttribute('webkit-playsinline', 'true')
     }
 
+    const isActuallyPlaying = () => !v.paused && !v.ended && v.readyState >= 2
+
     const tryPlay = async () => {
-      if (cancelled || !v.isConnected || document.hidden) return
+      if (stopped || !v.isConnected || document.hidden || isActuallyPlaying()) return
       primeVideo()
-      if (!v.paused && !v.ended) return
       try {
         const playPromise = v.play()
-        if (playPromise && typeof playPromise.then === 'function') {
-          await playPromise
-        }
+        if (playPromise && typeof playPromise.then === 'function') await playPromise
       } catch {
-        // Some mobile browsers reject early autoplay attempts; a few spaced retries help.
+        // ignore and retry below
       }
     }
 
-    const queuePlay = (delay = 0) => {
+    const onPlaying = () => {
+      clearRetries()
+      setHeroVideoOk(true)
+    }
+
+    const scheduleRetry = (delay: number) => {
       retryTimers.push(window.setTimeout(() => {
         void tryPlay()
       }, delay))
     }
 
     const onResume = () => {
-      if (!document.hidden) queuePlay(0)
+      if (!document.hidden) void tryPlay()
     }
 
+    setHeroVideoOk(true)
     primeVideo()
-    queuePlay(0)
-    queuePlay(300)
-    queuePlay(900)
+    scheduleRetry(0)
+    scheduleRetry(120)
+    scheduleRetry(420)
+    scheduleRetry(900)
+    scheduleRetry(1600)
+    scheduleRetry(2600)
+    retryInterval = window.setInterval(() => {
+      void tryPlay()
+    }, 900)
 
     document.addEventListener('visibilitychange', onResume)
     window.addEventListener('pageshow', onResume)
     window.addEventListener('focus', onResume)
     v.addEventListener('loadedmetadata', onResume)
-    v.addEventListener('canplaythrough', onResume)
+    v.addEventListener('loadeddata', onResume)
+    v.addEventListener('canplay', onResume)
+    v.addEventListener('playing', onPlaying)
 
     return () => {
-      cancelled = true
-      clearTimers()
+      stopped = true
+      clearRetries()
       document.removeEventListener('visibilitychange', onResume)
       window.removeEventListener('pageshow', onResume)
       window.removeEventListener('focus', onResume)
       v.removeEventListener('loadedmetadata', onResume)
-      v.removeEventListener('canplaythrough', onResume)
+      v.removeEventListener('loadeddata', onResume)
+      v.removeEventListener('canplay', onResume)
+      v.removeEventListener('playing', onPlaying)
     }
   }, [lang, pathname])
   useEffect(() => { const elements = Array.from(document.querySelectorAll('.revealBlock')) as HTMLElement[]; if (!elements.length) return; const observer = new IntersectionObserver((entries) => { entries.forEach((entry) => { if (entry.isIntersecting) { const el = entry.target as HTMLElement; el.classList.add('is-revealed'); observer.unobserve(el) } }) }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }); elements.forEach((el) => observer.observe(el)); return () => observer.disconnect() }, [])
 
-  return <div className="home"><section className="hero hero--video" aria-label="Hero"><div className="heroVideo" aria-label="Vanara hero media">{heroVideoOk ? <video key={`hero-${lang}-${pathname}`} ref={heroVideoRef} className="heroVideoEl" autoPlay muted playsInline loop preload="auto" controls={false} disablePictureInPicture poster="/hero-poster.jpg" onError={() => { setHeroVideoOk(false) }} onCanPlay={() => { setHeroVideoOk(true) }}><source src="/hero.mp4" type="video/mp4" /></video> : <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />}</div><div className="heroShade" aria-hidden="true" /><div className="heroContent"><div className="heroKicker">{t.home.heroKicker}</div><h1 className="heroTitle">VANARA RESORT &amp; SPA</h1></div></section>
+  return <div className="home"><section className="hero hero--video" aria-label="Hero"><div className="heroVideo" aria-label="Vanara hero media">{heroVideoOk ? <video key={`hero-${lang}-${pathname}`} ref={heroVideoRef} className="heroVideoEl" autoPlay muted playsInline loop preload="auto" controls={false} disablePictureInPicture poster={heroPosterSrc} src={heroVideoSrc} onError={() => { setHeroVideoOk(false) }} onCanPlay={() => { setHeroVideoOk(true) }} /> : <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />}</div><div className="heroShade" aria-hidden="true" /><div className="heroContent"><div className="heroKicker">{t.home.heroKicker}</div><h1 className="heroTitle">VANARA RESORT &amp; SPA</h1></div></section>
     <section className="section sectionIntro"><div className="container"><div className="eyebrow">{t.home.introEyebrow}</div><h2 className="h2">{t.home.introTitle}</h2><div className="copy" style={{ marginTop: 22 }}><p>{t.home.introP1}</p><p>{t.home.introP2}</p><p>{t.home.introP3}</p></div><div className="rule" /></div></section>
     <section className="section sectionVillasFeature"><div className="container"><div className="split split--rev"><VillasCarousel /><div><div className="eyebrow">{t.home.villasEyebrow}</div><h3 className="h3">{t.home.villasTitle}</h3><div className="copy"><p>{t.home.villasP1}</p><p>{t.home.villasP2}</p><p>{t.home.villasP3}</p></div><a className="textCta" href={withLang(lang, '/accommodation')}>{t.home.villasCta}</a></div></div></div></section>
     <section className="section sectionDiningFeature"><div className="container"><div className="split split--rev"><DiningCarousel /><div><div className="eyebrow">{t.home.kokoonEyebrow}</div><h3 className="h3">{t.home.kokoonTitle}</h3><div className="copy"><p>{t.home.kokoonP1}</p><p>{t.home.kokoonP2}</p></div><a className="textCta" href={withLang(lang, '/dine')}>{t.home.kokoonCta}</a></div></div></div></section>
