@@ -274,31 +274,31 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
         <section className={`section ${styles.heroIntroSection}`}>
           <div className="container">
             <div className={styles.heroIntroGrid}>
-              <div className={styles.heroIntroStack}>
+              <div className={styles.heroIntroLeft}>
                 <h1 className={styles.heroTitle}>{t.heroTitle}</h1>
                 <p className={styles.heroLead}>{t.heroLead}</p>
               </div>
-              <div className={styles.heroSide}>
+              <div className={styles.heroIntroRight}>
                 <p className={styles.heroText}>{t.heroText}</p>
-                <a className="textCta" href="#villa-collection">{t.discover}</a>
+                <a className="textCta" href={bookingHref} target="_blank" rel="noreferrer">{t.heroAvailability}</a>
               </div>
             </div>
           </div>
         </section>
 
-        <section className={`section ${styles.storySection}`}>
+        <section className="section sectionVillasFeature">
           <div className="container">
-            <div className={styles.storyGrid}>
-              <div className={styles.storyContent}>
+            <div className={`split split--rev ${styles.homeSplit}`}>
+              <div className={`${styles.imageFrame} revealBlock`}>
+                <img src="/villas-main.webp" alt={t.heroTitle} />
+              </div>
+              <div className={styles.textCol}>
                 <div className="eyebrow">{t.storyEyebrow}</div>
-                <h2 className={`h2 ${styles.sectionTitle}`}>{t.storyTitle}</h2>
+                <h2 className="h2">{t.storyTitle}</h2>
                 <div className="copy">
                   <p>{t.storyP1}</p>
                   <p>{t.storyP2}</p>
                 </div>
-              </div>
-              <div className={styles.storyMedia}>
-                <img src="/villas-main.webp" alt={t.heroTitle} />
               </div>
             </div>
           </div>
@@ -308,7 +308,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
           <div className="container">
             <div className={styles.collectionHead}>
               <div className="eyebrow">{t.collectionEyebrow}</div>
-              <h2 className={`h2 ${styles.sectionTitleWide}`}>{t.collectionTitle}</h2>
+              <h2 className="h2">{t.collectionTitle}</h2>
               <p className={styles.collectionText}>{t.collectionText}</p>
             </div>
 
@@ -329,15 +329,15 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
           </div>
         </section>
 
-        <section className={`section ${styles.detailsSection}`}>
+        <section className="section sectionDiningFeature">
           <div className="container">
-            <div className={styles.detailsGrid}>
-              <div className={styles.detailsMedia}>
+            <div className={`split split--rev ${styles.homeSplit}`}>
+              <div className={`${styles.imageFrame} revealBlock`}>
                 <img src="/villas-detail.webp" alt={t.detailsTitle} />
               </div>
-              <div className={styles.detailsContent}>
+              <div className={styles.textCol}>
                 <div className="eyebrow">{t.detailsEyebrow}</div>
-                <h2 className={`h2 ${styles.sectionTitle}`}>{t.detailsTitle}</h2>
+                <h2 className="h2">{t.detailsTitle}</h2>
                 <div className="copy">
                   <p>{t.detailsP1}</p>
                   <p>{t.detailsP2}</p>
