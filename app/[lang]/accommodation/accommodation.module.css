@@ -242,11 +242,20 @@
   }
 
   .hero {
-    min-height: 78svh;
+    min-height: 82svh;
   }
 
   .heroContent {
-    padding-bottom: 58px;
+    padding-bottom: 60px;
+  }
+
+  .heroIntroSection {
+    padding-top: 34px;
+    padding-bottom: 22px;
+  }
+
+  .heroIntroGrid {
+    gap: 20px;
   }
 
   .heroIntroLeft,
@@ -255,29 +264,64 @@
     max-width: 100%;
   }
 
+  .heroLead,
+  .heroText,
+  .collectionText,
+  .ctaText,
+  .cardText {
+    max-width: none;
+  }
+
   .imageFrame,
   .imageFrame img {
-    min-height: 260px;
+    min-height: 300px;
+  }
+
+  .collectionHead {
+    margin-bottom: 24px;
+  }
+
+  .cards {
+    gap: 16px;
+  }
+
+  .cardBody {
+    padding: 20px 18px 22px;
+  }
+
+  .ctaBox {
+    gap: 16px;
+    padding: 24px 22px;
   }
 }
 
 @media (max-width: 640px) {
   .hero {
-    min-height: 72svh;
+    min-height: 76svh;
+  }
+
+  .heroVideo {
+    object-position: center;
   }
 
   .heroContent {
-    padding: 0 20px 48px;
+    padding: 0 20px 44px;
   }
 
   .heroIntroSection {
-    padding-top: 28px;
-    padding-bottom: 18px;
+    padding-top: 26px;
+    padding-bottom: 12px;
+  }
+
+  .heroIntroGrid {
+    gap: 16px;
   }
 
   .heroTitle {
-    font-size: clamp(26px, 7vw, 34px);
-    max-width: 12ch;
+    font-size: clamp(24px, 6.8vw, 31px);
+    line-height: 1.12;
+    max-width: 11.5ch;
+    margin-bottom: 10px;
   }
 
   .heroLead,
@@ -285,30 +329,68 @@
   .collectionText,
   .ctaText {
     font-size: 14px;
-    line-height: 1.72;
+    line-height: 1.78;
+  }
+
+  .heroText {
+    margin-bottom: 14px;
+    max-width: 30ch;
   }
 
   .collectionSection,
   .ctaSection {
-    padding-top: 44px;
-    padding-bottom: 44px;
+    padding-top: 42px;
+    padding-bottom: 42px;
+  }
+
+  .collectionHead {
+    margin-bottom: 20px;
   }
 
   .card,
   .ctaBox,
   .imageFrame {
-    border-radius: 22px;
+    border-radius: 24px;
+  }
+
+  .imageFrame,
+  .imageFrame img {
+    min-height: 260px;
+  }
+
+  .card {
+    box-shadow: 0 18px 54px rgba(0,0,0,.07);
+  }
+
+  .cardMedia img {
+    aspect-ratio: 4 / 4.8;
+  }
+
+  .cardBody {
+    padding: 18px 16px 20px;
   }
 
   .cardTitle {
-    font-size: 26px;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .cardText {
+    font-size: 14px;
+    line-height: 1.72;
   }
 
   .ctaBox {
     padding: 22px 18px;
+    border-radius: 24px;
   }
 
   .ctaButton {
     width: 100%;
+    min-height: 48px;
+  }
+
+  .backSection {
+    padding-bottom: 56px;
   }
 }
