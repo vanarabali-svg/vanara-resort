@@ -138,61 +138,85 @@ export default function HomePage({ lang }: { lang: Locale }) {
     const v = heroVideoRef.current
     if (!v) return
 
-    let resumeTimer: number | null = null
+    let retryTimer: number | null = null
+    let intervalId: number | null = null
+    let stopped = false
 
-    const clearResumeTimer = () => {
-      if (resumeTimer != null) window.clearTimeout(resumeTimer)
-      resumeTimer = null
+    const clearTimers = () => {
+      if (retryTimer != null) window.clearTimeout(retryTimer)
+      if (intervalId != null) window.clearInterval(intervalId)
+      retryTimer = null
+      intervalId = null
+    }
+
+    const primeVideo = () => {
+      v.muted = true
+      v.defaultMuted = true
+      v.playsInline = true
+      v.setAttribute('muted', '')
+      v.setAttribute('playsinline', '')
+      v.setAttribute('webkit-playsinline', 'true')
+      v.autoplay = true
+    }
+
+    const settlePlayingState = () => {
+      if (!v.paused && !v.ended && v.readyState >= 2) {
+        clearTimers()
+        setNeedsTap(false)
+        setHeroVideoOk(true)
+        return true
+      }
+      return false
     }
 
     const tryPlay = async () => {
-      clearResumeTimer()
+      if (stopped) return
+      primeVideo()
+      if (settlePlayingState()) return
       try {
-        v.muted = true
-        v.defaultMuted = true
-        v.setAttribute('muted', '')
-        v.setAttribute('playsinline', '')
-        v.setAttribute('webkit-playsinline', 'true')
         await v.play()
-        setNeedsTap(false)
-        setHeroVideoOk(true)
+        settlePlayingState()
       } catch {
         setNeedsTap(true)
       }
     }
 
-    const scheduleResume = () => {
-      clearResumeTimer()
-      resumeTimer = window.setTimeout(() => {
-        if (document.hidden) return
-        if (v.paused) void tryPlay()
-      }, 350)
+    const scheduleRetryBurst = () => {
+      clearTimers()
+      retryTimer = window.setTimeout(() => {
+        void tryPlay()
+        intervalId = window.setInterval(() => {
+          if (stopped || document.hidden || settlePlayingState()) return
+          void tryPlay()
+        }, 1200)
+      }, 80)
     }
 
     const onVisibility = () => {
-      if (!document.hidden) void tryPlay()
+      if (!document.hidden) scheduleRetryBurst()
     }
 
-    const id = window.setTimeout(() => {
+    const onLoadedData = () => {
       void tryPlay()
-    }, 60)
+    }
 
+    const onPlaying = () => {
+      settlePlayingState()
+    }
+
+    scheduleRetryBurst()
     document.addEventListener('visibilitychange', onVisibility)
     window.addEventListener('pageshow', onVisibility)
-    v.addEventListener('pause', scheduleResume)
-    v.addEventListener('waiting', scheduleResume)
-    v.addEventListener('stalled', scheduleResume)
-    v.addEventListener('canplay', tryPlay)
+    v.addEventListener('loadeddata', onLoadedData)
+    v.addEventListener('playing', onPlaying)
 
     return () => {
-      window.clearTimeout(id)
-      clearResumeTimer()
+      stopped = true
+      clearTimers()
       document.removeEventListener('visibilitychange', onVisibility)
       window.removeEventListener('pageshow', onVisibility)
-      v.removeEventListener('pause', scheduleResume)
-      v.removeEventListener('waiting', scheduleResume)
-      v.removeEventListener('stalled', scheduleResume)
-      v.removeEventListener('canplay', tryPlay)
+      v.removeEventListener('loadeddata', onLoadedData)
+      v.removeEventListener('playing', onPlaying)
     }
   }, [lang])
   useEffect(() => { const elements = Array.from(document.querySelectorAll('.revealBlock')) as HTMLElement[]; if (!elements.length) return; const observer = new IntersectionObserver((entries) => { entries.forEach((entry) => { if (entry.isIntersecting) { const el = entry.target as HTMLElement; el.classList.add('is-revealed'); observer.unobserve(el) } }) }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }); elements.forEach((el) => observer.observe(el)); return () => observer.disconnect() }, [])
