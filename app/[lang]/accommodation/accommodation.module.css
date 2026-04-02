@@ -1,0 +1,281 @@
+.page {
+  background: var(--bg);
+}
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #0f1211;
+}
+
+.heroVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(1.04) contrast(1.02) saturate(1.04);
+}
+
+.heroShade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,.08), rgba(0,0,0,.16) 46%, rgba(0,0,0,.42));
+}
+
+.heroContent {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 26px 72px;
+  color: #fff;
+}
+
+.heroTitle {
+  margin: 0 0 16px;
+  font-family: var(--serif);
+  font-size: clamp(44px, 7vw, 92px);
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  max-width: 9ch;
+}
+
+.heroText {
+  margin: 0;
+  max-width: 42ch;
+  font-size: 16px;
+  line-height: 1.85;
+  color: rgba(255,255,255,.84);
+}
+
+.storySection,
+.detailsSection {
+  padding-top: 52px;
+  padding-bottom: 52px;
+}
+
+.storyGrid,
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.storyMedia,
+.detailsMedia {
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: #ddd3c5;
+  box-shadow: 0 28px 84px rgba(0,0,0,.10);
+}
+
+.storyMedia img,
+.detailsMedia img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.sectionTitle {
+  max-width: 11ch;
+}
+
+.sectionTitleWide {
+  max-width: 12ch;
+}
+
+.collectionSection {
+  padding-top: 68px;
+  padding-bottom: 68px;
+}
+
+.collectionHead {
+  max-width: 760px;
+  margin-bottom: 28px;
+}
+
+.collectionText {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(31,31,29,.72);
+  max-width: 56ch;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.card {
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.22);
+  box-shadow: 0 22px 68px rgba(0,0,0,.08);
+}
+
+.cardMedia img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.cardBody {
+  padding: 22px 20px 24px;
+}
+
+.cardLabel {
+  margin-bottom: 12px;
+  font-size: 10px;
+  letter-spacing: .30em;
+  text-transform: uppercase;
+  color: rgba(31,31,29,.54);
+}
+
+.cardTitle {
+  margin: 0 0 10px;
+  font-family: var(--serif);
+  font-size: 30px;
+  line-height: 1.06;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.cardText {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: rgba(31,31,29,.70);
+}
+
+.ctaSection {
+  padding-top: 62px;
+  padding-bottom: 74px;
+}
+
+.ctaBox {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+  padding: 28px;
+  border-radius: 28px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.22);
+  box-shadow: 0 24px 74px rgba(0,0,0,.08);
+}
+
+.ctaText {
+  margin: 0;
+  max-width: 40ch;
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(31,31,29,.70);
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 0 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(31,31,29,.14);
+  background: rgba(31,31,29,.94);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  transition: transform .18s ease, background .18s ease;
+}
+
+.ctaButton:hover {
+  transform: translateY(-1px);
+  background: rgba(31,31,29,.84);
+}
+
+.backSection {
+  padding-top: 0;
+  padding-bottom: 84px;
+}
+
+@media (max-width: 980px) {
+  .storyGrid,
+  .detailsGrid,
+  .ctaBox {
+    grid-template-columns: 1fr;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: 78svh;
+  }
+
+  .heroContent {
+    padding-bottom: 58px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    min-height: 72svh;
+  }
+
+  .heroContent {
+    padding: 0 20px 48px;
+  }
+
+  .heroTitle {
+    font-size: clamp(38px, 12vw, 56px);
+    max-width: 10ch;
+  }
+
+  .heroText {
+    font-size: 14px;
+    line-height: 1.72;
+  }
+
+  .storySection,
+  .detailsSection,
+  .collectionSection,
+  .ctaSection {
+    padding-top: 44px;
+    padding-bottom: 44px;
+  }
+
+  .storyMedia,
+  .detailsMedia,
+  .ctaBox,
+  .card {
+    border-radius: 22px;
+  }
+
+  .cardTitle {
+    font-size: 26px;
+  }
+
+  .ctaBox {
+    padding: 22px 18px;
+  }
+
+  .ctaButton {
+    width: 100%;
+  }
+}
