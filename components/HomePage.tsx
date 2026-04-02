@@ -119,7 +119,7 @@ function ExperienceMosaicGrid({ lang }: { lang: Locale }) {
     { src: '/experience-yoga.jpg', alt: t.home.mosaic.yoga, title: t.home.mosaic.yoga, size: 'portrait' },
     { src: '/experience-nunggalan.jpg', alt: t.home.mosaic.beach, title: t.home.mosaic.beach, size: 'portrait' },
   ], [t])
-  return <div className="experienceMosaicWrap"><div className="experienceMosaic" aria-label="Experiences gallery">{items.map((item, index) => <article className={`experienceMosaicItem experienceMosaicItem--${item.size} revealBlock`} key={`${item.title}-${index}`}><img src={item.src} alt={item.alt} draggable={false} /><div className="experienceMosaicOverlay" aria-hidden="true" /><div className="experienceMosaicLabel">{item.title}</div></article>)}</div><div className="experienceMosaicCtaWrap"><a className="experienceMosaicCta" href={withLang(lang, '/experience')}>{t.home.expCta}</a></div></div>
+  return <div className="experienceMosaicWrap"><div className="experienceMosaic" aria-label="Experiences gallery">{items.map((item, index) => <a className={`experienceMosaicItem experienceMosaicItem--${item.size} revealBlock`} key={`${item.title}-${index}`} href={withLang(lang, '/experience')} aria-label={`${item.title} — ${t.home.expCta}`}><img src={item.src} alt={item.alt} draggable={false} /><div className="experienceMosaicOverlay" aria-hidden="true" /><div className="experienceMosaicLabel">{item.title}</div></a>)}</div><div className="experienceMosaicCtaWrap"><a className="experienceMosaicCta" href={withLang(lang, '/experience')}>{t.home.expCta}</a></div></div>
 }
 
 export default function HomePage({ lang }: { lang: Locale }) {
