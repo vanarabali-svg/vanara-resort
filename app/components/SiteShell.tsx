@@ -131,7 +131,7 @@ export default function SiteShell({ lang, children }: { lang: Locale; children: 
   useEffect(() => { setHydrated(true) }, [])
   useEffect(() => { const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') { setMenuOpen(false); setLangOpen(false); closeBooking() } }; window.addEventListener('keydown', onKeyDown); return () => window.removeEventListener('keydown', onKeyDown) }, [])
   useEffect(() => { document.body.style.overflow = menuOpen || langOpen || bookingOpen ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [menuOpen, langOpen, bookingOpen])
-  useEffect(() => { try { const saved = window.localStorage.getItem(cookieConsentKey); setCookieOpen(!saved) } catch { setCookieOpen(true) } finally { setCookieReady(true) } }, [cookieConsentKey])
+  useEffect(() => { try { const saved = window.localStorage.getItem(cookieConsentKey); setCookieOpen(!saved) } catch { setCookieOpen(true) } finally { setCookieReady(true) } }, [])
   useEffect(() => {
     if (!hydrated || loaderStartedRef.current) return
     loaderStartedRef.current = true

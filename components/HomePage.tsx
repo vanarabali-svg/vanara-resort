@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { type Locale, dateLocales, getDictionary, withLang } from '../lib/i18n'
 
 function useScrollZoom(ref: any, opts?: { min?: number; max?: number; start?: number; end?: number }) {
@@ -124,6 +125,7 @@ function ExperienceMosaicGrid({ lang }: { lang: Locale }) {
 
 export default function HomePage({ lang }: { lang: Locale }) {
   const t = getDictionary(lang)
+  const pathname = usePathname()
   const [heroVideoOk, setHeroVideoOk] = useState(true)
   const heroVideoRef = useRef<HTMLVideoElement | null>(null)
   const today = startOfDay(new Date())
@@ -133,10 +135,82 @@ export default function HomePage({ lang }: { lang: Locale }) {
   const [bookRooms, setBookRooms] = useState(1)
   const bookingUrl = useMemo(() => { const params = new URLSearchParams(); params.set('arrival', bookCheckIn); params.set('departure', bookCheckOut); params.set('checkInDate', bookCheckIn); params.set('checkOutDate', bookCheckOut); params.set('rooms', String(bookRooms)); params.set('adults', String(bookAdults)); params.set('children', '0'); params.set('items[0][adults]', String(bookAdults)); params.set('items[0][children]', '0'); params.set('items[0][infants]', '0'); params.set('items[0][rooms]', String(bookRooms)); params.set('currency', 'IDR'); params.set('locale', lang === 'cn' ? 'zh' : lang); return `https://book-directonline.com/properties/vanararesortspa?${params.toString()}` }, [bookAdults, bookCheckIn, bookCheckOut, bookRooms, lang])
 
-  useEffect(() => { const v = heroVideoRef.current; if (!v) return; let resumeTimer: number | null = null; const clearResumeTimer = () => { if (resumeTimer != null) window.clearTimeout(resumeTimer); resumeTimer = null }; const tryPlay = async () => { clearResumeTimer(); try { v.muted = true; await v.play() } catch {} }; const scheduleResume = () => { clearResumeTimer(); resumeTimer = window.setTimeout(() => { if (document.hidden) return; if (v.paused) tryPlay() }, 350) }; const onVisibility = () => { if (!document.hidden) tryPlay() }; const id = window.setTimeout(tryPlay, 60); document.addEventListener('visibilitychange', onVisibility); v.addEventListener('pause', scheduleResume); v.addEventListener('waiting', scheduleResume); v.addEventListener('stalled', scheduleResume); v.addEventListener('canplay', tryPlay); return () => { window.clearTimeout(id); clearResumeTimer(); document.removeEventListener('visibilitychange', onVisibility); v.removeEventListener('pause', scheduleResume); v.removeEventListener('waiting', scheduleResume); v.removeEventListener('stalled', scheduleResume); v.removeEventListener('canplay', tryPlay) } }, [])
+  useEffect(() => {
+    const v = heroVideoRef.current
+    if (!v) return
+
+    let resumeTimer: number | null = null
+    const retryTimers: number[] = []
+
+    const clearTimers = () => {
+      if (resumeTimer != null) window.clearTimeout(resumeTimer)
+      resumeTimer = null
+      while (retryTimers.length) {
+        const id = retryTimers.pop()
+        if (id != null) window.clearTimeout(id)
+      }
+    }
+
+    const tryPlay = async () => {
+      if (!v.isConnected) return
+      try {
+        v.muted = true
+        v.defaultMuted = true
+        v.playsInline = true
+        v.setAttribute('muted', '')
+        v.setAttribute('playsinline', '')
+        v.setAttribute('webkit-playsinline', 'true')
+        const playPromise = v.play()
+        if (playPromise && typeof playPromise.then === 'function') await playPromise
+      } catch {
+        // Mobile browsers can reject autoplay transiently. Timed retries below cover it.
+      }
+    }
+
+    const scheduleResume = () => {
+      if (resumeTimer != null) window.clearTimeout(resumeTimer)
+      resumeTimer = window.setTimeout(() => {
+        if (!document.hidden && v.paused) {
+          void tryPlay()
+        }
+      }, 300)
+    }
+
+    const onVisibility = () => {
+      if (!document.hidden) {
+        void tryPlay()
+      }
+    }
+
+    void tryPlay()
+    ;[120, 450, 1000, 1800].forEach((delay) => {
+      retryTimers.push(window.setTimeout(() => { void tryPlay() }, delay))
+    })
+
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pageshow', onVisibility)
+    v.addEventListener('pause', scheduleResume)
+    v.addEventListener('waiting', scheduleResume)
+    v.addEventListener('stalled', scheduleResume)
+    v.addEventListener('suspend', scheduleResume)
+    v.addEventListener('loadeddata', tryPlay)
+    v.addEventListener('canplay', tryPlay)
+
+    return () => {
+      clearTimers()
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pageshow', onVisibility)
+      v.removeEventListener('pause', scheduleResume)
+      v.removeEventListener('waiting', scheduleResume)
+      v.removeEventListener('stalled', scheduleResume)
+      v.removeEventListener('suspend', scheduleResume)
+      v.removeEventListener('loadeddata', tryPlay)
+      v.removeEventListener('canplay', tryPlay)
+    }
+  }, [lang, pathname])
   useEffect(() => { const elements = Array.from(document.querySelectorAll('.revealBlock')) as HTMLElement[]; if (!elements.length) return; const observer = new IntersectionObserver((entries) => { entries.forEach((entry) => { if (entry.isIntersecting) { const el = entry.target as HTMLElement; el.classList.add('is-revealed'); observer.unobserve(el) } }) }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }); elements.forEach((el) => observer.observe(el)); return () => observer.disconnect() }, [])
 
-  return <div className="home"><section className="hero hero--video" aria-label="Hero"><div className="heroVideo" aria-label="Vanara hero media">{heroVideoOk ? <video key="hero" ref={heroVideoRef} className="heroVideoEl" autoPlay muted playsInline loop preload="auto" controls={false} disablePictureInPicture poster="/hero-poster.jpg" onError={() => { setHeroVideoOk(false) }} onCanPlay={() => setHeroVideoOk(true)}><source src="/hero.mp4" type="video/mp4" /></video> : <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />}</div><div className="heroShade" aria-hidden="true" /><div className="heroContent"><div className="heroKicker">{t.home.heroKicker}</div><h1 className="heroTitle">VANARA RESORT &amp; SPA</h1></div></section>
+  return <div className="home"><section className="hero hero--video" aria-label="Hero"><div className="heroVideo" aria-label="Vanara hero media">{heroVideoOk ? <video key={`hero-${lang}-${pathname}`} ref={heroVideoRef} className="heroVideoEl" autoPlay muted playsInline loop preload="auto" controls={false} disablePictureInPicture poster="/hero-poster.jpg" onError={() => { setHeroVideoOk(false) }} onLoadedData={() => { const v = heroVideoRef.current; if (v) { v.muted = true; void v.play().catch(() => {}) } }} onCanPlay={() => { setHeroVideoOk(true); const v = heroVideoRef.current; if (v) { v.muted = true; void v.play().catch(() => {}) } }}><source src="/hero.mp4" type="video/mp4" /></video> : <img className="heroVideoFallback" src="/hero-fallback.jpg" alt="Vanara Resort & Spa" />}</div><div className="heroShade" aria-hidden="true" /><div className="heroContent"><div className="heroKicker">{t.home.heroKicker}</div><h1 className="heroTitle">VANARA RESORT &amp; SPA</h1></div></section>
     <section className="section sectionIntro"><div className="container"><div className="eyebrow">{t.home.introEyebrow}</div><h2 className="h2">{t.home.introTitle}</h2><div className="copy" style={{ marginTop: 22 }}><p>{t.home.introP1}</p><p>{t.home.introP2}</p><p>{t.home.introP3}</p></div><div className="rule" /></div></section>
     <section className="section sectionVillasFeature"><div className="container"><div className="split split--rev"><VillasCarousel /><div><div className="eyebrow">{t.home.villasEyebrow}</div><h3 className="h3">{t.home.villasTitle}</h3><div className="copy"><p>{t.home.villasP1}</p><p>{t.home.villasP2}</p><p>{t.home.villasP3}</p></div><a className="textCta" href={withLang(lang, '/accommodation')}>{t.home.villasCta}</a></div></div></div></section>
     <section className="section sectionDiningFeature"><div className="container"><div className="split split--rev"><DiningCarousel /><div><div className="eyebrow">{t.home.kokoonEyebrow}</div><h3 className="h3">{t.home.kokoonTitle}</h3><div className="copy"><p>{t.home.kokoonP1}</p><p>{t.home.kokoonP2}</p></div><a className="textCta" href={withLang(lang, '/dine')}>{t.home.kokoonCta}</a></div></div></div></section>
