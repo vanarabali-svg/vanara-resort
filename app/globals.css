@@ -4995,3 +4995,27 @@ h2{
 .uVillasCarousel img{
   pointer-events: none;
 }
+
+
+/* Force transparent hero nav on homepage + accommodation before scroll */
+body.hero-nav-clear .nav{
+  background: transparent !important;
+  border-bottom: 1px solid transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+body.hero-nav-clear .logo-white{ display:block !important; }
+body.hero-nav-clear .logo-dark{ display:none !important; }
+body.hero-nav-clear .nav .ss-menuBtn{ color:#fff !important; }
+body.hero-nav-clear .lang-pill{
+  border-color: rgba(255,255,255,.28) !important;
+  background: rgba(0,0,0,.10) !important;
+  color:#fff !important;
+}
+body.hero-nav-clear .lang-pill:hover{ background: rgba(0,0,0,.18) !important; }
+body.hero-nav-clear .reserve-pill{
+  border-color: rgba(255,255,255,.35) !important;
+  background: rgba(0,0,0,.10) !important;
+  color: rgba(255,255,255,.92) !important;
+}
+body.hero-nav-clear .reserve-pill:hover{ background: rgba(0,0,0,.18) !important; }

@@ -5,6 +5,8 @@ import styles from './accommodation.module.css'
 
 type PageCopy = {
   heroKicker: string
+  heroLead: string
+  heroAvailability: string
   heroTitle: string
   heroText: string
   discover: string
@@ -28,6 +30,8 @@ type PageCopy = {
 const copy: Record<Locale, PageCopy> = {
   en: {
     heroKicker: 'VILLAS · ULUWATU',
+    heroLead: 'Clifftop villas in Uluwatu, designed for space, privacy, and uninterrupted views of the Indian Ocean.',
+    heroAvailability: 'Check Availability',
     heroTitle: 'Private villas above the ocean',
     heroText:
       'A calm collection of spaces shaped by light, landscape, and privacy — from garden hideaways to open ocean views.',
@@ -74,6 +78,8 @@ const copy: Record<Locale, PageCopy> = {
   },
   id: {
     heroKicker: 'VILA · ULUWATU',
+    heroLead: 'Vila-vila di tepi tebing di Uluwatu, dirancang untuk ruang, privasi, dan pemandangan Samudra Hindia tanpa gangguan.',
+    heroAvailability: 'Cek Ketersediaan',
     heroTitle: 'Vila privat di atas samudra',
     heroText:
       'Koleksi ruang yang tenang, dibentuk oleh cahaya, lanskap, dan privasi — dari sudut taman hingga panorama laut terbuka.',
@@ -120,6 +126,8 @@ const copy: Record<Locale, PageCopy> = {
   },
   ru: {
     heroKicker: 'ВИЛЛЫ · УЛУВАТУ',
+    heroLead: 'Виллы на утёсе в Улувату, созданные для простора, уединения и беспрепятственных видов на Индийский океан.',
+    heroAvailability: 'Проверить наличие',
     heroTitle: 'Частные виллы над океаном',
     heroText:
       'Спокойная коллекция пространств, сформированных светом, ландшафтом и уединением — от садовых укрытий до открытых видов на океан.',
@@ -166,6 +174,8 @@ const copy: Record<Locale, PageCopy> = {
   },
   cn: {
     heroKicker: '别墅 · 乌鲁瓦图',
+    heroLead: '位于乌鲁瓦图悬崖之上的别墅，为空间感、私密性与无遮挡印度洋景致而设计。',
+    heroAvailability: '查看可订情况',
     heroTitle: '悬崖之上的私人别墅',
     heroText:
       '由光线、景观与私密感塑造的安静居停系列，从花园隐逸到开阔海景，呈现更从容的度假方式。',
@@ -258,9 +268,21 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
           <div className={styles.heroShade} aria-hidden="true" />
           <div className={styles.heroContent}>
             <div className="eyebrow">{t.heroKicker}</div>
-            <h1 className={styles.heroTitle}>{t.heroTitle}</h1>
-            <p className={styles.heroText}>{t.heroText}</p>
-            <a className="textCta" href="#villa-collection">{t.discover}</a>
+          </div>
+        </section>
+
+        <section className={`section ${styles.heroIntroSection}`}>
+          <div className="container">
+            <div className={styles.heroIntroGrid}>
+              <div className={styles.heroIntroStack}>
+                <h1 className={styles.heroTitle}>{t.heroTitle}</h1>
+                <p className={styles.heroLead}>{t.heroLead}</p>
+              </div>
+              <div className={styles.heroSide}>
+                <p className={styles.heroText}>{t.heroText}</p>
+                <a className="textCta" href="#villa-collection">{t.discover}</a>
+              </div>
+            </div>
           </div>
         </section>
 

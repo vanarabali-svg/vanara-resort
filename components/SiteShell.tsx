@@ -121,7 +121,23 @@ export default function SiteShell({ lang, children }: { lang: Locale; children: 
   }
 
   useEffect(() => { document.documentElement.lang = languageHtml[lang] }, [lang])
-  useEffect(() => { const shouldForceScrolled = pathname !== `/${lang}`; const onScroll = () => document.body.classList.toggle('is-scrolled', shouldForceScrolled || window.scrollY > 10); onScroll(); window.addEventListener('scroll', onScroll, { passive: true }); return () => window.removeEventListener('scroll', onScroll) }, [pathname, lang])
+  useEffect(() => {
+    const isHeroTransparentPage = pathname === `/${lang}` || pathname === `/${lang}/accommodation`
+    const applyNavState = () => {
+      const atTop = window.scrollY <= 10
+      const shouldStayClear = isHeroTransparentPage && atTop
+      document.body.classList.toggle('hero-nav-clear', shouldStayClear)
+      document.body.classList.toggle('is-scrolled', !shouldStayClear)
+    }
+    applyNavState()
+    window.addEventListener('scroll', applyNavState, { passive: true })
+    window.addEventListener('resize', applyNavState)
+    return () => {
+      window.removeEventListener('scroll', applyNavState)
+      window.removeEventListener('resize', applyNavState)
+      document.body.classList.remove('hero-nav-clear')
+    }
+  }, [pathname, lang])
   useEffect(() => { const onKeyDown = (e: KeyboardEvent) => { if (e.key === 'Escape') { setMenuOpen(false); setLangOpen(false); closeBooking() } }; window.addEventListener('keydown', onKeyDown); return () => window.removeEventListener('keydown', onKeyDown) }, [])
   useEffect(() => { document.body.style.overflow = menuOpen || langOpen || bookingOpen ? 'hidden' : ''; return () => { document.body.style.overflow = '' } }, [menuOpen, langOpen, bookingOpen])
   useEffect(() => { try { const saved = window.localStorage.getItem(cookieConsentKey); setCookieOpen(!saved) } catch { setCookieOpen(true) } finally { setCookieReady(true) } }, [])

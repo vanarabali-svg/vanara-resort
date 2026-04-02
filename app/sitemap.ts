@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const langs = ['en', 'id', 'ru', 'cn']
-  const paths = ['', '/kokoon', '/weddings', '/privacy', '/terms', '/legal']
+  const paths = ['', '/accommodation', '/kokoon', '/weddings', '/privacy', '/terms', '/legal']
 
   return langs.flatMap((lang) =>
     paths.map((path) => ({
