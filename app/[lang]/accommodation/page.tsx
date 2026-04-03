@@ -493,7 +493,7 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
   const bookingHref = 'https://book-directonline.com/properties/vanararesortspa'
 
   return (
-    <SiteShell lang={lang} dict={dict}>
+    <SiteShell lang={lang}>
       <div className={styles.page}>
         <section className={styles.hero} aria-label="Villas hero">
           <video className={styles.heroVideo} autoPlay muted playsInline loop preload="metadata" poster="/villas-hero-poster.jpg">
