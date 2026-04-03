@@ -404,7 +404,7 @@ function InsideVillaGallery({ title }: { title: string }) {
                 key={src}
                 type="button"
                 className={styles.insideSlide}
-                onClick={() => setLightboxIndex(absoluteIndex)}
+                onClick={() => { if (typeof window !== 'undefined' && window.innerWidth <= 768) return; setLightboxIndex(absoluteIndex) }}
                 aria-label={`Open ${title.toLowerCase()} photo ${absoluteIndex + 1}`}
               >
                 <img src={src} alt={`${title} ${absoluteIndex + 1}`} />
@@ -462,7 +462,7 @@ function LivingAtVanaraGallery({ title }: { title: string }) {
                 key={src}
                 type="button"
                 className={styles.insideSlide}
-                onClick={() => setLightboxIndex(absoluteIndex)}
+                onClick={() => { if (typeof window !== 'undefined' && window.innerWidth <= 768) return; setLightboxIndex(absoluteIndex) }}
                 aria-label={`Open ${title.toLowerCase()} photo ${absoluteIndex + 1}`}
               >
                 <img src={src} alt={`${title} ${absoluteIndex + 1}`} />
