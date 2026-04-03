@@ -353,6 +353,24 @@ function formatDateInput(date: Date) {
   return `${y}-${m}-${d}`
 }
 
+
+function parseDateInput(value: string) {
+  const [y, m, d] = value.split('-').map(Number)
+  return new Date(y, (m || 1) - 1, d || 1)
+}
+
+function nightsBetween(start: string, end: string) {
+  if (!start || !end) return 0
+  const a = startOfDay(parseDateInput(start)).getTime()
+  const b = startOfDay(parseDateInput(end)).getTime()
+  return Math.max(0, Math.round((b - a) / 86400000))
+}
+
+function formatDisplayDate(value: string) {
+  if (!value) return 'Add date'
+  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(parseDateInput(value))
+}
+
 type DetailItemProps = { icon: 'bed' | 'size' | 'guests' | 'view' | 'pool'; text: string }
 
 function DetailIcon({ icon }: { icon: DetailItemProps['icon'] }) {
@@ -490,7 +508,26 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
   const today = startOfDay(new Date())
   const [checkIn, setCheckIn] = useState(formatDateInput(today))
   const [checkOut, setCheckOut] = useState(formatDateInput(addDays(today, 1)))
+  const [bookAdults, setBookAdults] = useState(2)
+  const [bookRooms, setBookRooms] = useState(1)
   const bookingHref = 'https://book-directonline.com/properties/vanararesortspa'
+  const bookingUrl = useMemo(() => {
+    const params = new URLSearchParams()
+    params.set('arrival', checkIn)
+    params.set('departure', checkOut)
+    params.set('checkInDate', checkIn)
+    params.set('checkOutDate', checkOut)
+    params.set('rooms', String(bookRooms))
+    params.set('adults', String(bookAdults))
+    params.set('children', '0')
+    params.set('items[0][adults]', String(bookAdults))
+    params.set('items[0][children]', '0')
+    params.set('items[0][infants]', '0')
+    params.set('items[0][rooms]', String(bookRooms))
+    params.set('currency', 'IDR')
+    params.set('locale', lang === 'cn' ? 'zh' : lang)
+    return `${bookingHref}?${params.toString()}`
+  }, [bookingHref, bookAdults, bookRooms, checkIn, checkOut, lang])
 
   return (
     <SiteShell lang={lang}>
@@ -585,35 +622,67 @@ export default function Page({ params }: { params: Promise<{ lang: string }> }) 
           <div className="container">
             <div className={styles.finalBox}>
               <div className={styles.finalIntro}>
-                <div className="eyebrow">{t.finalTitle}</div>
-                <p>{t.finalText}</p>
-                <a className={styles.finalButton} href={bookingHref} target="_blank" rel="noreferrer">{t.finalCta}</a>
+                <h2 className={styles.finalHeadline}>{t.finalText}</h2>
+                <a className={styles.finalButton} href={bookingUrl} target="_blank" rel="noreferrer">{t.finalCta}</a>
               </div>
-              <div className={styles.finalBookingGrid}>
-                <label className={styles.finalField}>
-                  <span>{dict.layout.checkIn}</span>
-                  <input
-                    type="date"
-                    min={formatDateInput(today)}
-                    value={checkIn}
-                    onChange={(e) => {
-                      const next = e.target.value
-                      setCheckIn(next)
-                      if (next && checkOut <= next) {
-                        setCheckOut(formatDateInput(addDays(new Date(next), 1)))
-                      }
-                    }}
-                  />
-                </label>
-                <label className={styles.finalField}>
-                  <span>{dict.layout.checkOut}</span>
-                  <input
-                    type="date"
-                    min={formatDateInput(addDays(new Date(checkIn), 1))}
-                    value={checkOut}
-                    onChange={(e) => setCheckOut(e.target.value)}
-                  />
-                </label>
+
+              <div className={styles.finalBookingCard}>
+                <div className={styles.finalBookingGrid}>
+                  <label className={styles.finalField}>
+                    <span>{dict.layout.checkIn}</span>
+                    <input
+                      type="date"
+                      min={formatDateInput(today)}
+                      value={checkIn}
+                      onChange={(e) => {
+                        const next = e.target.value
+                        setCheckIn(next)
+                        if (next && checkOut <= next) {
+                          setCheckOut(formatDateInput(addDays(new Date(next), 1)))
+                        }
+                      }}
+                    />
+                  </label>
+
+                  <label className={styles.finalField}>
+                    <span>{dict.layout.checkOut}</span>
+                    <input
+                      type="date"
+                      min={formatDateInput(addDays(new Date(checkIn), 1))}
+                      value={checkOut}
+                      onChange={(e) => setCheckOut(e.target.value)}
+                    />
+                  </label>
+
+                  <label className={styles.finalField}>
+                    <span>Adults</span>
+                    <select value={bookAdults} onChange={(e) => setBookAdults(Number(e.target.value))}>
+                      {[1, 2, 3, 4, 5, 6].map((n) => (
+                        <option key={n} value={n}>{n}</option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className={styles.finalField}>
+                    <span>Rooms</span>
+                    <select value={bookRooms} onChange={(e) => setBookRooms(Number(e.target.value))}>
+                      {[1, 2, 3, 4].map((n) => (
+                        <option key={n} value={n}>{n}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                <div className={styles.finalMeta}>
+                  <div>
+                    <div className={styles.finalSmall}>Stay summary</div>
+                    <div className={styles.finalSummary}>
+                      {formatDisplayDate(checkIn)} — {formatDisplayDate(checkOut)} · {nightsBetween(checkIn, checkOut)} night{nightsBetween(checkIn, checkOut) === 1 ? '' : 's'}
+                    </div>
+                  </div>
+
+                  <a className={styles.finalButton} href={bookingUrl} target="_blank" rel="noreferrer">Check Availability</a>
+                </div>
               </div>
             </div>
           </div>

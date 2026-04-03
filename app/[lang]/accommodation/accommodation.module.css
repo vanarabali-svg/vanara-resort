@@ -386,7 +386,7 @@
 }
 
 .lightboxInner {
-  width: min(1240px, 100%);
+  width: min(1440px, 100%);
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 16px;
@@ -395,7 +395,7 @@
 
 .lightboxImage {
   width: 100%;
-  max-height: 86vh;
+  max-height: 92vh;
   object-fit: contain;
   border-radius: 24px;
   background: rgba(255,255,255,.04);
@@ -418,7 +418,7 @@
   .villaTypesSection { padding-top: 26px; padding-bottom: 72px; }
   .villaTypesGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .villaTypeCard { border-radius: 22px; padding: 22px 18px 20px; }
-  .villaTypeName { font-size: 11px; white-space: nowrap; }
+  .villaTypeName { font-size: 14px; line-height: 1.08; white-space: normal; text-wrap: balance; }
   .villaTypeText { font-size: 13px; line-height: 1.65; margin-bottom: 16px; }
   .villaTypeDetails { padding: 14px 16px; }
   .villaTypeDetailItem span:last-child { font-size: 15px; line-height: 1.08; }
@@ -436,20 +436,61 @@
 @media (max-width: 768px) {
   .hero { min-height: 620px; }
   .heroContent { padding: 0 20px 42px; }
-  .subtitle { white-space: nowrap; font-size: clamp(22px, 3.8vw, 34px); }
-  .staySplit { grid-template-columns: 1.02fr .98fr; gap: 14px; }
-  .staySplitReverse { grid-template-columns: .98fr 1.02fr; gap: 14px; }
-  .stayPhotoWrap, .stayPhoto { min-height: 260px; }
-  .stayLabel { font-size: clamp(20px, 3vw, 28px); }
+  .subtitle { white-space: normal; font-size: clamp(22px, 3.8vw, 34px); }
+  .stayStack { gap: 18px; }
+  .staySplit,
+  .staySplitReverse {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .staySplitReverse > :first-child { order: 2; }
+  .staySplitReverse > :last-child { order: 1; }
+  .stayPhotoWrap {
+    min-height: 0;
+    border-radius: 20px;
+  }
+  .stayPhoto {
+    min-height: 0;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+  }
+  .stayTextWrap {
+    max-width: none;
+    padding: 0 2px;
+  }
+  .stayLabel { font-size: clamp(20px, 3vw, 28px); margin-bottom: 10px; }
   .villaTypesGrid { gap: 12px; }
-  .villaTypeName { font-size: 10px; }
+  .villaTypeName { font-size: 12px; line-height: 1.08; white-space: normal; text-wrap: balance; }
   .villaTypeDetails { padding: 12px 14px; }
   .villaTypeDetailItem { grid-template-columns: 18px 1fr; gap: 8px; }
   .detailIconWrap { width: 18px; height: 18px; }
   .detailIconWrap svg { width: 14px; height: 14px; }
   .villaTypeDetailItem span:last-child { font-size: 13px; }
-  .insideGalleryRow { gap: 10px; }
-  .insideSlide { aspect-ratio: .78; }
+  .insideGalleryShell {
+    overflow: visible;
+  }
+  .insideGalleryRow {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-right: -20px;
+    padding-right: 20px;
+  }
+  .insideGalleryRow::-webkit-scrollbar { display: none; }
+  .insideSlide {
+    flex: 0 0 82vw;
+    aspect-ratio: .82;
+    scroll-snap-align: start;
+  }
+  .insideGalleryControls {
+    justify-content: center;
+    margin-top: 14px;
+  }
   .lightboxInner { grid-template-columns: auto 1fr auto; }
   .amenitiesGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
   .amenityItem { grid-template-columns: 10px 1fr; gap: 6px; padding: 10px 8px; }
@@ -569,75 +610,102 @@
 
 
 .finalSection {
-  padding-top: 8px;
-  padding-bottom: 94px;
+  padding-top: 84px;
+  padding-bottom: 96px;
 }
 
 .finalBox {
-  display: grid;
-  grid-template-columns: .9fr 1.1fr;
-  gap: 24px;
-  align-items: end;
-  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 76px;
+  max-width: 1080px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .finalIntro {
-  max-width: 520px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
-.finalIntro p {
-  margin: 0 0 18px;
-  color: rgba(31,31,29,.72);
-  font-size: 15px;
-  line-height: 1.8;
+.finalHeadline {
+  font-family: var(--serif);
+  font-size: clamp(34px, 4vw, 56px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+  margin: 0;
+  max-width: none;
 }
 
 .finalButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 50px;
-  padding: 0 22px;
+  min-height: 54px;
+  padding: 0 24px;
   border-radius: 999px;
-  border: 1px solid rgba(31,31,29,.18);
-  background: rgba(255,255,255,.52);
-  color: rgba(31,31,29,.90);
-  font-size: 11px;
-  letter-spacing: .24em;
+  border: 1px solid rgba(110, 92, 68, 0.18);
+  background: transparent;
+  color: #2f2318;
+  text-decoration: none;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: transform .18s ease, background .18s ease, border-color .18s ease;
+  font-size: 12px;
+  transition: transform .25s ease, background .25s ease, border-color .25s ease;
 }
 
 .finalButton:hover {
   transform: translateY(-1px);
-  background: rgba(255,255,255,.74);
-  border-color: rgba(31,31,29,.24);
+  background: rgba(163, 123, 82, 0.06);
+  border-color: rgba(110, 92, 68, 0.32);
+}
+
+.finalBookingCard {
+  width: 100%;
+  max-width: 1080px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
 }
 
 .finalBookingGrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px 22px;
   align-items: end;
 }
 
 .finalField {
   display: grid;
   gap: 10px;
+  text-align: left;
 }
 
 .finalField span {
   font-size: 11px;
-  letter-spacing: .18em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(63,49,34,.72);
+  color: rgba(63, 49, 34, 0.72);
 }
 
-.finalField input {
+.finalField input,
+.finalField select {
   width: 100%;
   min-height: 52px;
   border: 0;
-  border-bottom: 1px solid rgba(110,92,68,.28);
+  border-bottom: 1px solid rgba(110, 92, 68, 0.28);
   border-radius: 0;
   background: transparent;
   padding: 0 0 10px;
@@ -645,27 +713,178 @@
   color: #2f2318;
   outline: none;
   box-shadow: none;
+  appearance: none;
 }
 
-.finalField input:focus {
-  border-bottom-color: rgba(110,92,68,.58);
+.finalField input:focus,
+.finalField select:focus {
+  border-bottom-color: rgba(110, 92, 68, 0.58);
+  box-shadow: none;
+}
+
+.finalMeta {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(110, 92, 68, 0.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.finalSmall {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(63, 49, 34, 0.62);
+  margin-bottom: 6px;
+}
+
+.finalSummary {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #2f2318;
 }
 
 @media (max-width: 980px) {
-  .finalBox {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-}
-
-@media (max-width: 768px) {
   .finalSection {
-    padding-top: 0;
-    padding-bottom: 64px;
+    padding-top: 52px;
+  }
+
+  .finalBox {
+    gap: 30px;
+  }
+
+  .finalIntro {
+    max-width: 100%;
+    gap: 12px;
+  }
+
+  .finalHeadline {
+    font-size: clamp(16px, 2.3vw, 22px);
+    white-space: nowrap;
+  }
+
+  .finalBookingCard {
+    max-width: 430px;
+    margin: 0 auto;
   }
 
   .finalBookingGrid {
-    grid-template-columns: 1fr;
-    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 18px;
+    align-items: end;
+  }
+
+  .finalField {
+    max-width: none;
+    justify-self: stretch;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .finalField span {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+  }
+
+  .finalField input,
+  .finalField select {
+    min-height: 38px;
+    padding-bottom: 6px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .finalMeta {
+    margin-top: 16px;
+    padding-top: 0;
+    border-top: 0;
+    justify-content: center;
+  }
+
+  .finalSmall,
+  .finalSummary {
+    display: none;
+  }
+
+  .finalButton {
+    min-height: 46px;
+    padding: 0 22px;
+    min-width: 220px;
+    border-color: rgba(110, 92, 68, 0.16);
+    font-size: 11px;
+    letter-spacing: 0.14em;
   }
 }
+
+@media (max-width: 640px) {
+  .finalSection {
+    padding-top: 44px;
+    padding-bottom: 68px;
+  }
+
+  .finalBox {
+    gap: 20px;
+  }
+
+  .finalIntro {
+    max-width: 100%;
+    padding: 0;
+    align-items: center;
+    text-align: center;
+    min-height: auto;
+    gap: 10px;
+  }
+
+  .finalHeadline {
+    white-space: normal;
+    max-width: 18ch;
+    font-size: clamp(18px, 5vw, 22px);
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  .finalBookingCard {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .finalBookingGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+  }
+
+  .finalField {
+    gap: 6px;
+  }
+
+  .finalField span {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+  }
+
+  .finalField input,
+  .finalField select {
+    min-height: 34px;
+    padding-bottom: 5px;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .finalMeta {
+    margin-top: 12px;
+    padding-top: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .finalButton {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    border-radius: 999px;
+  }
+}
+
