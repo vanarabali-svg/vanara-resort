@@ -1,297 +1,624 @@
-import type { Metadata } from 'next'
+'use client'
+
+import { use, useMemo, useState } from 'react'
 import SiteShell from '../../../components/SiteShell'
-import { locales, normalizeLocale, type Locale, withLang } from '../../../lib/i18n'
+import { getDictionary, normalizeLocale, type Locale } from '../../../lib/i18n'
 import styles from './accommodation.module.css'
 
 type PageCopy = {
   heroKicker: string
-  heroLead: string
-  heroAvailability: string
-  heroTitle: string
-  heroText: string
-  storyEyebrow: string
-  storyTitle: string
-  storyP1: string
-  storyP2: string
-  collectionEyebrow: string
-  collectionTitle: string
-  collectionText: string
-  cards: Array<{ label: string; title: string; text: string; image: string }>
-  detailsEyebrow: string
-  detailsTitle: string
-  detailsP1: string
-  detailsP2: string
-  ctaTitle: string
-  ctaText: string
-  ctaButton: string
+  title: string
+  subtitle: string
+  text1: string
+  text2: string
+  availability: string
+  stayTitle: string
+  oceanLabel: string
+  oceanText: string
+  poolLabel: string
+  poolText: string
+  gardenLabel: string
+  gardenText: string
+  villaTypesTitle: string
+  oceanVillaName: string
+  oceanVillaText: string
+  detailsBedroom: string
+  detailsSize: string
+  detailsGuests: string
+  detailsView: string
+  oceanPoolVillaName: string
+  oceanPoolVillaText: string
+  oceanPoolDetailsBedroom: string
+  oceanPoolDetailsSize: string
+  oceanPoolDetailsGuests: string
+  oceanPoolDetailsView: string
+  infinityVillaName: string
+  infinityVillaText: string
+  detailsBedroomsTwo: string
+  detailsSizeLarge: string
+  detailsInfinityPool: string
+  detailsPremiumView: string
+  detailsGuestsSix: string
+  gardenVillaName: string
+  gardenVillaText: string
+  detailsKingBed: string
+  detailsSizeGarden: string
+  detailsGardenView: string
+  detailsGuestsThree: string
+  bookNow: string
+  insideTitle: string
+  insideText: string
+  amenitiesTitle: string
+  amenitiesText: string
+  amenitiesDetails: string[]
+  livingTitle: string
+  livingText: string
+  finalTitle: string
+  finalText: string
+  finalCta: string
 }
 
 const copy: Record<Locale, PageCopy> = {
   en: {
     heroKicker: 'VILLAS · ULUWATU',
-    heroLead: 'Clifftop villas in Uluwatu, designed for space, privacy, and uninterrupted views of the Indian Ocean.',
-    heroAvailability: 'Check Availability',
-    heroTitle: 'Private villas above the ocean',
-    heroText: 'A calm collection of spaces shaped by light, landscape, and privacy — from garden hideaways to open ocean views.',
-    storyEyebrow: 'THE VILLAS',
-    storyTitle: 'Architecture that opens to air, light, and horizon',
-    storyP1: 'Each villa at Vanara is designed with a quiet material palette, generous proportions, and a natural flow between interior and exterior living.',
-    storyP2: 'Some open toward the Indian Ocean, others are immersed in lush greenery, while select villas offer private pools, terraces, and a slower rhythm of stay.',
-    collectionEyebrow: 'COLLECTION',
-    collectionTitle: 'A stay for every rhythm',
-    collectionText: 'A refined collection of spaces designed for couples, slow mornings, and uninterrupted time above the coastline.',
-    cards: [
-      { label: 'Ocean View', title: 'Clifftop Villa', text: 'Open views, warm light, and a calm atmosphere designed around the horizon.', image: '/villas-1.webp' },
-      { label: 'Private Pool', title: 'Pool Villa', text: 'A quieter retreat with outdoor living, water, and privacy shaped into one space.', image: '/villas-2.webp' },
-      { label: 'Garden Setting', title: 'Garden Villa', text: 'Immersed in greenery, with softer light and a more intimate connection to the landscape.', image: '/villas-3.webp' },
+    title: 'VILLAS',
+    subtitle: 'Architecture that opens to air, light, and horizon',
+    text1: 'Each villa at Vanara is defined by a quiet material palette, generous proportions, and a seamless flow between interior and exterior living.',
+    text2: 'Some open toward the Indian Ocean, while others are immersed in lush greenery. Select villas feature private pools and spacious terraces, creating a slower, more considered rhythm of stay.',
+    availability: 'Check Availability',
+    stayTitle: 'The way you stay',
+    oceanLabel: 'Ocean Facing',
+    oceanText: 'Villas that open toward the Indian Ocean, where light and horizon define each moment.',
+    poolLabel: 'Private Pool Living',
+    poolText: 'A slower rhythm of stay, centered around private pools, terraces, and open-air living.',
+    gardenLabel: 'Garden & Secluded',
+    gardenText: 'Spaces immersed in tropical greenery, offering privacy and a more grounded connection to the surroundings.',
+    villaTypesTitle: 'Villa Types',
+    oceanVillaName: 'One Bedroom Ocean View Villa',
+    oceanVillaText: 'Designed to face open ocean, where light and water define each moment.',
+    detailsBedroom: '1 Bedroom',
+    detailsSize: '70 sq. m. / 753 sq. ft.',
+    detailsGuests: 'Max guests: 3',
+    detailsView: 'Ocean View',
+    oceanPoolVillaName: 'One Bedroom Ocean Pool Villa',
+    oceanPoolVillaText: 'A more immersive stay with a private pool and partial ocean views.',
+    oceanPoolDetailsBedroom: '1 Bedroom',
+    oceanPoolDetailsSize: '98 sq. m. / 1054 sq. ft.',
+    oceanPoolDetailsGuests: 'Max guests: 3',
+    oceanPoolDetailsView: 'Partial Ocean View',
+    infinityVillaName: 'Two Bedroom Infinity Pool Villa',
+    infinityVillaText: 'Expansive space with uninterrupted ocean views and a seamless connection to the horizon.',
+    detailsBedroomsTwo: '2 Bedrooms',
+    detailsSizeLarge: '210 sq.m / 2260 sq. ft.',
+    detailsInfinityPool: 'Infinity Pool',
+    detailsPremiumView: 'Premium Ocean View',
+    detailsGuestsSix: 'Max guests: 6',
+    gardenVillaName: 'One Bedroom Garden View Villa',
+    gardenVillaText: 'A quieter stay surrounded by lush greenery and natural textures.',
+    detailsKingBed: '1 Bedroom',
+    detailsSizeGarden: '70 sq. m. / 753 sq. ft.',
+    detailsGardenView: 'Garden View',
+    detailsGuestsThree: 'Max guests: 3',
+    bookNow: 'Book now',
+    insideTitle: 'Inside the villa',
+    insideText: 'Curved lines, natural materials, and soft light shape interiors that feel both refined and effortless. Spaces remain open and adaptable, allowing indoor and outdoor living to merge naturally.',
+    amenitiesTitle: 'Villa amenities',
+    amenitiesText: 'Each villa is designed with a focus on comfort, functionality, and refined living.',
+    amenitiesDetails: [
+      'Private terrace or outdoor living area',
+      'Private pool (selected villas)',
+      'King-sized bed with premium linens',
+      'Spacious indoor and outdoor living areas',
+      'Air conditioning and ceiling fan',
+      'High-speed Wi‑Fi',
+      'Coffee machine with curated selection',
+      'Complimentary bottled water, refreshed daily',
+      'Private bathroom with bathtub and rain shower',
+      'Double vanity and premium toiletries',
+      'Hair dryer',
+      'Bathrobes and slippers',
+      'In-room safe',
+      'Work and dining space',
+      'In-villa dining and room service',
     ],
-    detailsEyebrow: 'SPACE & ATMOSPHERE',
-    detailsTitle: 'A calmer way to stay',
-    detailsP1: 'The villas are designed to feel open yet private, where architecture frames the landscape without competing with it.',
-    detailsP2: 'Materials, light, and proportion create a stay that feels both refined and effortless, from arrival to evening.',
-    ctaTitle: 'Reserve your villa',
-    ctaText: 'Continue to direct booking for availability, rates, and your preferred stay dates.',
-    ctaButton: 'Check availability',
+    livingTitle: 'Living at Vanara',
+    livingText: 'Days unfold between the villa, the ocean, and the surrounding landscape, from slow mornings by the pool to evenings shaped by light and atmosphere.',
+    finalTitle: 'Final',
+    finalText: 'Experience space, comfort, and the rhythm of the ocean.',
+    finalCta: 'Book your Stay',
   },
   id: {
     heroKicker: 'VILA · ULUWATU',
-    heroLead: 'Vila-vila di tepi tebing di Uluwatu, dirancang untuk ruang, privasi, dan pemandangan Samudra Hindia tanpa gangguan.',
-    heroAvailability: 'Cek Ketersediaan',
-    heroTitle: 'Vila privat di atas samudra',
-    heroText: 'Koleksi ruang yang tenang, dibentuk oleh cahaya, lanskap, dan privasi — dari sudut taman hingga panorama laut terbuka.',
-    storyEyebrow: 'VILA',
-    storyTitle: 'Arsitektur yang terbuka pada udara, cahaya, dan horizon',
-    storyP1: 'Setiap vila di Vanara dirancang dengan palet material yang tenang, proporsi yang lapang, dan alur alami antara ruang dalam dan luar.',
-    storyP2: 'Sebagian menghadap Samudra Hindia, sebagian dikelilingi kehijauan, sementara beberapa vila menawarkan kolam privat, teras, dan ritme menginap yang lebih lambat.',
-    collectionEyebrow: 'KOLEKSI',
-    collectionTitle: 'Masa inap untuk setiap ritme',
-    collectionText: 'Koleksi ruang yang elegan, dirancang untuk pasangan, pagi yang lambat, dan waktu tanpa gangguan di atas garis pantai.',
-    cards: [
-      { label: 'Pemandangan Laut', title: 'Vila Clifftop', text: 'Pemandangan terbuka, cahaya hangat, dan suasana tenang yang dirancang menghadap horizon.', image: '/villas-1.webp' },
-      { label: 'Kolam Privat', title: 'Pool Villa', text: 'Tempat beristirahat yang lebih privat dengan ruang luar, air, dan ketenangan dalam satu kesatuan.', image: '/villas-2.webp' },
-      { label: 'Nuansa Taman', title: 'Garden Villa', text: 'Dikelilingi kehijauan, dengan cahaya yang lebih lembut dan hubungan yang lebih intim dengan lanskap.', image: '/villas-3.webp' },
+    title: 'VILA',
+    subtitle: 'Arsitektur yang terbuka pada udara, cahaya, dan horizon',
+    text1: 'Setiap vila di Vanara didefinisikan oleh palet material yang tenang, proporsi yang lapang, dan alur yang menyatu antara ruang dalam dan luar.',
+    text2: 'Sebagian menghadap Samudra Hindia, sementara yang lain tenggelam dalam kehijauan yang rimbun. Beberapa vila memiliki kolam privat dan teras luas, menciptakan ritme menginap yang lebih lambat dan lebih berkesan.',
+    availability: 'Cek Ketersediaan',
+    stayTitle: 'Cara Anda Menginap',
+    oceanLabel: 'Menghadap Laut',
+    oceanText: 'Vila-vila yang terbuka ke arah Samudra Hindia, tempat cahaya dan horizon menentukan setiap momen.',
+    poolLabel: 'Hidup dengan Kolam Privat',
+    poolText: 'Ritme menginap yang lebih lambat, berpusat pada kolam privat, teras, dan kehidupan terbuka.',
+    gardenLabel: 'Taman & Tersembunyi',
+    gardenText: 'Ruang yang tenggelam dalam kehijauan tropis, menawarkan privasi dan hubungan yang lebih membumi dengan sekitarnya.',
+    villaTypesTitle: 'Tipe Vila',
+    oceanVillaName: 'One Bedroom Ocean View Villa',
+    oceanVillaText: 'Designed to face open ocean, where light and water define each moment.',
+    detailsBedroom: '1 Bedroom',
+    detailsSize: '70 sq. m. / 753 sq. ft.',
+    detailsGuests: 'Max guests: 3',
+    detailsView: 'Ocean View',
+    oceanPoolVillaName: 'One Bedroom Ocean Pool Villa',
+    oceanPoolVillaText: 'A more immersive stay with a private pool and partial ocean views.',
+    oceanPoolDetailsBedroom: '1 Bedroom',
+    oceanPoolDetailsSize: '98 sq. m. / 1054 sq. ft.',
+    oceanPoolDetailsGuests: 'Max guests: 3',
+    oceanPoolDetailsView: 'Partial Ocean View',
+    infinityVillaName: 'Two Bedroom Infinity Pool Villa',
+    infinityVillaText: 'Expansive space with uninterrupted ocean views and a seamless connection to the horizon.',
+    detailsBedroomsTwo: '2 Bedrooms',
+    detailsSizeLarge: '210 sq.m / 2260 sq. ft.',
+    detailsInfinityPool: 'Infinity Pool',
+    detailsPremiumView: 'Premium Ocean View',
+    detailsGuestsSix: 'Max guests: 6',
+    gardenVillaName: 'One Bedroom Garden View Villa',
+    gardenVillaText: 'A quieter stay surrounded by lush greenery and natural textures.',
+    detailsKingBed: '1 Bedroom',
+    detailsSizeGarden: '70 sq. m. / 753 sq. ft.',
+    detailsGardenView: 'Garden View',
+    detailsGuestsThree: 'Max guests: 3',
+    bookNow: 'Book now',
+    insideTitle: 'Inside the villa',
+    insideText: 'Curved lines, natural materials, and soft light shape interiors that feel both refined and effortless. Spaces remain open and adaptable, allowing indoor and outdoor living to merge naturally.',
+    amenitiesTitle: 'Villa amenities',
+    amenitiesText: 'Each villa is designed with a focus on comfort, functionality, and refined living.',
+    amenitiesDetails: [
+      'Private terrace or outdoor living area',
+      'Private pool (selected villas)',
+      'King-sized bed with premium linens',
+      'Spacious indoor and outdoor living areas',
+      'Air conditioning and ceiling fan',
+      'High-speed Wi‑Fi',
+      'Coffee machine with curated selection',
+      'Complimentary bottled water, refreshed daily',
+      'Private bathroom with bathtub and rain shower',
+      'Double vanity and premium toiletries',
+      'Hair dryer',
+      'Bathrobes and slippers',
+      'In-room safe',
+      'Work and dining space',
+      'In-villa dining and room service',
     ],
-    detailsEyebrow: 'RUANG & SUASANA',
-    detailsTitle: 'Cara menginap yang lebih tenang',
-    detailsP1: 'Vila-vila dirancang agar terasa terbuka namun tetap privat, di mana arsitektur membingkai lanskap tanpa mengalahkannya.',
-    detailsP2: 'Material, cahaya, dan proporsi menciptakan pengalaman menginap yang elegan sekaligus terasa natural, dari kedatangan hingga malam hari.',
-    ctaTitle: 'Reservasi vila Anda',
-    ctaText: 'Lanjutkan ke pemesanan langsung untuk melihat ketersediaan, harga, dan tanggal masa inap Anda.',
-    ctaButton: 'Cek ketersediaan',
+    livingTitle: 'Living at Vanara',
+    livingText: 'Days unfold between the villa, the ocean, and the surrounding landscape, from slow mornings by the pool to evenings shaped by light and atmosphere.',
+    finalTitle: 'Final',
+    finalText: 'Experience space, comfort, and the rhythm of the ocean.',
+    finalCta: 'Book your Stay',
   },
   ru: {
     heroKicker: 'ВИЛЛЫ · УЛУВАТУ',
-    heroLead: 'Виллы на утёсе в Улувату, созданные для простора, уединения и беспрепятственных видов на Индийский океан.',
-    heroAvailability: 'Проверить наличие',
-    heroTitle: 'Частные виллы над океаном',
-    heroText: 'Спокойная коллекция пространств, сформированных светом, ландшафтом и уединением — от садовых укрытий до открытых видов на океан.',
-    storyEyebrow: 'ВИЛЛЫ',
-    storyTitle: 'Архитектура, открытая воздуху, свету и горизонту',
-    storyP1: 'Каждая вилла Vanara создана с тихой палитрой материалов, щедрыми пропорциями и естественным переходом между интерьером и внешним пространством.',
-    storyP2: 'Одни виллы обращены к Индийскому океану, другие утопают в зелени, а некоторые предлагают частные бассейны, террасы и более медленный ритм отдыха.',
-    collectionEyebrow: 'КОЛЛЕКЦИЯ',
-    collectionTitle: 'Отдых в своём ритме',
-    collectionText: 'Утончённая коллекция пространств для пар, неспешных утр и безмятежного времени над побережьем.',
-    cards: [
-      { label: 'Вид на океан', title: 'Вилла на утёсе', text: 'Открытые виды, тёплый свет и спокойная атмосфера, построенная вокруг линии горизонта.', image: '/villas-1.webp' },
-      { label: 'Частный бассейн', title: 'Pool Villa', text: 'Более уединённое пространство с внешней зоной отдыха, водой и приватностью в одной композиции.', image: '/villas-2.webp' },
-      { label: 'Садовая среда', title: 'Garden Villa', text: 'Среди зелени, с мягким светом и более интимной связью с ландшафтом.', image: '/villas-3.webp' },
+    title: 'ВИЛЛЫ',
+    subtitle: 'Архитектура, открытая воздуху, свету и горизонту',
+    text1: 'Каждая вилла Vanara определяется сдержанной палитрой материалов, щедрыми пропорциями и плавным переходом между внутренним и внешним пространством.',
+    text2: 'Одни обращены к Индийскому океану, другие утопают в пышной зелени. Некоторые виллы располагают частными бассейнами и просторными террасами, создавая более медленный и осмысленный ритм отдыха.',
+    availability: 'Проверить наличие',
+    stayTitle: 'Как вы отдыхаете',
+    oceanLabel: 'Вид на океан',
+    oceanText: 'Виллы, открытые к Индийскому океану, где свет и линия горизонта определяют каждый момент.',
+    poolLabel: 'Приватная жизнь у бассейна',
+    poolText: 'Более медленный ритм отдыха, выстроенный вокруг частных бассейнов, террас и жизни под открытым небом.',
+    gardenLabel: 'Сад и уединение',
+    gardenText: 'Пространства, утопающие в тропической зелени, дарят приватность и более глубокую связь с окружением.',
+    villaTypesTitle: 'Типы вилл',
+    oceanVillaName: 'One Bedroom Ocean View Villa',
+    oceanVillaText: 'Designed to face open ocean, where light and water define each moment.',
+    detailsBedroom: '1 Bedroom',
+    detailsSize: '70 sq. m. / 753 sq. ft.',
+    detailsGuests: 'Max guests: 3',
+    detailsView: 'Ocean View',
+    oceanPoolVillaName: 'One Bedroom Ocean Pool Villa',
+    oceanPoolVillaText: 'A more immersive stay with a private pool and partial ocean views.',
+    oceanPoolDetailsBedroom: '1 Bedroom',
+    oceanPoolDetailsSize: '98 sq. m. / 1054 sq. ft.',
+    oceanPoolDetailsGuests: 'Max guests: 3',
+    oceanPoolDetailsView: 'Partial Ocean View',
+    infinityVillaName: 'Two Bedroom Infinity Pool Villa',
+    infinityVillaText: 'Expansive space with uninterrupted ocean views and a seamless connection to the horizon.',
+    detailsBedroomsTwo: '2 Bedrooms',
+    detailsSizeLarge: '210 sq.m / 2260 sq. ft.',
+    detailsInfinityPool: 'Infinity Pool',
+    detailsPremiumView: 'Premium Ocean View',
+    detailsGuestsSix: 'Max guests: 6',
+    gardenVillaName: 'One Bedroom Garden View Villa',
+    gardenVillaText: 'A quieter stay surrounded by lush greenery and natural textures.',
+    detailsKingBed: '1 Bedroom',
+    detailsSizeGarden: '70 sq. m. / 753 sq. ft.',
+    detailsGardenView: 'Garden View',
+    detailsGuestsThree: 'Max guests: 3',
+    bookNow: 'Book now',
+    insideTitle: 'Inside the villa',
+    insideText: 'Curved lines, natural materials, and soft light shape interiors that feel both refined and effortless. Spaces remain open and adaptable, allowing indoor and outdoor living to merge naturally.',
+    amenitiesTitle: 'Villa amenities',
+    amenitiesText: 'Each villa is designed with a focus on comfort, functionality, and refined living.',
+    amenitiesDetails: [
+      'Private terrace or outdoor living area',
+      'Private pool (selected villas)',
+      'King-sized bed with premium linens',
+      'Spacious indoor and outdoor living areas',
+      'Air conditioning and ceiling fan',
+      'High-speed Wi‑Fi',
+      'Coffee machine with curated selection',
+      'Complimentary bottled water, refreshed daily',
+      'Private bathroom with bathtub and rain shower',
+      'Double vanity and premium toiletries',
+      'Hair dryer',
+      'Bathrobes and slippers',
+      'In-room safe',
+      'Work and dining space',
+      'In-villa dining and room service',
     ],
-    detailsEyebrow: 'ПРОСТРАНСТВО И АТМОСФЕРА',
-    detailsTitle: 'Более спокойный способ отдыхать',
-    detailsP1: 'Виллы спроектированы так, чтобы ощущаться открытыми, но приватными, где архитектура обрамляет природу, не споря с ней.',
-    detailsP2: 'Материалы, свет и пропорции создают утончённое и естественное ощущение пребывания — от прибытия до вечера.',
-    ctaTitle: 'Забронировать виллу',
-    ctaText: 'Перейдите к прямому бронированию, чтобы увидеть наличие, стоимость и выбрать даты пребывания.',
-    ctaButton: 'Проверить наличие',
+    livingTitle: 'Living at Vanara',
+    livingText: 'Days unfold between the villa, the ocean, and the surrounding landscape, from slow mornings by the pool to evenings shaped by light and atmosphere.',
+    finalTitle: 'Final',
+    finalText: 'Experience space, comfort, and the rhythm of the ocean.',
+    finalCta: 'Book your Stay',
   },
   cn: {
     heroKicker: '别墅 · 乌鲁瓦图',
-    heroLead: '位于乌鲁瓦图悬崖之上的别墅，为空间感、私密性与无遮挡印度洋景致而设计。',
-    heroAvailability: '查看可订情况',
-    heroTitle: '悬崖之上的私人别墅',
-    heroText: '由光线、景观与私密感塑造的安静居停系列，从花园隐逸到开阔海景，呈现更从容的度假方式。',
-    storyEyebrow: '别墅',
-    storyTitle: '向空气、光线与海平线敞开的建筑',
-    storyP1: 'Vanara 的每一栋别墅都以克制的材质、宽阔的比例，以及室内外自然流动的方式来设计。',
-    storyP2: '有的面向印度洋，有的沉浸于绿意之中，部分别墅则拥有私人泳池、露台与更从容的居停节奏。',
-    collectionEyebrow: '系列',
-    collectionTitle: '适合不同节奏的居停',
-    collectionText: '为情侣、慢节奏清晨与不被打扰的海岸时光而设计的精致空间系列。',
-    cards: [
-      { label: '海景', title: '悬崖别墅', text: '开阔视野、温暖光线，以及围绕地平线展开的宁静氛围。', image: '/villas-1.webp' },
-      { label: '私人泳池', title: '泳池别墅', text: '更私密的居停空间，将户外生活、水景与安静感融为一体。', image: '/villas-2.webp' },
-      { label: '花园环境', title: '花园别墅', text: '沉浸在绿意之中，光线更柔和，与自然景观的联系更亲密。', image: '/villas-3.webp' },
+    title: '别墅',
+    subtitle: '向空气、光线与地平线敞开的建筑',
+    text1: 'Vanara 的每一栋别墅都以克制的材质语言、宽阔的比例，以及室内外生活之间自然流动的关系为特征。',
+    text2: '有的面向印度洋，有的沉浸于繁茂绿意之中。部分别墅配有私人泳池与宽敞露台，营造出更从容、更值得细细体会的居停节奏。',
+    availability: '查看房态',
+    stayTitle: '居停方式',
+    oceanLabel: '面向海洋',
+    oceanText: '这些别墅面向印度洋敞开，让光线与地平线定义每一个时刻。',
+    poolLabel: '私人泳池生活',
+    poolText: '更缓慢的居停节奏，围绕私人泳池、露台与开放式生活展开。',
+    gardenLabel: '花园与静谧',
+    gardenText: '沉浸于热带绿意中的空间，带来私密感，也与周围环境建立更沉稳的联系。',
+    villaTypesTitle: '别墅类型',
+    oceanVillaName: 'One Bedroom Ocean View Villa',
+    oceanVillaText: 'Designed to face open ocean, where light and water define each moment.',
+    detailsBedroom: '1 Bedroom',
+    detailsSize: '70 sq. m. / 753 sq. ft.',
+    detailsGuests: 'Max guests: 3',
+    detailsView: 'Ocean View',
+    oceanPoolVillaName: 'One Bedroom Ocean Pool Villa',
+    oceanPoolVillaText: 'A more immersive stay with a private pool and partial ocean views.',
+    oceanPoolDetailsBedroom: '1 Bedroom',
+    oceanPoolDetailsSize: '98 sq. m. / 1054 sq. ft.',
+    oceanPoolDetailsGuests: 'Max guests: 3',
+    oceanPoolDetailsView: 'Partial Ocean View',
+    infinityVillaName: 'Two Bedroom Infinity Pool Villa',
+    infinityVillaText: 'Expansive space with uninterrupted ocean views and a seamless connection to the horizon.',
+    detailsBedroomsTwo: '2 Bedrooms',
+    detailsSizeLarge: '210 sq.m / 2260 sq. ft.',
+    detailsInfinityPool: 'Infinity Pool',
+    detailsPremiumView: 'Premium Ocean View',
+    detailsGuestsSix: 'Max guests: 6',
+    gardenVillaName: 'One Bedroom Garden View Villa',
+    gardenVillaText: 'A quieter stay surrounded by lush greenery and natural textures.',
+    detailsKingBed: '1 Bedroom',
+    detailsSizeGarden: '70 sq. m. / 753 sq. ft.',
+    detailsGardenView: 'Garden View',
+    detailsGuestsThree: 'Max guests: 3',
+    bookNow: 'Book now',
+    insideTitle: 'Inside the villa',
+    insideText: 'Curved lines, natural materials, and soft light shape interiors that feel both refined and effortless. Spaces remain open and adaptable, allowing indoor and outdoor living to merge naturally.',
+    amenitiesTitle: 'Villa amenities',
+    amenitiesText: 'Each villa is designed with a focus on comfort, functionality, and refined living.',
+    amenitiesDetails: [
+      'Private terrace or outdoor living area',
+      'Private pool (selected villas)',
+      'King-sized bed with premium linens',
+      'Spacious indoor and outdoor living areas',
+      'Air conditioning and ceiling fan',
+      'High-speed Wi‑Fi',
+      'Coffee machine with curated selection',
+      'Complimentary bottled water, refreshed daily',
+      'Private bathroom with bathtub and rain shower',
+      'Double vanity and premium toiletries',
+      'Hair dryer',
+      'Bathrobes and slippers',
+      'In-room safe',
+      'Work and dining space',
+      'In-villa dining and room service',
     ],
-    detailsEyebrow: '空间与氛围',
-    detailsTitle: '更安静的居停方式',
-    detailsP1: '这些别墅被设计得既开敞又私密，让建筑成为景观的框架，而不是喧宾夺主。',
-    detailsP2: '材质、光线与比例共同营造出精致却自然的居停体验，从抵达一直延续到夜晚。',
-    ctaTitle: '预订您的别墅',
-    ctaText: '进入直订页面，查看房态、价格与您偏好的入住日期。',
-    ctaButton: '查看可订情况',
+    livingTitle: 'Living at Vanara',
+    livingText: 'Days unfold between the villa, the ocean, and the surrounding landscape, from slow mornings by the pool to evenings shaped by light and atmosphere.',
+    finalTitle: 'Final',
+    finalText: 'Experience space, comfort, and the rhythm of the ocean.',
+    finalCta: 'Book your Stay',
   },
 }
 
-export function generateStaticParams() {
-  return locales.map((lang) => ({ lang }))
+
+function startOfDay(date: Date) {
+  const d = new Date(date)
+  d.setHours(0, 0, 0, 0)
+  return d
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
-  const { lang: raw } = await params
-  const lang = normalizeLocale(raw)
-  const t = copy[lang]
-
-  return {
-    title: `Vanara Resort & Spa | ${t.heroTitle}`,
-    description: t.heroText,
-    alternates: {
-      canonical: `/${lang}/accommodation`,
-      languages: {
-        en: '/en/accommodation',
-        id: '/id/accommodation',
-        ru: '/ru/accommodation',
-        'zh-CN': '/cn/accommodation',
-      },
-    },
-  }
+function addDays(date: Date, amount: number) {
+  const d = new Date(date)
+  d.setDate(d.getDate() + amount)
+  return d
 }
 
-export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
-  const { lang: raw } = await params
+function formatDateInput(date: Date) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+type DetailItemProps = { icon: 'bed' | 'size' | 'guests' | 'view' | 'pool'; text: string }
+
+function DetailIcon({ icon }: { icon: DetailItemProps['icon'] }) {
+  if (icon === 'bed') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13V8.5A1.5 1.5 0 0 1 5.5 7H10a2 2 0 0 1 2 2v4" /><path d="M4 13h16v4H4z" /><path d="M6 17v2" /><path d="M18 17v2" /><path d="M12 10h4a2 2 0 0 1 2 2v1" /></svg>
+  if (icon === 'size') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5" /><path d="M20 9V4h-5" /><path d="M4 15v5h5" /><path d="M20 15v5h-5" /><path d="M9 4L4 9" /><path d="M15 4l5 5" /><path d="M9 20l-5-5" /><path d="M15 20l5-5" /></svg>
+  if (icon === 'guests') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.5 20a4.5 4.5 0 0 0-9 0" /><circle cx="12" cy="8" r="3" /><path d="M20 20a3.8 3.8 0 0 0-3.2-3.75" /><path d="M17.5 5.5a2.5 2.5 0 1 1 0 5" /></svg>
+  if (icon === 'view') return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" /><circle cx="12" cy="12" r="2.5" /></svg>
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2H4z" /><path d="M7 9V7a2 2 0 0 1 2-2" /><path d="M17 9V7a2 2 0 0 0-2-2" /></svg>
+}
+
+function DetailItem({ icon, text }: DetailItemProps) {
+  return <li className={styles.villaTypeDetailItem}><span className={styles.detailIconWrap}><DetailIcon icon={icon} /></span><span>{text}</span></li>
+}
+
+function InsideVillaGallery({ title }: { title: string }) {
+  const images = useMemo(() => Array.from({ length: 8 }, (_, i) => `/${i + 1}.webp`), [])
+  const [page, setPage] = useState(0)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const pageSize = 3
+  const maxPage = Math.ceil(images.length / pageSize) - 1
+  const visible = images.slice(page * pageSize, page * pageSize + pageSize)
+
+  return (
+    <>
+      <div className={styles.insideGalleryShell}>
+        <div className={styles.insideGalleryRow}>
+          {visible.map((src, idx) => {
+            const absoluteIndex = page * pageSize + idx
+            return (
+              <button
+                key={src}
+                type="button"
+                className={styles.insideSlide}
+                onClick={() => setLightboxIndex(absoluteIndex)}
+                aria-label={`Open ${title.toLowerCase()} photo ${absoluteIndex + 1}`}
+              >
+                <img src={src} alt={`${title} ${absoluteIndex + 1}`} />
+              </button>
+            )
+          })}
+        </div>
+        <div className={styles.insideGalleryControls}>
+          <button type="button" className={styles.insideArrow} onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={page === 0} aria-label="Previous villa photos">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          </button>
+          <button type="button" className={styles.insideArrow} onClick={() => setPage((p) => Math.min(maxPage, p + 1))} disabled={page === maxPage} aria-label="Next villa photos">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+          </button>
+        </div>
+      </div>
+
+      {lightboxIndex !== null && (
+        <div className={styles.lightbox} role="dialog" aria-modal="true" onClick={() => setLightboxIndex(null)}>
+          <button type="button" className={styles.lightboxClose} aria-label="Close image" onClick={() => setLightboxIndex(null)}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12" /><path d="M18 6 6 18" /></svg>
+          </button>
+          <div className={styles.lightboxInner} onClick={(e) => e.stopPropagation()}>
+            <button type="button" className={styles.lightboxArrow} onClick={() => setLightboxIndex((i) => (i === null ? 0 : (i - 1 + images.length) % images.length))} aria-label="Previous image">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+            </button>
+            <img className={styles.lightboxImage} src={images[lightboxIndex]} alt={`${title} ${lightboxIndex + 1}`} />
+            <button type="button" className={styles.lightboxArrow} onClick={() => setLightboxIndex((i) => (i === null ? 0 : (i + 1) % images.length))} aria-label="Next image">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+
+function LivingAtVanaraGallery({ title }: { title: string }) {
+  const images = useMemo(() => Array.from({ length: 5 }, (_, i) => `/lv-${i + 1}.webp`), [])
+  const [page, setPage] = useState(0)
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const pageSize = 3
+  const maxPage = Math.ceil(images.length / pageSize) - 1
+  const visible = images.slice(page * pageSize, page * pageSize + pageSize)
+
+  return (
+    <>
+      <div className={styles.insideGalleryShell}>
+        <div className={styles.insideGalleryRow}>
+          {visible.map((src, idx) => {
+            const absoluteIndex = page * pageSize + idx
+            return (
+              <button
+                key={src}
+                type="button"
+                className={styles.insideSlide}
+                onClick={() => setLightboxIndex(absoluteIndex)}
+                aria-label={`Open ${title.toLowerCase()} photo ${absoluteIndex + 1}`}
+              >
+                <img src={src} alt={`${title} ${absoluteIndex + 1}`} />
+              </button>
+            )
+          })}
+        </div>
+        <div className={styles.insideGalleryControls}>
+          <button type="button" className={styles.insideArrow} onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={page === 0} aria-label="Previous living photos">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          </button>
+          <button type="button" className={styles.insideArrow} onClick={() => setPage((p) => Math.min(maxPage, p + 1))} disabled={page === maxPage} aria-label="Next living photos">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+          </button>
+        </div>
+      </div>
+
+      {lightboxIndex !== null && (
+        <div className={styles.lightbox} role="dialog" aria-modal="true" onClick={() => setLightboxIndex(null)}>
+          <button type="button" className={styles.lightboxClose} aria-label="Close image" onClick={() => setLightboxIndex(null)}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12" /><path d="M18 6 6 18" /></svg>
+          </button>
+          <div className={styles.lightboxInner} onClick={(e) => e.stopPropagation()}>
+            <button type="button" className={styles.lightboxArrow} onClick={() => setLightboxIndex((i) => (i === null ? 0 : (i - 1 + images.length) % images.length))} aria-label="Previous image">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+            </button>
+            <img className={styles.lightboxImage} src={images[lightboxIndex]} alt={`${title} ${lightboxIndex + 1}`} />
+            <button type="button" className={styles.lightboxArrow} onClick={() => setLightboxIndex((i) => (i === null ? 0 : (i + 1) % images.length))} aria-label="Next image">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+export default function Page({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang: raw } = use(params)
   const lang = normalizeLocale(raw)
+  const dict = getDictionary(lang)
   const t = copy[lang]
+  const today = startOfDay(new Date())
+  const [checkIn, setCheckIn] = useState(formatDateInput(today))
+  const [checkOut, setCheckOut] = useState(formatDateInput(addDays(today, 1)))
   const bookingHref = 'https://book-directonline.com/properties/vanararesortspa'
 
   return (
-    <SiteShell lang={lang}>
+    <SiteShell lang={lang} dict={dict}>
       <div className={styles.page}>
-        <section className={styles.hero} aria-label="Accommodation hero">
-          <video
-            className={styles.heroVideo}
-            autoPlay
-            muted
-            playsInline
-            loop
-            preload="metadata"
-            poster="/villas-hero-poster.jpg"
-          >
+        <section className={styles.hero} aria-label="Villas hero">
+          <video className={styles.heroVideo} autoPlay muted playsInline loop preload="metadata" poster="/villas-hero-poster.jpg">
             <source src="/villas-hero.mp4" type="video/mp4" />
           </video>
           <div className={styles.heroShade} aria-hidden="true" />
-          <div className={styles.heroContent}>
-            <div className="eyebrow">{t.heroKicker}</div>
-          </div>
+          <div className={styles.heroContent}><div className="eyebrow">{t.heroKicker}</div></div>
         </section>
 
         <section className={`section ${styles.introSection}`}>
           <div className="container">
             <div className={styles.introWrap}>
-              <h1 className={styles.heroTitle}>{t.heroTitle}</h1>
-              <p className={styles.heroText}>{t.heroText}</p>
-              <div className={styles.introDivider} aria-hidden="true" />
-              <div className={styles.introMeta}>
-                <p className={styles.heroLead}>{t.heroLead}</p>
-                <a className="textCta" href={bookingHref} target="_blank" rel="noreferrer">
-                  {t.heroAvailability}
-                </a>
+              <div className="eyebrow">{t.title}</div>
+              <h1 className={styles.subtitle}>{t.subtitle}</h1>
+              <div className={styles.copy}><p>{t.text1}</p><p>{t.text2}</p></div>
+              <a className={styles.introButton} href={bookingHref} target="_blank" rel="noreferrer">{t.availability}</a>
+              <div className="rule" />
+            </div>
+          </div>
+        </section>
+
+        <section className={`section ${styles.staySection}`}>
+          <div className="container">
+            <div className="eyebrow">{t.stayTitle}</div>
+            <div className={styles.stayStack}>
+              <div className={styles.staySplit}>
+                <div className={styles.stayPhotoWrap}><img className={styles.stayPhoto} src="/villas-ocean.webp" alt={t.oceanLabel} /></div>
+                <div className={styles.stayTextWrap}><h2 className={styles.stayLabel}>{t.oceanLabel}</h2><p className={styles.stayText}>{t.oceanText}</p></div>
+              </div>
+              <div className={`${styles.staySplit} ${styles.staySplitReverse}`}>
+                <div className={styles.stayTextWrap}><h2 className={styles.stayLabel}>{t.poolLabel}</h2><p className={styles.stayText}>{t.poolText}</p></div>
+                <div className={styles.stayPhotoWrap}><img className={styles.stayPhoto} src="/villas-pool.webp" alt={t.poolLabel} /></div>
+              </div>
+              <div className={styles.staySplit}>
+                <div className={styles.stayPhotoWrap}><img className={styles.stayPhoto} src="/villas-garden.webp" alt={t.gardenLabel} /></div>
+                <div className={styles.stayTextWrap}><h2 className={styles.stayLabel}>{t.gardenLabel}</h2><p className={styles.stayText}>{t.gardenText}</p></div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className={`section ${styles.editorialSection}`}>
+        <section className={`section ${styles.villaTypesSection}`}>
           <div className="container">
-            <div className={styles.editorialGrid}>
-              <div className={styles.editorialText}>
-                <div className="eyebrow">{t.storyEyebrow}</div>
-                <h2 className={styles.editorialTitle}>{t.storyTitle}</h2>
-                <div className={styles.editorialCopy}>
-                  <p>{t.storyP1}</p>
-                  <p>{t.storyP2}</p>
+            <div className="eyebrow">{t.villaTypesTitle}</div>
+            <div className={styles.villaTypesGrid}>
+              <div className={styles.villaTypeCard}><div className={styles.villaTypeContent}><h2 className={styles.villaTypeName}>{t.oceanVillaName}</h2><p className={styles.villaTypeText}>{t.oceanVillaText}</p><ul className={styles.villaTypeDetails}><DetailItem icon="bed" text={t.detailsBedroom} /><DetailItem icon="size" text={t.detailsSize} /><DetailItem icon="guests" text={t.detailsGuests} /><DetailItem icon="view" text={t.detailsView} /></ul><a className={styles.villaTypeButton} href={bookingHref} target="_blank" rel="noreferrer">{t.bookNow}</a></div></div>
+              <div className={styles.villaTypeCard}><div className={styles.villaTypeContent}><h2 className={styles.villaTypeName}>{t.oceanPoolVillaName}</h2><p className={styles.villaTypeText}>{t.oceanPoolVillaText}</p><ul className={styles.villaTypeDetails}><DetailItem icon="bed" text={t.oceanPoolDetailsBedroom} /><DetailItem icon="size" text={t.oceanPoolDetailsSize} /><DetailItem icon="guests" text={t.oceanPoolDetailsGuests} /><DetailItem icon="view" text={t.oceanPoolDetailsView} /></ul><a className={styles.villaTypeButton} href={bookingHref} target="_blank" rel="noreferrer">{t.bookNow}</a></div></div>
+              <div className={styles.villaTypeCard}><div className={styles.villaTypeContent}><h2 className={styles.villaTypeName}>{t.infinityVillaName}</h2><p className={styles.villaTypeText}>{t.infinityVillaText}</p><ul className={styles.villaTypeDetails}><DetailItem icon="bed" text={t.detailsBedroomsTwo} /><DetailItem icon="size" text={t.detailsSizeLarge} /><DetailItem icon="pool" text={t.detailsInfinityPool} /><DetailItem icon="view" text={t.detailsPremiumView} /><DetailItem icon="guests" text={t.detailsGuestsSix} /></ul><a className={styles.villaTypeButton} href={bookingHref} target="_blank" rel="noreferrer">{t.bookNow}</a></div></div>
+              <div className={styles.villaTypeCard}><div className={styles.villaTypeContent}><h2 className={styles.villaTypeName}>{t.gardenVillaName}</h2><p className={styles.villaTypeText}>{t.gardenVillaText}</p><ul className={styles.villaTypeDetails}><DetailItem icon="bed" text={t.detailsKingBed} /><DetailItem icon="size" text={t.detailsSizeGarden} /><DetailItem icon="view" text={t.detailsGardenView} /><DetailItem icon="guests" text={t.detailsGuestsThree} /></ul><a className={styles.villaTypeButton} href={bookingHref} target="_blank" rel="noreferrer">{t.bookNow}</a></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section className={`section ${styles.insideSection}`}>
+          <div className="container">
+            <div className="eyebrow">{t.insideTitle}</div>
+            <div className={styles.insideIntro}><p>{t.insideText}</p></div>
+            <InsideVillaGallery title={t.insideTitle} />
+          </div>
+        </section>
+
+        <section className={`section ${styles.amenitiesSection}`}>
+          <div className="container">
+            <div className="eyebrow">{t.amenitiesTitle}</div>
+            <div className={styles.amenitiesIntro}>
+              <p>{t.amenitiesText}</p>
+            </div>
+            <div className={styles.amenitiesGrid}>
+              {t.amenitiesDetails.map((item) => (
+                <div key={item} className={styles.amenityItem}>
+                  <span className={styles.amenityDot} aria-hidden="true" />
+                  <span>{item}</span>
                 </div>
-              </div>
-
-              <div className={styles.editorialMedia}>
-                <figure className={`${styles.imageFrame} ${styles.imageLarge} revealBlock`}>
-                  <img src="/villas-main.webp" alt={t.heroTitle} />
-                </figure>
-                <figure className={`${styles.imageFrame} ${styles.imageSmall} revealBlock`}>
-                  <img src="/villas-detail.webp" alt={t.detailsTitle} />
-                </figure>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className={`section ${styles.collectionSection}`} id="villa-collection">
-          <div className="container">
-            <div className={styles.collectionHead}>
-              <div className="eyebrow">{t.collectionEyebrow}</div>
-              <h2 className={styles.collectionTitle}>{t.collectionTitle}</h2>
-              <p className={styles.collectionText}>{t.collectionText}</p>
-            </div>
-
-            <div className={styles.cards}>
-              {t.cards.map((card, index) => (
-                <article className={`${styles.card} ${index === 0 ? styles.cardFeatured : ''} revealBlock`} key={card.title}>
-                  <div className={styles.cardMedia}>
-                    <img src={card.image} alt={card.title} />
-                  </div>
-                  <div className={styles.cardBody}>
-                    <div className={styles.cardLabel}>{card.label}</div>
-                    <h3 className={styles.cardTitle}>{card.title}</h3>
-                    <p className={styles.cardText}>{card.text}</p>
-                  </div>
-                </article>
               ))}
             </div>
           </div>
         </section>
 
-        <section className={`section ${styles.atmosphereSection}`}>
+        <section className={`section ${styles.livingSection}`}>
           <div className="container">
-            <div className={styles.atmospherePanel}>
-              <div className={styles.atmosphereText}>
-                <div className="eyebrow">{t.detailsEyebrow}</div>
-                <h2 className={styles.atmosphereTitle}>{t.detailsTitle}</h2>
-                <p>{t.detailsP1}</p>
-                <p>{t.detailsP2}</p>
+            <div className="eyebrow">{t.livingTitle}</div>
+            <div className={styles.livingIntro}><p>{t.livingText}</p></div>
+            <LivingAtVanaraGallery title={t.livingTitle} />
+          </div>
+        </section>
+
+
+        <section className={`section ${styles.finalSection}`}>
+          <div className="container">
+            <div className={styles.finalBox}>
+              <div className={styles.finalIntro}>
+                <div className="eyebrow">{t.finalTitle}</div>
+                <p>{t.finalText}</p>
+                <a className={styles.finalButton} href={bookingHref} target="_blank" rel="noreferrer">{t.finalCta}</a>
               </div>
-              <figure className={`${styles.atmosphereImage} revealBlock`}>
-                <img src="/villas-detail.webp" alt={t.detailsTitle} />
-              </figure>
+              <div className={styles.finalBookingGrid}>
+                <label className={styles.finalField}>
+                  <span>{dict.layout.checkIn}</span>
+                  <input
+                    type="date"
+                    min={formatDateInput(today)}
+                    value={checkIn}
+                    onChange={(e) => {
+                      const next = e.target.value
+                      setCheckIn(next)
+                      if (next && checkOut <= next) {
+                        setCheckOut(formatDateInput(addDays(new Date(next), 1)))
+                      }
+                    }}
+                  />
+                </label>
+                <label className={styles.finalField}>
+                  <span>{dict.layout.checkOut}</span>
+                  <input
+                    type="date"
+                    min={formatDateInput(addDays(new Date(checkIn), 1))}
+                    value={checkOut}
+                    onChange={(e) => setCheckOut(e.target.value)}
+                  />
+                </label>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className={`section ${styles.ctaSection}`}>
-          <div className="container">
-            <div className={`${styles.ctaBox} revealBlock`}>
-              <div className={styles.ctaInner}>
-                <div className="eyebrow">{t.ctaTitle}</div>
-                <p className={styles.ctaText}>{t.ctaText}</p>
-                <a className={styles.ctaButton} href={bookingHref} target="_blank" rel="noreferrer">
-                  {t.ctaButton}
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className={`section ${styles.backSection}`}>
-          <div className="container">
-            <a className="textCta" href={withLang(lang, '/')}>
-              {lang === 'id'
-                ? 'Kembali ke beranda'
-                : lang === 'ru'
-                ? 'Назад на главную'
-                : lang === 'cn'
-                ? '返回首页'
-                : 'Back to homepage'}
-            </a>
-          </div>
-        </section>
       </div>
     </SiteShell>
   )
