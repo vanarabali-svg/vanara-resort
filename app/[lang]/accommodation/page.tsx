@@ -387,18 +387,18 @@ function DetailItem({ icon, text }: DetailItemProps) {
 
 function InsideVillaGallery({ title }: { title: string }) {
   const images = useMemo(() => Array.from({ length: 8 }, (_, i) => `/${i + 1}.webp`), [])
-  const [page, setPage] = useState(0)
+  const [startIndex, setStartIndex] = useState(0)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const pageSize = 3
-  const maxPage = Math.ceil(images.length / pageSize) - 1
-  const visible = images.slice(page * pageSize, page * pageSize + pageSize)
+  const maxIndex = Math.max(0, images.length - pageSize)
+  const visible = images.slice(startIndex, startIndex + pageSize)
 
   return (
     <>
       <div className={styles.insideGalleryShell}>
         <div className={styles.insideGalleryRow}>
           {visible.map((src, idx) => {
-            const absoluteIndex = page * pageSize + idx
+            const absoluteIndex = startIndex + idx
             return (
               <button
                 key={src}
@@ -413,10 +413,10 @@ function InsideVillaGallery({ title }: { title: string }) {
           })}
         </div>
         <div className={styles.insideGalleryControls}>
-          <button type="button" className={styles.insideArrow} onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={page === 0} aria-label="Previous villa photos">
+          <button type="button" className={styles.insideArrow} onClick={() => setStartIndex((i) => Math.max(0, i - 1))} disabled={startIndex === 0} aria-label="Previous villa photos">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
           </button>
-          <button type="button" className={styles.insideArrow} onClick={() => setPage((p) => Math.min(maxPage, p + 1))} disabled={page === maxPage} aria-label="Next villa photos">
+          <button type="button" className={styles.insideArrow} onClick={() => setStartIndex((i) => Math.min(maxIndex, i + 1))} disabled={startIndex === maxIndex} aria-label="Next villa photos">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
           </button>
         </div>
@@ -445,18 +445,18 @@ function InsideVillaGallery({ title }: { title: string }) {
 
 function LivingAtVanaraGallery({ title }: { title: string }) {
   const images = useMemo(() => Array.from({ length: 5 }, (_, i) => `/lv-${i + 1}.webp`), [])
-  const [page, setPage] = useState(0)
+  const [startIndex, setStartIndex] = useState(0)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const pageSize = 3
-  const maxPage = Math.ceil(images.length / pageSize) - 1
-  const visible = images.slice(page * pageSize, page * pageSize + pageSize)
+  const maxIndex = Math.max(0, images.length - pageSize)
+  const visible = images.slice(startIndex, startIndex + pageSize)
 
   return (
     <>
       <div className={styles.insideGalleryShell}>
         <div className={styles.insideGalleryRow}>
           {visible.map((src, idx) => {
-            const absoluteIndex = page * pageSize + idx
+            const absoluteIndex = startIndex + idx
             return (
               <button
                 key={src}
@@ -471,10 +471,10 @@ function LivingAtVanaraGallery({ title }: { title: string }) {
           })}
         </div>
         <div className={styles.insideGalleryControls}>
-          <button type="button" className={styles.insideArrow} onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={page === 0} aria-label="Previous living photos">
+          <button type="button" className={styles.insideArrow} onClick={() => setStartIndex((i) => Math.max(0, i - 1))} disabled={startIndex === 0} aria-label="Previous living photos">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
           </button>
-          <button type="button" className={styles.insideArrow} onClick={() => setPage((p) => Math.min(maxPage, p + 1))} disabled={page === maxPage} aria-label="Next living photos">
+          <button type="button" className={styles.insideArrow} onClick={() => setStartIndex((i) => Math.min(maxIndex, i + 1))} disabled={startIndex === maxIndex} aria-label="Next living photos">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
           </button>
         </div>

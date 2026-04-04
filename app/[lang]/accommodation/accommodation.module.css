@@ -200,12 +200,12 @@
 
 .villaTypeName {
   font-family: var(--serif);
-  font-size: clamp(12px, 0.82vw, 15px);
+  font-size: clamp(10px, 0.68vw, 12px);
   font-weight: 500;
-  line-height: 1.02;
+  line-height: 1;
   margin: 0 0 14px;
   color: var(--ink);
-  letter-spacing: -0.018em;
+  letter-spacing: -0.012em;
   white-space: nowrap;
 }
 
